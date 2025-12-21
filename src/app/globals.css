@@ -1,26 +1,77 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Fonts */
+  --font-mono: "Fira Code", "JetBrains Mono", monospace;
+
+  /* Light theme surfaces */
+  --color-surface-bg: #fffbf0;
+  --color-surface-sidebar: #fff8e7;
+  --color-surface-card: #ffffff;
+  --color-surface-terminal: #fafafa;
+
+  /* Light theme borders */
+  --color-border: #fdba74;
+  --color-border-card: #fed7aa;
+
+  /* Light theme text */
+  --color-foreground: #1e293b;
+  --color-foreground-heading: #0f172a;
+  --color-foreground-muted: #475569;
+  --color-foreground-terminal: #4338ca;
+
+  /* Light theme accents */
+  --color-accent: #ea580c;
+  --color-accent-success: #059669;
+
+  /* Light mode method badges - all orange themed */
+  --color-method-get: #ea580c;
+  --color-method-get-bg: #ffedd5;
+  --color-method-post: #ea580c;
+  --color-method-post-bg: #ffedd5;
+  --color-method-put: #ea580c;
+  --color-method-put-bg: #ffedd5;
+  --color-method-patch: #ea580c;
+  --color-method-patch-bg: #ffedd5;
+
+  /* Active nav in light mode */
+  --color-nav-active-bg: #fed7aa;
+  --color-nav-active-text: #c2410c;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* Dark theme overrides */
+.dark {
+  --color-surface-bg: #0a0f1e;
+  --color-surface-sidebar: #0f1629;
+  --color-surface-card: #0f172a;
+  --color-surface-terminal: #010409;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-border: #1e293b;
+  --color-border-card: #1e293b;
+
+  --color-foreground: #cbd5e1;
+  --color-foreground-heading: #ffffff;
+  --color-foreground-muted: #9ca3af;
+  --color-foreground-terminal: #93c5fd;
+
+  --color-accent: #60a5fa;
+  --color-accent-success: #4ade80;
+
+  /* Dark mode method badges - colorful */
+  --color-method-get: #60a5fa;
+  --color-method-get-bg: rgba(59, 130, 246, 0.1);
+  --color-method-post: #4ade80;
+  --color-method-post-bg: rgba(34, 197, 94, 0.1);
+  --color-method-put: #facc15;
+  --color-method-put-bg: rgba(234, 179, 8, 0.1);
+  --color-method-patch: #c084fc;
+  --color-method-patch-bg: rgba(168, 85, 247, 0.1);
+
+  /* Active nav in dark mode */
+  --color-nav-active-bg: rgba(59, 130, 246, 0.1);
+  --color-nav-active-text: #60a5fa;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-surface-bg text-foreground;
 }
