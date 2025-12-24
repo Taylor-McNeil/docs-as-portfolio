@@ -75,3 +75,41 @@
 body {
   @apply bg-surface-bg text-foreground;
 }
+
+/* Shiki code block styling */
+.shiki-wrapper pre.shiki {
+  @apply p-4 m-0;
+  background: transparent !important;
+}
+
+.shiki-wrapper pre.shiki code {
+  @apply font-mono block;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.shiki-wrapper pre.shiki code .line {
+  display: block;
+  line-height: 1.6;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Reset all elements inside shiki blocks */
+.shiki-wrapper pre.shiki span,
+.shiki-wrapper pre.shiki code span,
+.shiki-wrapper * {
+  border: none !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  border-color: transparent !important;
+}

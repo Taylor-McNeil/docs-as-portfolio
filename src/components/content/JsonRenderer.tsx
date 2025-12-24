@@ -2,13 +2,14 @@
 
 import { useTheme } from "next-themes";
 
-type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
 interface JsonRendererProps {
   data: JsonValue;
+  isRoot?: boolean;
 }
 
-export function JsonRenderer({ data }: JsonRendererProps) {
+export function JsonRenderer({ data, isRoot = true }: JsonRendererProps) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
@@ -25,7 +26,7 @@ export function JsonRenderer({ data }: JsonRendererProps) {
   }
 
   if (typeof data === "string") {
-    if (data.startsWith("http")) {
+    if (data.startsWith("http") || data.startsWith("mailto:")) {
       return (
         <a
           href={data}
@@ -56,8 +57,8 @@ export function JsonRenderer({ data }: JsonRendererProps) {
       <span>
         <span className="text-foreground-muted">[</span>
         {data.map((item, index) => (
-          <div key={index} className="pl-5">
-            <JsonRenderer data={item} />
+          <div key={index} className="pl-4">
+            <JsonRenderer data={item} isRoot={false} />
             {index < data.length - 1 && <span className="text-foreground-muted">,</span>}
           </div>
         ))}
@@ -75,14 +76,13 @@ export function JsonRenderer({ data }: JsonRendererProps) {
       <span>
         <span className="text-foreground-muted">{"{"}</span>
         {entries.map(([key, value], index) => (
-          <div key={key} className="pl-5 flex">
-            <span className={`mr-2 ${isDark ? "text-blue-300" : "text-indigo-600"}`}>
-              &quot;{key}&quot;:
+          <div key={key} className="pl-4">
+            <span className={isDark ? "text-blue-300" : "text-indigo-600"}>
+              &quot;{key}&quot;
             </span>
-            <div className="flex-1">
-              <JsonRenderer data={value} />
-              {index < entries.length - 1 && <span className="text-foreground-muted">,</span>}
-            </div>
+            <span className="text-foreground-muted">: </span>
+            <JsonRenderer data={value} isRoot={false} />
+            {index < entries.length - 1 && <span className="text-foreground-muted">,</span>}
           </div>
         ))}
         <span className="text-foreground-muted">{"}"}</span>

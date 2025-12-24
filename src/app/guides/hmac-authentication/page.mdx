@@ -1,0 +1,148 @@
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { GuideHeader } from "@/components/content/GuideHeader";
+
+export const metadata = {
+  title: "HMAC Authentication Guide | Taylor McNeil",
+};
+
+<AnchorSidebar
+  items={[
+    { id: "what-is-hmac-authentication?", label: "What is HMAC?", level: 2 },
+    { id: "key-components", label: "Key Components", level: 2 },
+    { id: "authorization-format", label: "Authorization Format", level: 2 },
+    { id: "how-hmac-authentication-works", label: "How HMAC Authentication Works", level: 2 },
+    { id: "signing-process", label: "Signing Process", level: 2 },
+    { id: "generate-the-timestamp", label: "Generate a Timestamp", level: 3 },
+    { id: "build-the-canonical-request-string", label: "Build the Canonical Request String", level: 3 },
+    { id: "derive-the-signing-key", label: "Derive the Signing Key", level: 3 },
+    { id: "generate-the-signature", label: "Generate the Signature", level: 3 },
+    { id: "send-the-request", label: "Send the Request", level: 3 },
+    { id: "implementation", label: "Implementation", level: 2 },
+    { id: "troubleshooting", label: "Troubleshooting", level: 2 },
+    { id: "next-steps", label: "Next Steps", level: 2 },
+  ]}
+/>
+
+<GuideHeader title="HMAC Authentication Guide" mdxPath="src/app/guides/hmac-authentication/page.mdx" />
+
+Implement secure API authentication using Hash-based Message Authentication Codes.
+
+<Callout type="note">
+This guide was originally written for NCR's developer platform, where it reduced auth-related support tickets by 40%. I have updated it to make it more robust.
+</Callout>
+
+## What is HMAC Authentication?
+
+HMAC (Hash-based Message Authentication Code) is a request-signing mechanism used to authenticate API calls. 
+
+Each request consists of a cryptographic signature derived from: 
+- The request details that include the: method, path, query, body, and selected headers
+- A shared secret key known only to the client and server
+- A timestamp
+
+The server independently computes the same signature. If the signatures match and the request timestamp is valid, the request is accepted.
+
+HMAC authentication provides the following guarantees:
+
+1. **Request Integrity**: the request was not modified in transit
+2. **Caller Authenticity**: the caller possesses the secret key
+3. **Replay Protection**: old requests cannot be reused
+
+
+## Key Components
+
+HMAC authentication relies on two credentials issued to the client:
+
+| Component | Purpose |
+|-----------|---------|
+| **Shared Key** | Public identifier for the client. Sent with each request |
+| **Secret Key** | Private key used to generate signatures. Never transmitted. |
+
+The shared key identifies the client. The secret key proves authorization.
+
+## Authorization Format
+
+Requests are authenticated using the <InlineCode>AccessKey</InlineCode> authorization scheme.
+The <InlineCode>Authorization</InlineCode> header has the following format:
+
+<InlineCode>{"Authorization: AccessKey <shared-key>:<signature>"}</InlineCode>
+
+Where:
+- <InlineCode>{"<shared-key>"}</InlineCode> is the client's shared key
+- <InlineCode>{"<signature>"}</InlineCode> is the Base64-encoded HMAC signature
+
+## Implementation
+
+
+
+
+
+Here's a JavaScript implementation:
+```javascript:hmac.js
+const crypto = require("crypto");
+
+function generateHMAC(secretKey, method, path, timestamp) {
+  // Create the signing string
+  const signingString = `${method}\n${path}\n${timestamp}`;
+
+  // Generate HMAC using SHA-256
+  const hmac = crypto.createHmac("sha256", secretKey);
+  hmac.update(signingString);
+
+  return hmac.digest("base64");
+}
+
+// Usage
+const signature = generateHMAC(
+  "your-secret-key",
+  "POST",
+  "/api/transactions",
+  new Date().toISOString()
+);
+```
+
+And in Python:
+```python:hmac_auth.py
+import hmac
+import hashlib
+import base64
+from datetime import datetime
+
+def generate_hmac(secret_key: str, method: str, path: str, timestamp: str) -> str:
+    signing_string = f"{method}\n{path}\n{timestamp}"
+
+    signature = hmac.new(
+        secret_key.encode(),
+        signing_string.encode(),
+        hashlib.sha256
+    ).digest()
+
+    return base64.b64encode(signature).decode()
+
+# Usage
+signature = generate_hmac(
+    "your-secret-key",
+    "POST",
+    "/api/transactions",
+    datetime.utcnow().isoformat()
+)
+```
+
+## Troubleshooting
+
+Common issues and fixes:
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| 401 Invalid Signature | Timestamp drift | Ensure server/client clocks are synced |
+| 401 Expired Request | Request too old | Use current timestamp, check for network delays |
+| 403 Invalid Key | Wrong shared key | Verify key matches portal credentials |
+
+<Callout type="tip">
+Set up NTP on your servers to prevent timestamp drift issues.
+</Callout>
+
+## Next Steps
+
+- [OpenAPI Patterns](/guides/openapi-patterns) — Document your authenticated endpoints
+- [Methodology](/methodology/llm-evaluation) — How I approach technical documentation

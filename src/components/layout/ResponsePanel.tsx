@@ -2,11 +2,11 @@
 
 import { useEffect } from "react";
 import { useRightPanel } from "./RightPanelContext";
-import { JsonRenderer } from "../content/JsonRenderer";
+import { JsonRenderer, JsonValue } from "../content/JsonRenderer";
 import { Terminal } from "lucide-react";
 
 interface ResponsePanelProps {
-  data: Record<string, unknown>;
+  data: JsonValue;
 }
 
 export function ResponsePanel({ data }: ResponsePanelProps) {

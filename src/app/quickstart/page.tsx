@@ -1,50 +1,183 @@
 import { ResponsePanel } from "@/components/layout/ResponsePanel";
 import { PageHeader } from "@/components/content/PageHeader";
+import { CodeBlock } from "@/components/content/CodeBlock";
+import { Callout } from "@/components/content/Callout";
+import Link from "next/link";
+
+const faqResponse = {
+  "status": 200,
+  "faq": [
+    { "q": "What have you been doing the past 18 months?", "a": "Building. See /active-builds" },
+    { "q": "What are you working on right now?", "a": "&mpersand, LLM Eval, this portfolio" },
+    { "q": "Can you use AI? LLMs? CI/CD?", "a": "See /methodology. This website uses all three." },
+    { "q": "Road warrior?", "a": "Deprecated in v4.0" },
+    { "q": "What is this?", "a": "Docs-as-portfolio" },
+    { "q": "Why hire you?", "a": "Acquired taste. Keep exploring the portfolio." },
+    { "q": "Do you have a highlight reel?", "a": "6 continents, 11 hackathons, 75k+ devs. See /introduction"}
+  ],
+  "next_action": "mailto:mcneiltaylor@live.com"
+}
+
+const configCode = `import { Candidate } from '@taylor-mcneil/core';
+
+export default new Candidate({
+  role: 'Developer Experience Engineer',
+  version: '4.0.0', // Deprecates "Road Warrior" module
+  location: 'Atlanta, GA (Remote)',
+  
+  capabilities: {
+    technical_writing: true,
+    full_stack_development: true,
+    api_design: true,
+    strategy: 'systems-first'
+  },
+
+  stack: {
+    languages: ['TypeScript', 'Python', 'Java', 'SQL'],
+    frameworks: ['Next.js', 'FastAPI', 'React','Django'],
+    tools: ['OpenAPI', 'GitHub Actions', 'MongoDB'],
+    ai_workflow: ['Prompt Engineering', 'Multi-Model Evaluation']
+  },
+
+  preferences: {
+    remote: true,
+    async_communication: true,
+  }
+});`;
+
 
 export default function Quickstart() {
   return (
-    <div className="space-y-6">
-      <ResponsePanel
-        data={{
-          status: 200,
-          summary: {
-            experience: "5+ years",
-            focus: "Developer enablement",
-            reach: "75k+ developers",
-            events: "35+ across 6 continents",
-            onboarding_impact: "-40%",
-            current_mode: "Building, not traveling",
-          },
-          faq_count: 6,
-          vibe: "acquired taste",
-        }}
-      />
+    <div className="space-y-8">
+      <ResponsePanel data={faqResponse} />
 
       <PageHeader
         method="GET"
         endpoint="/quickstart"
         title="Quickstart"
-        description="Why hire me? I bridge the gap between Product Engineering and Developer Advocacy."
+        description="Configure a DevEx Engineer for your team."
       />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="text-center p-4 bg-surface-card border border-border-card rounded-lg">
-          <div className="text-2xl font-bold text-accent">40%</div>
-          <div className="text-xs text-foreground-muted mt-1">onboarding ↓</div>
+      {/* Prerequisites */}
+      <div className="space-y-2">
+        <p className="text-sm text-foreground-muted">
+          <strong className="text-foreground">Time to complete:</strong> 2 minutes
+        </p>
+        <p className="text-sm text-foreground-muted">
+          <strong className="text-foreground">Prerequisites:</strong>
+        </p>
+        <ul className="list-disc list-inside text-sm text-foreground-muted space-y-1 ml-2">
+          <li>A product with an API or complex developer workflow</li>
+          <li>Remote-friendly environment</li>
+          <li>Belief that documentation is a part of the product</li>
+        </ul>
+      </div>
+
+      {/* Configuration */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-foreground-heading">Configuration</h2>
+        <p className="text-foreground-muted">
+          Create a <code className="px-1.5 py-0.5 bg-surface-card border border-border rounded text-sm font-mono">taylor.config.js</code> in your project root:
+        </p>
+        <CodeBlock language="javascript" filename="taylor.config.js">
+          {configCode}
+        </CodeBlock>
+        <Callout type="note">
+          Version 4.0.0 focuses on high-leverage developer enablement.
+          For the legacy &quot;Evangelist&quot; build (80% travel), see{" "}
+          <Link href="/changelog" className="text-accent underline hover:opacity-80">
+            v2.0.0 in the Changelog
+          </Link>.
+        </Callout>
+      </section>
+
+      {/* Run Tests */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-foreground-heading">Run Tests</h2>
+        <p className="text-foreground-muted">
+          Validate the integration is working:
+        </p>
+        <CodeBlock language="bash">
+          {`npm test`}
+        </CodeBlock>
+        <CodeBlock language="plaintext" filename="integration/taylor.test.js">
+          {`PASS  integration/taylor.test.js
+
+        DevEx Integration
+          ✓ reduces onboarding friction (40% improvement)
+          ✓ decreases support ticket volume (40% reduction)
+          ✓ scales developer reach (75k+ developers)
+          ✓ eliminates documentation drift
+          ✓ respects async-first communication
+          ✓ blocks friday deployments, mostly 😋 
+
+      Test Suites: 1 passed, 1 total
+      Tests:       6 passed, 6 total
+      Time:        3-6 months`}
+        </CodeBlock>
+      </section>
+
+   {/* Next Steps */}
+    <section className="space-y-4">
+      <h2 className="text-xl font-semibold text-foreground-heading">Next Steps</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Coding Path */}
+        <div className="p-5 bg-surface-card border border-border-card rounded-lg space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">💻</span>
+            <h3 className="font-semibold text-foreground-heading">Show Me Code</h3>
+          </div>
+          <p className="text-sm text-foreground-muted">
+            See APIs, SDKs, and what I&apos;ve built.
+          </p>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/playground/year-calendar-api" className="text-accent hover:underline">
+                → Playground (API + SDK)
+              </Link>
+            </li>
+            <li>
+              <Link href="/active-builds/ampersand" className="text-accent hover:underline">
+                → Active Builds
+              </Link>
+            </li>
+            <li>
+              <Link href="/methodology/llm-evaluation" className="text-accent hover:underline">
+                → Methodology
+              </Link>
+            </li>
+          </ul>
         </div>
-        <div className="text-center p-4 bg-surface-card border border-border-card rounded-lg">
-          <div className="text-2xl font-bold text-accent">75k+</div>
-          <div className="text-xs text-foreground-muted mt-1">developers</div>
-        </div>
-        <div className="text-center p-4 bg-surface-card border border-border-card rounded-lg">
-          <div className="text-2xl font-bold text-accent">6</div>
-          <div className="text-xs text-foreground-muted mt-1">continents</div>
-        </div>
-        <div className="text-center p-4 bg-surface-card border border-border-card rounded-lg">
-          <div className="text-2xl font-bold text-accent">35+</div>
-          <div className="text-xs text-foreground-muted mt-1">events</div>
+
+        {/* Writing Path */}
+        <div className="p-5 bg-surface-card border border-border-card rounded-lg space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">📝</span>
+            <h3 className="font-semibold text-foreground-heading">Show Me Writing</h3>
+          </div>
+          <p className="text-sm text-foreground-muted">
+            See guides, docs, and tutorials.
+          </p>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/guides/hmac-authentication" className="text-accent hover:underline">
+                → HMAC Authentication Guide
+              </Link>
+            </li>
+            <li>
+              <Link href="/tutorials/react-integration" className="text-accent hover:underline">
+                → MongoDB + React Tutorial
+              </Link>
+            </li>
+            <li>
+              <Link href="/guides/openapi-patterns" className="text-accent hover:underline">
+                → OpenAPI Patterns
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
+    </section>
     </div>
   );
 }

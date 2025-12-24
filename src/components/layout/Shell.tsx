@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, PanelRightOpen, PanelRightClose } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { RightPanelProvider, useRightPanel } from "./RightPanelContext";
 
@@ -12,7 +12,7 @@ interface ShellProps {
 
 export function ShellInner({ sidebar, children }: ShellProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { content: rightPanelContent } = useRightPanel();
+  const { content: rightPanelContent, width: panelWidth, isCollapsed, toggleCollapsed } = useRightPanel();
 
   return (
     <div className="h-screen bg-surface-bg overflow-hidden grid grid-rows-[auto_1fr] md:grid-rows-[1fr]">
@@ -34,33 +34,62 @@ export function ShellInner({ sidebar, children }: ShellProps) {
       </header>
 
       {/* Three-Panel Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-[256px_1fr] lg:grid-cols-[256px_1fr_384px] overflow-hidden">
-       {/* Sidebar */}
+      <div className="grid grid-cols-1 md:grid-cols-[256px_1fr] lg:grid-cols-[256px_1fr] overflow-hidden">
+        {/* Sidebar */}
         <aside
-        className={`
+          className={`
             absolute inset-0 z-20 w-64 bg-surface-sidebar border-r border-border
             transform transition-transform duration-300 flex flex-col overflow-hidden
             md:relative md:translate-x-0
             ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
+          `}
         >
-            {sidebar}
+          {sidebar}
         </aside>
 
         {/* Main Content */}
-        <main className="overflow-y-auto">
+        <main className={`overflow-y-auto transition-[padding] duration-300 ${
+          rightPanelContent && !isCollapsed
+            ? panelWidth === "narrow" ? "lg:pr-56" : "lg:pr-96"
+            : ""
+        }`}>
           <div className="max-w-3xl mx-auto p-6 md:p-12">
             {children}
           </div>
         </main>
-
-        {/* Right Panel */}
-        {rightPanelContent && (
-          <aside className="hidden lg:block w-96 bg-surface-terminal border-l border-border overflow-y-auto">
-            {rightPanelContent}
-          </aside>
-        )}
       </div>
+
+      {/* Right Panel - Fixed position with slide animation */}
+      {rightPanelContent && (
+        <aside
+          className={`
+            hidden lg:block fixed top-0 right-0 h-full bg-surface-terminal border-l border-border overflow-y-auto
+            transform transition-transform duration-300 ease-in-out
+            ${panelWidth === "narrow" ? "w-56" : "w-96"}
+            ${isCollapsed ? "translate-x-full" : "translate-x-0"}
+          `}
+        >
+          <button
+            onClick={toggleCollapsed}
+            className="absolute top-3 right-3 p-1.5 rounded text-foreground-muted hover:text-foreground hover:bg-surface-card transition-colors z-10"
+            title="Collapse panel"
+          >
+            <PanelRightClose size={14} />
+          </button>
+          {rightPanelContent}
+        </aside>
+      )}
+
+      {/* Expand Panel Button (when collapsed) */}
+      {rightPanelContent && isCollapsed && (
+        <button
+          onClick={toggleCollapsed}
+          className="hidden lg:flex fixed right-4 top-4 z-30 p-2 rounded text-foreground-muted hover:text-foreground hover:bg-surface-card transition-colors"
+          title="Expand panel"
+        >
+          <PanelRightOpen size={16} />
+        </button>
+      )}
     </div>
   );
 }
