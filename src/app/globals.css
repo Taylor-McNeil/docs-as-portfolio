@@ -92,7 +92,7 @@ body {
 
 .shiki-wrapper pre.shiki code .line {
   display: block;
-  line-height: 1.6;
+  line-height: 1.0;
   border: none !important;
   box-shadow: none !important;
   padding: 0 !important;

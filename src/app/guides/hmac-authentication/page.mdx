@@ -7,142 +7,268 @@ export const metadata = {
 
 <AnchorSidebar
   items={[
-    { id: "what-is-hmac-authentication?", label: "What is HMAC?", level: 2 },
+    { id: "what-is-hmac-authentication", label: "What is HMAC Authentication", level: 2 },
     { id: "key-components", label: "Key Components", level: 2 },
     { id: "authorization-format", label: "Authorization Format", level: 2 },
     { id: "how-hmac-authentication-works", label: "How HMAC Authentication Works", level: 2 },
-    { id: "signing-process", label: "Signing Process", level: 2 },
-    { id: "generate-the-timestamp", label: "Generate a Timestamp", level: 3 },
-    { id: "build-the-canonical-request-string", label: "Build the Canonical Request String", level: 3 },
-    { id: "derive-the-signing-key", label: "Derive the Signing Key", level: 3 },
-    { id: "generate-the-signature", label: "Generate the Signature", level: 3 },
-    { id: "send-the-request", label: "Send the Request", level: 3 },
-    { id: "implementation", label: "Implementation", level: 2 },
+    { id: "step-1-generate-a-timestamp", label: "Generate a Timestamp", level: 3 },
+    { id: "step-2-build-the-canonical-request-string", label: "Build the Canonical Request String", level: 3 },
+    { id: "step-3-derive-the-signing-key", label: "Derive the Signing Key", level: 3 },
+    { id: "step-4-generate-the-signature", label: "Generate the Signature", level: 3 },
+    { id: "step-5-send-the-request", label: "Send the Request", level: 3 },
+    { id: "examples", label: "Examples", level: 2 },
     { id: "troubleshooting", label: "Troubleshooting", level: 2 },
     { id: "next-steps", label: "Next Steps", level: 2 },
   ]}
 />
 
-<GuideHeader title="HMAC Authentication Guide" mdxPath="src/app/guides/hmac-authentication/page.mdx" />
+<GuideHeader 
+title="HMAC Authentication Guide"
+method="GET"
+endpoint="/guides/hmac-authentication"
+mdxPath="src/app/guides/hmac-authentication/page.mdx" 
+/>
 
 Implement secure API authentication using Hash-based Message Authentication Codes.
 
-<Callout type="note">
-This guide was originally written for NCR's developer platform, where it reduced auth-related support tickets by 40%. I have updated it to make it more robust.
+<Callout type="context">
+This guide was originally written for NCR's developer platform, where it reduced auth-related support tickets by 40%. I have updated it to make it more robust, and use active voice.
 </Callout>
 
 ## What is HMAC Authentication?
 
 HMAC (Hash-based Message Authentication Code) is a request-signing mechanism used to authenticate API calls. 
 
-Each request consists of a cryptographic signature derived from: 
-- The request details that include the: method, path, query, body, and selected headers
-- A shared secret key known only to the client and server
+Your application secures each request with a cryptographic signature derived from: 
+- The request details: method, path, query, and selected headers
+- A shared secret key known only to your application and server
 - A timestamp
 
 The server independently computes the same signature. If the signatures match and the request timestamp is valid, the request is accepted.
 
 HMAC authentication provides the following guarantees:
 
-1. **Request Integrity**: the request was not modified in transit
-2. **Caller Authenticity**: the caller possesses the secret key
-3. **Replay Protection**: old requests cannot be reused
+1. **Request Integrity**: The request was not modified in transit.
+2. **Caller Authenticity**: The caller possesses the valid secret key.
+3. **Replay Protection**: Attackers cannot reuse intercepted requests.
 
 
 ## Key Components
 
-HMAC authentication relies on two credentials issued to the client:
+To implement HMAC, you will use two specific credentials:
 
 | Component | Purpose |
 |-----------|---------|
-| **Shared Key** | Public identifier for the client. Sent with each request |
-| **Secret Key** | Private key used to generate signatures. Never transmitted. |
+| **Shared Key** | The public identifier for your application. Include this with every request |
+| **Secret Key** | The private key used to generate signatures. **Never transmit this key.** |
 
-The shared key identifies the client. The secret key proves authorization.
+The shared key identifies **who** is calling. The secret key proves they are **authorized**.
 
 ## Authorization Format
 
 Requests are authenticated using the <InlineCode>AccessKey</InlineCode> authorization scheme.
 The <InlineCode>Authorization</InlineCode> header has the following format:
 
-<InlineCode>{"Authorization: AccessKey <shared-key>:<signature>"}</InlineCode>
+<Example label="Format">
+  Authorization: AccessKey {`<shared-key>`}:{`<signature>`}
+</Example>
 
 Where:
-- <InlineCode>{"<shared-key>"}</InlineCode> is the client's shared key
-- <InlineCode>{"<signature>"}</InlineCode> is the Base64-encoded HMAC signature
+- <InlineCode>{`<shared-key>`}</InlineCode> is your application's shared key
+- <InlineCode>{`<signature>`}</InlineCode> is the Base64-encoded HMAC signature
 
-## Implementation
+## How HMAC Authentication Works
+
+HMAC authentication validates requests by ensuring that both your application and the server independently compute the exact same cryptographic signature.
+
+Your application generates a signature using a normalized representation of the request and your shared secret key. The server then reconstructs that representation from the incoming request and computes its own signature.
+
+If the two signatures match and the timestamp is within the validity window, the server accepts the request.
+
+To authenticate an API request, follow these five steps in order. Each step contributes data to the final signature calculation. Deviations in formatting or encoding may result in authentication failures.
+
+### Step 1: Generate a Timestamp
+
+Capture the current time using the <InlineCode>ISO-8601 UTC</InlineCode> format.
+
+<Example label="Example">
+  2025-06-25T18:42:11.000Z
+</Example>
+
+<Callout type="warning">
+You must use this exact timestamp string for both the signature calculation and the HTTP Date header.
+</Callout>
+
+### Step 2: Build the Canonical Request String
+
+Create a canonical text representation of the request.
+Concatenate the following components in a fixed order, separated by newline characters <InlineCode>\n</InlineCode>:
+
+1. **HTTP Method**: Uppercase (e.g., POST, GET).
+2. **Request URI**: The path and query string, URL-encoded.
+
+<Example label="Example Canonical String">
+  POST\n/api/transactions?limit=10
+</Example>
+
+<Callout type="note">
+Newlines and whitespace are significant. Any deviation will cause signature mismatch.
+</Callout>
+
+### Step 3: Derive the Signing Key
+
+Create a unique key for each request by combining your Secret Key and the Timestamp.
+
+<Example label="Format">
+  {`<secret-key>`}:{`<timestamp>`}
+</Example>
+
+<Example label="Example">
+  mySecretKey:2025-06-25T18:42:11.000Z
+</Example>
+
+### Step 4: Generate the Signature
+
+Compute the signature using the derived signing key and your canonical request string.
+
+- **Algorithm:** HMAC-SHA256
+- **Input:** Canonical Request String
+- **Output:** Binary Hash
+- **Encoding:** Base64
+
+The resulting signature must be identical to the server’s computed signature for the request to be accepted.
 
 
+### Step 5: Send the Request
 
+Construct your final HTTP request with the following headers:
 
+<Example label="Authorization Header">
+  Authorization: AccessKey {`<shared-key>`}:{`<signature>`}
+</Example>
 
-Here's a JavaScript implementation:
-```javascript:hmac.js
-const crypto = require("crypto");
+<Example label="Date Header">
+  Date: {`<timestamp>`}
+</Example>
 
-function generateHMAC(secretKey, method, path, timestamp) {
-  // Create the signing string
-  const signingString = `${method}\n${path}\n${timestamp}`;
+## Examples
 
-  // Generate HMAC using SHA-256
-  const hmac = crypto.createHmac("sha256", secretKey);
-  hmac.update(signingString);
+<CodeTabs
+  tabs={[
+    {
+      label: "JavaScript",
+      language: "javascript",
+      filename: "hmac.js",
+      code: `import crypto from "crypto";
 
-  return hmac.digest("base64");
+function buildCanonicalRequest(method, uri) {
+  return \`\${method.toUpperCase()}\\n\${encodeURI(uri)}\`;
 }
 
-// Usage
-const signature = generateHMAC(
-  "your-secret-key",
-  "POST",
-  "/api/transactions",
-  new Date().toISOString()
-);
-```
+function generateSignature({
+  sharedKey,
+  secretKey,
+  method,
+  uri,
+  timestamp,
+}) {
+  const canonicalRequest = buildCanonicalRequest(method, uri);
+  const signingKey = \`\${secretKey}:\${timestamp}\`;
 
-And in Python:
-```python:hmac_auth.py
-import hmac
+  const signature = crypto
+    .createHmac("sha256", signingKey)
+    .update(canonicalRequest, "utf8")
+    .digest("base64");
+
+  return {
+    authorizationHeader: \`AccessKey \${sharedKey}:\${signature}\`,
+    dateHeader: timestamp,
+  };
+}
+
+// Example usage
+const timestamp = new Date().toISOString();
+const headers = generateSignature({
+  sharedKey: "your-shared-key",
+  secretKey: "your-secret-key",
+  method: "POST",
+  uri: "/api/transactions",
+  timestamp,
+});
+
+console.log(headers);`,
+    },
+    {
+      label: "Python",
+      language: "python",
+      filename: "hmac.py",
+      code: `import hmac
 import hashlib
 import base64
-from datetime import datetime
+from urllib.parse import quote
+from datetime import datetime, timezone
 
-def generate_hmac(secret_key: str, method: str, path: str, timestamp: str) -> str:
-    signing_string = f"{method}\n{path}\n{timestamp}"
+def build_canonical_request(method: str, uri: str) -> str:
+    return f"{method.upper()}\\n{quote(uri, safe='/?=&')}"
 
-    signature = hmac.new(
-        secret_key.encode(),
-        signing_string.encode(),
-        hashlib.sha256
+def generate_signature(
+    shared_key: str,
+    secret_key: str,
+    method: str,
+    uri: str,
+    timestamp: str
+):
+    canonical_request = build_canonical_request(method, uri)
+    signing_key = f"{secret_key}:{timestamp}"
+
+    digest = hmac.new(
+        signing_key.encode("utf-8"),
+        canonical_request.encode("utf-8"),
+        hashlib.sha256,
     ).digest()
 
-    return base64.b64encode(signature).decode()
+    signature = base64.b64encode(digest).decode("utf-8")
 
-# Usage
-signature = generate_hmac(
-    "your-secret-key",
-    "POST",
-    "/api/transactions",
-    datetime.utcnow().isoformat()
+    return {
+        "Authorization": f"AccessKey {shared_key}:{signature}",
+        "Date": timestamp,
+    }
+
+# Example usage
+timestamp = datetime.now(timezone.utc).isoformat()
+
+headers = generate_signature(
+    shared_key="your-shared-key",
+    secret_key="your-secret-key",
+    method="POST",
+    uri="/api/transactions",
+    timestamp=timestamp,
 )
-```
+
+print(headers)`,
+    },
+  ]}
+/>
+
 
 ## Troubleshooting
 
-Common issues and fixes:
+If your authentication fails, check these common sources of error.
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| 401 Invalid Signature | Timestamp drift | Ensure server/client clocks are synced |
-| 401 Expired Request | Request too old | Use current timestamp, check for network delays |
-| 403 Invalid Key | Wrong shared key | Verify key matches portal credentials |
+| Error | Likely Cause | Solution |
+|-------|--------------|----------|
+| 401 Invalid Signature | Canonical request mismatch | Verify method casing, URI encoding, header order, and whitespace |
+| 401 Expired Request | Timestamp outside allowed window | Ensure your system clocks are synchronized via NTP |
+| 403 Invalid Key | Incorrect shared key | Confirm the Shared Key matches the intended client credentials |
 
 <Callout type="tip">
-Set up NTP on your servers to prevent timestamp drift issues.
+**Debugging Tip:** Log the generated Canonical Request String on both the client and the server. Comparing these strings usually reveals the issue immediately — a single missing newline or character difference will invalidate the signature.
 </Callout>
 
 ## Next Steps
 
-- [OpenAPI Patterns](/guides/openapi-patterns) — Document your authenticated endpoints
-- [Methodology](/methodology/llm-evaluation) — How I approach technical documentation
+To ensure the security and reliability of your integration:
+
+- **Secure your keys:** Store secret keys in environment variables or a secrets manager. Never hardcode them.
+- **Synchronize clocks:** Ensure your servers use NTP (Network Time Protocol) to avoid Expired Request errors.
+- **Limit scope:** Avoid signing headers that might change in transit (like User-Agent or Accept) unless strictly required.

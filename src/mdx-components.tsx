@@ -4,6 +4,8 @@ import { Callout } from "@/components/content/Callout";
 import { CodeBlock } from "@/components/content/CodeBlock";
 import { InlineCode } from "@/components/content/InlineCode";
 import { Children, isValidElement, ReactNode } from "react";
+import { Example } from "./components/content/Example";
+import { CodeTabs } from "./components/content/CodeTabs";
 
 // Helper to extract text content from React children
 function getCodeString(children: ReactNode): string {
@@ -149,6 +151,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // Custom components
     Callout,
     InlineCode,
+    Example,
+    CodeTabs,
 
     ...components,
   };
