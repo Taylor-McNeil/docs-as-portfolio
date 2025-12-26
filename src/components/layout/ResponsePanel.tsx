@@ -45,7 +45,7 @@ function ResponsePanelContent({
 }
 
 export function ResponsePanel({ data }: ResponsePanelProps) {
-  const { setContent, toggleCollapsed } = useRightPanel();
+  const { setContent, setWidth, toggleCollapsed } = useRightPanel();
 
   // Calculate size from data
   const dataSize = useMemo(() => {
@@ -53,16 +53,20 @@ export function ResponsePanel({ data }: ResponsePanelProps) {
   }, [data]);
 
   useEffect(() => {
+    setWidth("medium");
     setContent(
-      <ResponsePanelContent 
-        data={data} 
+      <ResponsePanelContent
+        data={data}
         dataSize={dataSize}
-        onCollapse={toggleCollapsed} 
+        onCollapse={toggleCollapsed}
       />
     );
 
-    return () => setContent(null);
-  }, [data, dataSize, setContent, toggleCollapsed]);
+    return () => {
+      setContent(null);
+      setWidth("normal");
+    };
+  }, [data, dataSize, setContent, setWidth, toggleCollapsed]);
 
   return null;
 }

@@ -33,9 +33,12 @@ export function Sidebar() {
 
       {/* CTA */}
       <div className="p-4 border-t border-border">
-        <button className="w-full bg-accent text-white text-xs font-medium py-2.5 rounded hover:opacity-90 transition-opacity">
+        <a
+          href="mailto:mcneiltaylor@live.com"
+          className="block w-full bg-accent text-white text-xs font-medium py-2.5 rounded hover:opacity-90 transition-opacity text-center"
+        >
           Contact API →
-        </button>
+        </a>
       </div>
     </>
   );

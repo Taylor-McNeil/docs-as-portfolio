@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 
 type Cell = "X" | "O" | null;
 type GameState = "playing" | "player_win" | "computer_win" | "tie";
@@ -26,14 +26,6 @@ export function TicTacToeGame() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
   const addMessage = useCallback((text: string, type: Message["type"]) => {
     setMessages((prev) => [...prev, { text, type }]);
   }, []);
@@ -43,9 +35,9 @@ export function TicTacToeGame() {
     return [
       "",
       ` ${getCell(0)} | ${getCell(1)} | ${getCell(2)}`,
-      "───┼───┼───",
+      "---+---+---",
       ` ${getCell(3)} | ${getCell(4)} | ${getCell(5)}`,
-      "───┼───┼───",
+      "---+---+---",
       ` ${getCell(6)} | ${getCell(7)} | ${getCell(8)}`,
       "",
     ];
@@ -251,7 +243,6 @@ export function TicTacToeGame() {
             onChange={(e) => setInput(e.target.value)}
             className="flex-1 bg-transparent outline-none text-foreground-terminal"
             placeholder={gameState === "playing" ? "Enter move (1-9)..." : "Type 'play' to restart..."}
-            autoFocus
           />
           <span className="animate-pulse text-foreground-terminal">█</span>
         </div>

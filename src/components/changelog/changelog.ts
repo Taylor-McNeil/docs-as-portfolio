@@ -117,7 +117,7 @@ export const changelogData: ChangelogVersion[] = [
   },
   {
     version: "1.0.0",
-    title: "Origin Story",
+    title: "Origins",
     dateRange: "2018 - 2020",
     summary: "CS degree by day, community builder by night. Led PantherHackers, taught Python to 150+ students, and accidentally became a YouTuber. Discovered that explaining things was the job I wanted.",
     color: "gray",

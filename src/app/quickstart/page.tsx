@@ -83,8 +83,8 @@ export default function Quickstart() {
         <Callout type="note">
           Version 4.0.0 focuses on high-leverage developer enablement.
           For the legacy &quot;Evangelist&quot; build (80% travel), see{" "}
-          <Link href="/changelog" className="text-accent underline hover:opacity-80">
-            v2.0.0 in the Changelog
+          <Link href="/changelog#stellar" className="text-accent underline hover:opacity-80">
+            v3.0.0 in the Changelog
           </Link>.
         </Callout>
       </section>
@@ -115,67 +115,6 @@ export default function Quickstart() {
         />
       </section>
 
-   {/* Next Steps */}
-    <section className="space-y-4">
-      <h2 className="text-xl font-semibold text-foreground-heading">Next Steps</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Coding Path */}
-        <div className="p-5 bg-surface-card border border-border-card rounded-lg space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">💻</span>
-            <h3 className="font-semibold text-foreground-heading">Show Me Code</h3>
-          </div>
-          <p className="text-sm text-foreground-muted">
-            See APIs, SDKs, and what I&apos;ve built.
-          </p>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/playground/year-calendar-api" className="text-accent hover:underline">
-                → Playground (API + SDK)
-              </Link>
-            </li>
-            <li>
-              <Link href="/active-builds/ampersand" className="text-accent hover:underline">
-                → Active Builds
-              </Link>
-            </li>
-            <li>
-              <Link href="/methodology/llm-evaluation" className="text-accent hover:underline">
-                → Methodology
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Writing Path */}
-        <div className="p-5 bg-surface-card border border-border-card rounded-lg space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">📝</span>
-            <h3 className="font-semibold text-foreground-heading">Show Me Writing</h3>
-          </div>
-          <p className="text-sm text-foreground-muted">
-            See guides, docs, and tutorials.
-          </p>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/guides/hmac-authentication" className="text-accent hover:underline">
-                → HMAC Authentication Guide
-              </Link>
-            </li>
-            <li>
-              <Link href="/tutorials/react-integration" className="text-accent hover:underline">
-                → MongoDB + React Tutorial
-              </Link>
-            </li>
-            <li>
-              <Link href="/guides/openapi-patterns" className="text-accent hover:underline">
-                → OpenAPI Patterns
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
     </div>
   );
 }

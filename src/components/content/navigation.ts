@@ -56,6 +56,12 @@ export const navigation: NavSection[] = [
   //   ],
   // },
   {
+    title: "Case Studies",
+    items:[
+      {href: "/case-studies/stellar-api-docs",label:"Stellar API Docs",method:"GET"}
+    ]
+  },
+  {
     title: "Log",
     items: [
       {href: "/changelog", label:"Changelog", method:"PATCH"}

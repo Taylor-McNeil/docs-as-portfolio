@@ -9,7 +9,7 @@ interface JsonRendererProps {
   isRoot?: boolean;
 }
 
-export function JsonRenderer({ data, isRoot = true }: JsonRendererProps) {
+export function JsonRenderer({ data }: JsonRendererProps) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 

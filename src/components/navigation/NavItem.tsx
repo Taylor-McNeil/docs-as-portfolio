@@ -27,6 +27,7 @@ export function NavItem({ href, label, method }: NavItemProps) {
     <li>
       <Link
         href={href}
+        scroll={true}
         className={`flex items-center px-3 py-2 text-xs rounded-md transition-colors ${
           isActive
             ? `${activeStyles[method]} font-semibold`

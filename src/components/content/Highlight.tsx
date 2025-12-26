@@ -12,6 +12,8 @@ import bash from "highlight.js/lib/languages/bash";
 import json from "highlight.js/lib/languages/json";
 import css from "highlight.js/lib/languages/css";
 import xml from "highlight.js/lib/languages/xml"; // includes HTML
+import yaml from "highlight.js/lib/languages/yaml";
+import plaintext from "highlight.js/lib/languages/plaintext";
 
 hljs.registerLanguage("java", java);
 hljs.registerLanguage("javascript", javascript);
@@ -26,6 +28,10 @@ hljs.registerLanguage("json", json);
 hljs.registerLanguage("css", css);
 hljs.registerLanguage("html", xml);
 hljs.registerLanguage("xml", xml);
+hljs.registerLanguage("yaml", yaml);
+hljs.registerLanguage("yml", yaml);
+hljs.registerLanguage("plaintext", plaintext);
+hljs.registerLanguage("text", plaintext);
 
 interface CodeHighlightProps {
   code: string;

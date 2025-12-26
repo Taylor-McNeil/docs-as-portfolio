@@ -4,6 +4,7 @@ import { ReactNode, useState } from "react";
 import { Menu, X, PanelRightOpen } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { RightPanelProvider, useRightPanel } from "./RightPanelContext";
+import { ScrollToTop } from "./ScrollToTop";
 
 interface ShellProps {
   sidebar: ReactNode;
@@ -16,6 +17,7 @@ export function ShellInner({ sidebar, children }: ShellProps) {
 
   return (
     <div className="h-screen bg-surface-bg overflow-hidden grid grid-rows-[auto_1fr] md:grid-rows-[1fr]">
+      <ScrollToTop />
       {/* Mobile Header */}
       <header className="md:hidden flex items-center justify-between p-4 border-b border-border bg-surface-sidebar">
         <div>
@@ -50,7 +52,7 @@ export function ShellInner({ sidebar, children }: ShellProps) {
         {/* Main Content */}
         <main className={`overflow-y-auto transition-[padding] duration-300 ${
           rightPanelContent && !isCollapsed
-            ? panelWidth === "narrow" ? "lg:pr-56" : "lg:pr-96"
+            ? panelWidth === "narrow" ? "lg:pr-56" : panelWidth === "medium" ? "lg:pr-72" : "lg:pr-96"
             : ""
         }`}>
           <div className="max-w-3xl mx-auto p-6 md:p-12">
@@ -65,7 +67,7 @@ export function ShellInner({ sidebar, children }: ShellProps) {
           className={`
             hidden lg:block fixed top-0 right-0 h-full bg-surface-terminal border-l border-border overflow-y-auto
             transform transition-transform duration-300 ease-in-out
-            ${panelWidth === "narrow" ? "w-56" : "w-96"}
+            ${panelWidth === "narrow" ? "w-56" : panelWidth === "medium" ? "w-72" : "w-96"}
             ${isCollapsed ? "translate-x-full" : "translate-x-0"}
           `}
         >

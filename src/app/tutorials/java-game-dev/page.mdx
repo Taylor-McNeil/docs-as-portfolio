@@ -45,6 +45,7 @@ export const metadata = {
 <AnchorSidebar
   items={[
     { id: "about-this-tutorial", label: "About This Tutorial", level: 2 },
+    { id: "prerequisites", label: "Prerequisites", level: 3 },
     { id: "building-the-board", label: "Building the Board", level: 2 },
     { id: "placing-pieces", label: "Placing Pieces", level: 2 },
     { id: "getting-player-input", label: "Getting Player Input", level: 2 },
@@ -65,6 +66,7 @@ export const metadata = {
   views="75K+ views"
   date="May 6, 2021"
   source={{ name: "View on Medium", url: "https://medium.com/codex/tic-tac-toe-e53212028341" }}
+  mdxPath="src/app/tutorials/java-game-dev/page.mdx"
 />
 
 <Callout type="context">
@@ -88,6 +90,18 @@ This tutorial uses the most basic solution to make it accessible to all skill le
 
 <Callout type="tip">
 Always remember to test your code at the end of each section to make sure it works!
+</Callout>
+
+### Prerequisites
+
+Before starting this tutorial, make sure you have:
+
+- **Java JDK 11 or higher** — This tutorial uses basic Java features that work with any modern version. [Download from Oracle](https://www.oracle.com/java/technologies/downloads/) or use OpenJDK.
+- **A text editor or IDE** — Any editor works, but [VS Code](https://code.visualstudio.com/) with the Java Extension Pack or [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/download/) will give you syntax highlighting and error checking.
+- **Basic Java knowledge** — You should be comfortable with variables, data types, and how to compile/run a Java program. If `System.out.println("Hello")` looks familiar, you're ready.
+
+<Callout type="note">
+Ensure you have Java installed. To check your Java version, open a terminal and run `java -version`.
 </Callout>
 
 ## Building the Board

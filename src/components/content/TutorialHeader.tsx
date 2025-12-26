@@ -1,4 +1,7 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import { Clock, Eye, Calendar, ExternalLink } from "lucide-react";
+import { CopyMarkdownButton } from "./CopyMarkdownButton";
 
 interface TutorialHeaderProps {
   title: string;
@@ -10,6 +13,7 @@ interface TutorialHeaderProps {
     name: string;
     url: string;
   };
+  mdxPath?: string;
 }
 
 export function TutorialHeader({
@@ -19,10 +23,35 @@ export function TutorialHeader({
   views,
   date,
   source,
+  mdxPath,
 }: TutorialHeaderProps) {
+  let encodedMarkdown: string | undefined;
+
+  if (mdxPath) {
+    try {
+      const fullPath = join(process.cwd(), mdxPath);
+      const content = readFileSync(fullPath, "utf-8");
+      // Strip the import statements and metadata export at the top
+      const markdown = content
+        .replace(/^import .+;\n/gm, "")
+        .replace(/^export const metadata[\s\S]*?};\n\n/m, "")
+        .replace(/<ResponsePanel[\s\S]*?\/>\n\n/m, "")
+        .replace(/<AnchorSidebar[\s\S]*?\/>\n\n/m, "")
+        .replace(/<TutorialHeader[^>]*\/?>\n\n/m, "")
+        .trim();
+      // Base64 encode to avoid JSON serialization issues
+      encodedMarkdown = Buffer.from(markdown).toString("base64");
+    } catch {
+      // File not found, skip copy button
+    }
+  }
+
   return (
     <header className="mt-4 mb-6">
-      <h1 className="text-3xl font-bold text-foreground-heading">{title}</h1>
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="text-3xl font-bold text-foreground-heading">{title}</h1>
+        {encodedMarkdown && <CopyMarkdownButton encodedMarkdown={encodedMarkdown} />}
+      </div>
       
       {description && (
         <p className="mt-3 text-lg text-foreground">{description}</p>
@@ -52,7 +81,7 @@ export function TutorialHeader({
             href={source.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-accent hover:underline"
+            className="flex items-center gap-1.5 text-foreground-muted hover:underline"
           >
             <ExternalLink size={14} />
             <span>{source.name}</span>

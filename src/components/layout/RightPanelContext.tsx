@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
-type PanelWidth = "normal" | "narrow";
+type PanelWidth = "normal" | "medium" | "narrow";
 
 interface RightPanelContextType {
   content: ReactNode | null;

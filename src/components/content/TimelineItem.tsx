@@ -12,21 +12,21 @@ interface TimelineItemProps {
 }
 
 const lineColors: Record<VersionColor, string> = {
-  green: "bg-accent-success",
-  blue: "bg-method-get",
-  purple: "bg-method-patch",
-  orange: "bg-accent",
-  yellow: "bg-method-put",
+  green: "bg-timeline-green",
+  blue: "bg-timeline-blue",
+  purple: "bg-timeline-purple",
+  orange: "bg-timeline-orange",
+  yellow: "bg-timeline-yellow",
   pink: "bg-timeline-pink",
   gray: "bg-border",
 };
 
 const dotColors: Record<VersionColor, string> = {
-  green: "bg-accent-success border-accent-success",
-  blue: "bg-method-get border-method-get",
-  purple: "bg-method-patch border-method-patch",
-  orange: "bg-accent border-accent",
-  yellow: "bg-method-put border-method-put",
+  green: "bg-timeline-green border-timeline-green",
+  blue: "bg-timeline-blue border-timeline-blue",
+  purple: "bg-timeline-purple border-timeline-purple",
+  orange: "bg-timeline-orange border-timeline-orange",
+  yellow: "bg-timeline-yellow border-timeline-yellow",
   gray: "bg-surface-bg border-foreground-muted",
   pink: "bg-timeline-pink border-timeline-pink",
 };
@@ -34,8 +34,11 @@ const dotColors: Record<VersionColor, string> = {
 export function TimelineItem({ version, defaultExpanded = false, isLast = false }: TimelineItemProps) {
   const [expanded, setExpanded] = useState(defaultExpanded);
 
+  // Create URL-friendly ID from title (e.g., "Stellar Development Foundation" -> "stellar")
+  const sectionId = version.title.toLowerCase().split(" ")[0];
+
   return (
-    <div className="relative pl-8 pb-8 last:pb-0">
+    <div id={sectionId} className="relative pl-8 pb-8 last:pb-0 scroll-mt-8">
       {/* Timeline line */}
       {!isLast && (
         <div

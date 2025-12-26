@@ -22,11 +22,11 @@
 
   /* Light theme accents */
   --color-accent: #ea580c;
-  --color-accent-success: #059669;
+  --color-accent-success: #0d9488;
 
-  /* Light mode method badges - all orange themed */
-  --color-method-get: #ea580c;
-  --color-method-get-bg: #ffedd5;
+  /* Light mode method badges - GET is teal, others orange */
+  --color-method-get: #0d9488;
+  --color-method-get-bg: #ccfbf1;
   --color-method-post: #ea580c;
   --color-method-post-bg: #ffedd5;
   --color-method-put: #ea580c;
@@ -38,7 +38,12 @@
   --color-nav-active-bg: #fed7aa;
   --color-nav-active-text: #c2410c;
 
-  /* Timeline pink - orange in light mode */
+  /* Timeline colors - Current is teal, others orange in light mode */
+  --color-timeline-green: #0d9488;
+  --color-timeline-blue: #ea580c;
+  --color-timeline-purple: #ea580c;
+  --color-timeline-orange: #ea580c;
+  --color-timeline-yellow: #ea580c;
   --color-timeline-pink: #ea580c;
 }
 
@@ -74,7 +79,12 @@
   --color-nav-active-bg: rgba(59, 130, 246, 0.1);
   --color-nav-active-text: #60a5fa;
 
-  /* Timeline pink - pink in dark mode */
+  /* Timeline colors - colorful in dark mode */
+  --color-timeline-green: #4ade80;
+  --color-timeline-blue: #60a5fa;
+  --color-timeline-purple: #c084fc;
+  --color-timeline-orange: #fb923c;
+  --color-timeline-yellow: #facc15;
   --color-timeline-pink: #ec4899;
 }
 
