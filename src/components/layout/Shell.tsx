@@ -1,9 +1,10 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { Menu, X, PanelRightOpen } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { RightPanelProvider, useRightPanel } from "./RightPanelContext";
+import { MobileMenuProvider, useMobileMenu } from "./MobileMenuContext";
 import { ScrollToTop } from "./ScrollToTop";
 
 interface ShellProps {
@@ -12,7 +13,7 @@ interface ShellProps {
 }
 
 export function ShellInner({ sidebar, children }: ShellProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isOpen: mobileMenuOpen, setIsOpen: setMobileMenuOpen } = useMobileMenu();
   const { content: rightPanelContent, width: panelWidth, isCollapsed, toggleCollapsed } = useRightPanel();
 
   return (
@@ -91,8 +92,10 @@ export function ShellInner({ sidebar, children }: ShellProps) {
 
 export function Shell({ sidebar, children }: ShellProps) {
   return (
-    <RightPanelProvider>
-      <ShellInner sidebar={sidebar}>{children}</ShellInner>
-    </RightPanelProvider>
+    <MobileMenuProvider>
+      <RightPanelProvider>
+        <ShellInner sidebar={sidebar}>{children}</ShellInner>
+      </RightPanelProvider>
+    </MobileMenuProvider>
   );
 }

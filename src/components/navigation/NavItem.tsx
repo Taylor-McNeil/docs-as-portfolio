@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MethodBadge } from "./MethodBadge";
+import { useMobileMenu } from "@/components/layout/MobileMenuContext";
 
 type Method = "GET" | "POST" | "PUT" | "PATCH";
 
@@ -21,6 +22,7 @@ const activeStyles: Record<Method, string> = {
 
 export function NavItem({ href, label, method }: NavItemProps) {
   const pathname = usePathname();
+  const { close: closeMobileMenu } = useMobileMenu();
   const isActive = pathname === href;
 
   return (
@@ -28,6 +30,7 @@ export function NavItem({ href, label, method }: NavItemProps) {
       <Link
         href={href}
         scroll={true}
+        onClick={closeMobileMenu}
         className={`flex items-center px-3 py-2 text-xs rounded-md transition-colors ${
           isActive
             ? `${activeStyles[method]} font-semibold`
