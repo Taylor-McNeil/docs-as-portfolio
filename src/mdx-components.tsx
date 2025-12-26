@@ -1,26 +1,16 @@
 import type { MDXComponents } from "mdx/types";
-import Link from "next/link";
-import { Callout } from "@/components/content/Callout";
 import { CodeBlock } from "@/components/content/CodeBlock";
-import { InlineCode } from "@/components/content/InlineCode";
-import { Children, isValidElement, ReactNode } from "react";
-import { Example } from "./components/content/Example";
-import { CodeTabs } from "./components/content/CodeTabs";
+import { CollapsibleCode } from "@/components/content/CollapsibleCode";
+import { Callout } from "@/components/content/Callout";
+import { Example } from "@/components/content/Example";
+import { CodeTabs } from "@/components/content/CodeTabs";
+import { TutorialHeader } from "@/components/content/TutorialHeader";
+import { Figure } from "@/components/content/Figure";
+import { TicTacToeGame } from "@/components/interactive/TicTacToeGame";
 
-// Helper to extract text content from React children
-function getCodeString(children: ReactNode): string {
-  if (typeof children === "string") return children;
-  if (Array.isArray(children)) return children.map(getCodeString).join("");
-  if (isValidElement(children)) {
-    const props = children.props as { children?: ReactNode };
-    if (props.children) {
-      return getCodeString(props.children);
-    }
-  }
-  return "";
-}
 
-// Helper to generate URL-friendly IDs from heading text
+
+
 function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -30,14 +20,10 @@ function slugify(text: string): string {
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    // Headings with auto IDs for anchor navigation
-    h1: ({ children }) => (
-      <h1 className="text-3xl font-bold text-foreground-heading mb-4">{children}</h1>
-    ),
     h2: ({ children }) => {
       const id = slugify(String(children));
       return (
-        <h2 id={id} className="text-xl font-semibold text-foreground-heading mt-10 mb-4 scroll-mt-6">
+        <h2 id={id} className="text-2xl font-bold text-foreground-heading mt-10 mb-4 scroll-mt-6">
           {children}
         </h2>
       );
@@ -45,114 +31,84 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h3: ({ children }) => {
       const id = slugify(String(children));
       return (
-        <h3 id={id} className="text-lg font-semibold text-foreground-heading mt-8 mb-3 scroll-mt-6">
+        <h3 id={id} className="text-xl font-semibold text-foreground-heading mt-8 mb-3 scroll-mt-6">
           {children}
         </h3>
       );
     },
-
-    // Text
     p: ({ children }) => (
       <p className="text-foreground-muted leading-relaxed mb-4">{children}</p>
+    ),
+    ul: ({ children }) => (
+      <ul className="list-disc list-inside text-foreground-muted mb-4 space-y-1">{children}</ul>
+    ),
+    ol: ({ children }) => (
+      <ol className="list-decimal list-inside text-foreground-muted mb-4 space-y-1">{children}</ol>
     ),
     strong: ({ children }) => (
       <strong className="font-semibold text-foreground">{children}</strong>
     ),
-    blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-accent/50 pl-4 italic text-foreground-muted my-4">
-        {children}
-      </blockquote>
-    ),
-
-    // Lists
-    ul: ({ children }) => (
-      <ul className="list-disc list-inside space-y-2 text-foreground-muted mb-4 ml-2">{children}</ul>
-    ),
-    ol: ({ children }) => (
-      <ol className="list-decimal list-inside space-y-2 text-foreground-muted mb-4 ml-2">{children}</ol>
-    ),
-    li: ({ children }) => (
-      <li className="text-foreground-muted">{children}</li>
-    ),
-
-    // Links
     a: ({ href, children }) => (
-      <Link href={href || "#"} className="text-accent hover:underline">
+      <a href={href} className="text-accent hover:underline">
         {children}
-      </Link>
+      </a>
     ),
-
-    // Inline code only (code blocks have a language className)
-    code: ({ children, className }) => {
-      // If it has a language class (e.g., language-js), it's part of a code block - skip styling
-      if (className?.startsWith("language-")) {
-        return <code className={className}>{children}</code>;
-      }
-      // Inline code styling - subtle background, no border
-      return (
-        <code className="px-1.5 py-0.5 rounded text-sm font-mono text-foreground">
-          {children}
-        </code>
-      );
-    },
-
-    // Code blocks - extract language and code, render with Shiki
-    // Supports: ```javascript:filename.js for filename headers
-    pre: ({ children }) => {
-      const childArray = Children.toArray(children);
-      const firstChild = childArray[0];
-
-      // Try to get props from the first child (should be a code element)
-      if (isValidElement(firstChild)) {
-        const props = firstChild.props as { className?: string; children?: ReactNode };
-        const className = props.className || "";
-
-        // Parse language and optional filename from "language-javascript:filename.js"
-        const langPart = className.replace(/language-/, "");
-        const [language, filename] = langPart.includes(":")
-          ? langPart.split(":")
-          : [langPart || "text", undefined];
-
-        const code = getCodeString(props.children);
-
-        return <CodeBlock code={code} language={language} filename={filename} />;
-      }
-
-      // Fallback: render as plain pre with styling
-      return (
-        <pre className="p-4 bg-surface-card rounded-lg border border-border overflow-x-auto text-sm font-mono my-4">
-          {children}
-        </pre>
-      );
-    },
-
-    // Tables
     table: ({ children }) => (
-      <div className="overflow-x-auto mb-6">
-        <table className="w-full text-sm border-collapse">
+      <div className="overflow-x-auto my-6">
+        <table className="w-full text-sm border border-border rounded-lg overflow-hidden">
           {children}
         </table>
       </div>
     ),
     thead: ({ children }) => (
-      <thead className="bg-surface-card border-b border-border">{children}</thead>
-    ),
-    tbody: ({ children }) => <tbody>{children}</tbody>,
-    tr: ({ children }) => (
-      <tr className="border-b border-border">{children}</tr>
+      <thead className="bg-surface-card text-foreground-heading">{children}</thead>
     ),
     th: ({ children }) => (
-      <th className="text-left p-3 text-foreground-heading font-semibold">{children}</th>
+      <th className="px-4 py-2 text-left font-semibold border-b border-border">{children}</th>
     ),
     td: ({ children }) => (
-      <td className="p-3 text-foreground-muted">{children}</td>
+      <td className="px-4 py-2 text-foreground-muted border-b border-border">{children}</td>
     ),
+    pre: ({ children }) => {
+      // Extract code content and metadata from the child
+      const codeElement = children as React.ReactElement<{ className?: string; children?: string }>;
+      const className = codeElement?.props?.className || "";
+      const code = codeElement?.props?.children || "";
+
+      // Parse language and filename from className (e.g., "language-java:TicTacToe.java")
+      const match = className.match(/language-(\w+)(?::(.+))?/);
+      const language = match?.[1];
+      const filename = match?.[2];
+
+      return <CodeBlock code={code.trim()} language={language} filename={filename} />;
+    },
+    code: ({ className, children }) => {
+      // Inline code (no language class)
+      if (!className) {
+        return (
+          <code className="px-1.5 py-0.5 rounded text-sm font-mono bg-surface-card text-accent">
+            {children}
+          </code>
+        );
+      }
+      // Block code is handled by pre
+      return <code className={className}>{children}</code>;
+    },
 
     // Custom components
+    InlineCode: ({ children }: { children: React.ReactNode }) => (
+      <code className="px-1.5 py-0.5 rounded text-sm font-mono bg-surface-card text-accent">
+        {children}
+      </code>
+    ),
     Callout,
-    InlineCode,
     Example,
+    CodeBlock,
     CodeTabs,
+    CollapsibleCode,
+    TutorialHeader,
+    Figure,
+    TicTacToeGame,
 
     ...components,
   };

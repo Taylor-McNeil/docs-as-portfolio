@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import { Menu, X, PanelRightOpen, PanelRightClose } from "lucide-react";
+import { Menu, X, PanelRightOpen } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { RightPanelProvider, useRightPanel } from "./RightPanelContext";
 
@@ -69,13 +69,6 @@ export function ShellInner({ sidebar, children }: ShellProps) {
             ${isCollapsed ? "translate-x-full" : "translate-x-0"}
           `}
         >
-          <button
-            onClick={toggleCollapsed}
-            className="absolute top-3 right-3 p-1.5 rounded text-foreground-muted hover:text-foreground hover:bg-surface-card transition-colors z-10"
-            title="Collapse panel"
-          >
-            <PanelRightClose size={14} />
-          </button>
           {rightPanelContent}
         </aside>
       )}

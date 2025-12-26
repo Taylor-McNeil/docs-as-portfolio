@@ -32,14 +32,14 @@ export const navigation: NavSection[] = [
   //     { href: "/active-builds/llm-evaluator", label: "LLM Evaluator", method: "POST" },
   //   ],
   // },
-  // {
-  //   title: "Tutorials",
-  //   items: [
+   {
+    title: "Tutorials",
+     items: [
   //     { href: "/tutorials/year-calendar", label: "Year Calendar", method: "GET" },
   //     { href: "/tutorials/react-integration", label: "MongoDB + React", method: "GET" },
-  //     { href: "/tutorials/java-game-dev", label: "Java Game Dev", method: "GET" },
-  //   ],
-  // },
+       { href: "/tutorials/java-game-dev", label: "Java Game Dev", method: "GET" },
+     ],
+   },
   {
     title: "Guides",
     items: [
@@ -55,4 +55,10 @@ export const navigation: NavSection[] = [
   //     { href: "/methodology/ai-doc-review", label: "AI-Assisted Doc Review", method: "GET" },
   //   ],
   // },
+  {
+    title: "Log",
+    items: [
+      {href: "/changelog", label:"Changelog", method:"PATCH"}
+    ]
+  }
 ];

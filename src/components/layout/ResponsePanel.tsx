@@ -1,57 +1,68 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useRightPanel } from "./RightPanelContext";
 import { JsonRenderer, JsonValue } from "../content/JsonRenderer";
-import { Terminal } from "lucide-react";
+import { RequestContext } from "./RequestContext";
+import { Terminal, PanelRightClose } from "lucide-react";
 
 interface ResponsePanelProps {
   data: JsonValue;
 }
 
-export function ResponsePanel({ data }: ResponsePanelProps) {
-  const { setContent } = useRightPanel();
-
-  useEffect(() => {
-    setContent(
-      <div className="font-mono">
-        <div className="sticky top-0 bg-surface-terminal backdrop-blur-sm p-3 border-b border-border flex justify-between items-center z-10">
-          <span className="text-[10px] font-bold text-foreground-muted uppercase tracking-widest flex items-center">
-            <Terminal size={10} className="mr-1.5" /> Response Body
-          </span>
+function ResponsePanelContent({ 
+  data, 
+  dataSize,
+  onCollapse 
+}: ResponsePanelProps & { dataSize: number; onCollapse: () => void }) {
+  return (
+    <div className="font-mono">
+      <div className="sticky top-0 bg-surface-terminal backdrop-blur-sm p-3 border-b border-border flex justify-between items-center">
+        <span className="text-[10px] font-bold text-foreground-muted uppercase tracking-widest flex items-center">
+          <Terminal size={10} className="mr-1.5" /> Response Body
+        </span>
+        <div className="flex items-center gap-2">
           <span className="text-[10px] font-mono text-accent-success bg-accent-success/10 px-1.5 py-0.5 rounded">
             200 OK
           </span>
-        </div>
-
-        <div className="p-4 text-[11px] leading-relaxed">
-          <JsonRenderer data={data} />
-        </div>
-
-        <div className="p-4 border-t border-border mt-4 bg-surface-card/30">
-          <div className="text-[10px] font-bold text-foreground-muted uppercase tracking-widest mb-3">
-            Request Context
-          </div>
-          <div className="space-y-2.5 text-[11px]">
-            <div className="flex justify-between">
-              <span className="text-foreground-muted">Content-Type</span>
-              <span className="text-foreground">application/json</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-foreground-muted">Size</span>
-              <span className="text-foreground">1.2kb</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-foreground-muted">Time</span>
-              <span className="text-foreground">24ms</span>
-            </div>
-          </div>
+          <button
+            onClick={onCollapse}
+            className="p-1 rounded text-foreground-muted hover:text-foreground hover:bg-surface-card transition-colors"
+            title="Collapse panel"
+          >
+            <PanelRightClose size={14} />
+          </button>
         </div>
       </div>
+
+      <div className="p-4 text-[11px] leading-relaxed">
+        <JsonRenderer data={data} />
+      </div>
+
+      <RequestContext dataSize={dataSize} />
+    </div>
+  );
+}
+
+export function ResponsePanel({ data }: ResponsePanelProps) {
+  const { setContent, toggleCollapsed } = useRightPanel();
+
+  // Calculate size from data
+  const dataSize = useMemo(() => {
+    return new Blob([JSON.stringify(data)]).size;
+  }, [data]);
+
+  useEffect(() => {
+    setContent(
+      <ResponsePanelContent 
+        data={data} 
+        dataSize={dataSize}
+        onCollapse={toggleCollapsed} 
+      />
     );
 
     return () => setContent(null);
-  }, [data, setContent]);
+  }, [data, dataSize, setContent, toggleCollapsed]);
 
   return null;
 }

@@ -1,30 +1,38 @@
+import { Info, AlertTriangle, Lightbulb, FileText, FlaskConical, PartyPopper } from "lucide-react";
 import { ReactNode } from "react";
-import { Info, AlertTriangle, Lightbulb, FileText } from "lucide-react";
+
+type CalloutType = "note" | "warning" | "tip" | "context" | "test" | "celebration";
 
 interface CalloutProps {
-  type?: "note" | "warning" | "tip" | "context";
+  type?: CalloutType;
   children: ReactNode;
 }
 
-const styles = {
-  note: "border-accent/50 bg-accent/5",
-  warning: "border-method-put/50 bg-method-put/5",
-  tip: "border-accent-success/50 bg-accent-success/5",
+const styles: Record<CalloutType, string> = {
+  note: "border-accent bg-accent/5",
+  warning: "border-method-put bg-method-put/5",
+  tip: "border-accent-success bg-accent-success/5",
   context: "border-foreground-muted/20 bg-surface-card/50",
+  test: "border-method-get bg-method-get/5",
+  celebration: "border-accent-success bg-accent-success/5",
 };
 
-const icons = {
+const icons: Record<CalloutType, ReactNode> = {
   note: <Info size={16} className="text-accent" />,
   warning: <AlertTriangle size={16} className="text-method-put" />,
   tip: <Lightbulb size={16} className="text-accent-success" />,
   context: <FileText size={16} className="text-foreground-muted" />,
+  test: <FlaskConical size={16} className="text-method-get" />,
+  celebration: <PartyPopper size={16} className="text-accent-success" />,
 };
 
-const labels = {
+const labels: Record<CalloutType, string> = {
   note: "Note",
   warning: "Warning",
   tip: "Tip",
   context: "Context",
+  test: "Test Your Code",
+  celebration: "Celebrate",
 };
 
 export function Callout({ type = "note", children }: CalloutProps) {
@@ -36,7 +44,7 @@ export function Callout({ type = "note", children }: CalloutProps) {
           {labels[type]}
         </span>
       </div>
-      <div className="mt-2 text-sm text-foreground-muted">{children}</div>
+      <div className="mt-2 text-sm text-foreground-muted [&>p]:m-0">{children}</div>
     </div>
   );
 }

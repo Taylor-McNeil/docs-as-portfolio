@@ -37,6 +37,9 @@
   /* Active nav in light mode */
   --color-nav-active-bg: #fed7aa;
   --color-nav-active-text: #c2410c;
+
+  /* Timeline pink - orange in light mode */
+  --color-timeline-pink: #ea580c;
 }
 
 /* Dark theme overrides */
@@ -70,46 +73,63 @@
   /* Active nav in dark mode */
   --color-nav-active-bg: rgba(59, 130, 246, 0.1);
   --color-nav-active-text: #60a5fa;
+
+  /* Timeline pink - pink in dark mode */
+  --color-timeline-pink: #ec4899;
 }
 
 body {
   @apply bg-surface-bg text-foreground;
 }
-
-/* Shiki code block styling */
-.shiki-wrapper pre.shiki {
-  @apply p-4 m-0;
+/* Highlight.js theme - GitHub Dark inspired */
+.hljs {
   background: transparent !important;
 }
 
-.shiki-wrapper pre.shiki code {
-  @apply font-mono block;
-  background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  box-shadow: none !important;
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag {
+  color: #ff7b72;
 }
 
-.shiki-wrapper pre.shiki code .line {
-  display: block;
-  line-height: 1.0;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-addition {
+  color: #a5d6ff;
 }
 
-/* Reset all elements inside shiki blocks */
-.shiki-wrapper pre.shiki span,
-.shiki-wrapper pre.shiki code span,
-.shiki-wrapper * {
-  border: none !important;
-  border-left: 0 !important;
-  border-right: 0 !important;
-  border-top: 0 !important;
-  border-bottom: 0 !important;
-  outline: none !important;
-  box-shadow: none !important;
-  text-decoration: none !important;
-  border-color: transparent !important;
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion,
+.hljs-meta {
+  color: #8b949e;
+}
+
+.hljs-number,
+.hljs-regexp,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #79c0ff;
+}
+
+.hljs-function,
+.hljs-title.function_ {
+  color: #d2a8ff;
+}
+
+.hljs-variable,
+.hljs-params {
+  color: #c9d1d9;
+}
+
+.hljs-class .hljs-title {
+  color: #f0883e;
 }

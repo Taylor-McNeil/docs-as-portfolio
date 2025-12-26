@@ -79,9 +79,7 @@ export default function Quickstart() {
         <p className="text-foreground-muted">
           Create a <code className="px-1.5 py-0.5 bg-surface-card border border-border rounded text-sm font-mono">taylor.config.js</code> in your project root:
         </p>
-        <CodeBlock language="javascript" filename="taylor.config.js">
-          {configCode}
-        </CodeBlock>
+        <CodeBlock code={configCode} language="javascript" filename="taylor.config.js" />
         <Callout type="note">
           Version 4.0.0 focuses on high-leverage developer enablement.
           For the legacy &quot;Evangelist&quot; build (80% travel), see{" "}
@@ -97,11 +95,9 @@ export default function Quickstart() {
         <p className="text-foreground-muted">
           Validate the integration is working:
         </p>
-        <CodeBlock language="bash">
-          {`npm test`}
-        </CodeBlock>
-        <CodeBlock language="plaintext" filename="integration/taylor.test.js">
-          {`PASS  integration/taylor.test.js
+        <CodeBlock code="npm test" language="bash" />
+        <CodeBlock
+          code={`PASS  integration/taylor.test.js
 
         DevEx Integration
           ✓ reduces onboarding friction (40% improvement)
@@ -109,12 +105,14 @@ export default function Quickstart() {
           ✓ scales developer reach (75k+ developers)
           ✓ eliminates documentation drift
           ✓ respects async-first communication
-          ✓ blocks friday deployments, mostly 😋 
+          ✓ blocks friday deployments, mostly 😋
 
       Test Suites: 1 passed, 1 total
       Tests:       6 passed, 6 total
       Time:        3-6 months`}
-        </CodeBlock>
+          language="plaintext"
+          filename="integration/taylor.test.js"
+        />
       </section>
 
    {/* Next Steps */}

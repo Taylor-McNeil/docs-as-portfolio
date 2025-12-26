@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRightPanel } from "./RightPanelContext";
+import { PanelRightClose } from "lucide-react";
 
 interface TocItem {
   id: string;
@@ -14,7 +15,7 @@ interface AnchorSidebarProps {
 }
 
 export function AnchorSidebar({ items }: AnchorSidebarProps) {
-  const { setContent, setWidth } = useRightPanel();
+  const { setContent, setWidth, toggleCollapsed } = useRightPanel();
   const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
@@ -42,10 +43,19 @@ export function AnchorSidebar({ items }: AnchorSidebarProps) {
     setWidth("narrow");
 
     setContent(
-      <div className="p-4 pt-6">
-        <p className="text-[9px] font-semibold text-foreground-muted uppercase tracking-wider mb-4">
-          On this page
-        </p>
+      <div className="p-4">
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-[9px] font-semibold text-foreground-muted uppercase tracking-wider">
+            On this page
+          </p>
+          <button
+            onClick={toggleCollapsed}
+            className="p-1 rounded text-foreground-muted hover:text-foreground hover:bg-surface-card transition-colors"
+            title="Collapse panel"
+          >
+            <PanelRightClose size={14} />
+          </button>
+        </div>
 
         <nav className="border-l border-border space-y-1">
           {items.map((item) => (
@@ -71,7 +81,7 @@ export function AnchorSidebar({ items }: AnchorSidebarProps) {
       setContent(null);
       setWidth("normal"); // Reset to normal when leaving
     };
-  }, [items, activeId, setContent, setWidth]);
+  }, [items, activeId, setContent, setWidth, toggleCollapsed]);
 
   return null;
 }

@@ -1,0 +1,291 @@
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { TutorialHeader } from "@/components/content/TutorialHeader";
+import { Figure } from "@/components/content/Figure";
+import { TicTacToeGame } from "@/components/interactive/TicTacToeGame";
+import { ResponsePanel } from "@/components/layout/ResponsePanel";
+import {
+  buildBoardCode,
+  updateBoardCode,
+  testUpdateBoardCode,
+  playerInputCode,
+  validateMovesCode,
+  computerMoveCode,
+  isGameOverCode,
+  gameLoopCode,
+  fullCodeAfterValidation,
+  completeCode,
+  cleanBoardCode,
+  robustInputCode,
+  coordinateMathCode,
+} from "@/components/snippets/tictactoe-snippets";
+
+export const metadata = {
+  title: "Tic Tac Toe in Java | Taylor McNeil",
+};
+
+<ResponsePanel
+  data={{
+    tutorial: "Tic Tac Toe in Java",
+    type: "Beginner",
+    language: "Java",
+    read_time: "11 min",
+    views: "75,000+",
+    platform: "Medium",
+    concepts: [
+      "Arrays",
+      "Loops", 
+      "Functions",
+      "Game Logic",
+      "User Input"
+    ],
+    status: "Classic"
+  }}
+/>
+
+<AnchorSidebar
+  items={[
+    { id: "about-this-tutorial", label: "About This Tutorial", level: 2 },
+    { id: "building-the-board", label: "Building the Board", level: 2 },
+    { id: "placing-pieces", label: "Placing Pieces", level: 2 },
+    { id: "getting-player-input", label: "Getting Player Input", level: 2 },
+    { id: "validating-moves", label: "Validating Moves", level: 2 },
+    { id: "simulating-the-computer", label: "Simulating the Computer", level: 2 },
+    { id: "winning-the-game", label: "Winning the Game", level: 2 },
+    { id: "creating-the-game-loop", label: "Creating the Game Loop", level: 2 },
+    { id: "complete-code", label: "Complete Code", level: 2 },
+    { id: "try-it-yourself", label: "Try It Yourself", level: 2 },
+    { id: "2025-retrospective", label: "2025 Retrospective", level: 2 },
+  ]}
+/>
+
+<TutorialHeader
+  title="Tic Tac Toe in Java"
+  description="A step-by-step tutorial for implementing Tic Tac Toe via the console."
+  readTime="11 min read"
+  views="75K+ views"
+  date="May 6, 2021"
+  source={{ name: "View on Medium", url: "https://medium.com/codex/tic-tac-toe-e53212028341" }}
+/>
+
+<Callout type="context">
+**Editor's Note (2025):** This tutorial was originally written when I was first learning Java. I've kept the original code below as a time capsule of my learning journey. If you want to see how I would write this today—with proper input validation and error handling—check out the interactive demo and retrospective at the bottom.
+</Callout>
+
+## About This Tutorial
+
+Tic Tac Toe is a classic programming problem that many developers encounter on their programming journey. Deceptively simple, Tic Tac Toe can teach developers essential programming concepts while building a complete, functional game.
+
+**What You'll Learn:**
+
+- Arrays and 2D array manipulation
+- Boolean logic and conditionals
+- Functions and method design
+- Loop structures and game flow
+- User input validation
+- Game state management
+
+This tutorial uses the most basic solution to make it accessible to all skill levels. We'll build everything in one class with several functions, focusing on clarity and learning rather than advanced design patterns.
+
+<Callout type="tip">
+Always remember to test your code at the end of each section to make sure it works!
+</Callout>
+
+## Building the Board
+
+The first step in building our game is to create the board. We'll use a 2D character array filled with dashes, vertical bars, and spaces to create our visual board.
+
+<Figure
+  src="/images/tictactoe-indices.png"
+  alt="Tic Tac Toe board showing array indices"
+  caption="The board uses a 3x5 character array with specific indices for game pieces"
+/>
+
+<Callout type="note">
+**Array Indexing:** Valid game positions correspond to these array indices:
+- Top row: [0][0], [0][2], [0][4]
+- Middle row: [1][0], [1][2], [1][4]
+- Bottom row: [2][0], [2][2], [2][4]
+
+The vertical bars exist for visual formatting but aren't used in game logic.
+</Callout>
+
+<CodeBlock code={buildBoardCode} language="java" filename="TicTacToe.java" />
+
+## Placing Pieces
+
+Now that we have our board, let's establish the game rules and create a method to place pieces on the board.
+
+**Game Rules:**
+- The player will be represented by the `X` character and the number `1`
+- The computer will be represented by the `O` character and the number `2`
+- Valid indices for placing pieces are the positions noted above
+
+<CollapsibleCode 
+  title="updateBoard() Method" 
+  filename="TicTacToe.java"
+  language="java"
+  code={updateBoardCode}
+/>
+
+<Callout type="test">
+Try these function calls in your main method to see pieces placed on the board:
+
+<CodeBlock code={testUpdateBoardCode} language="java" />
+</Callout>
+
+## Getting Player Input
+
+Now we need to allow the player to tell us where they want to place their pieces. We'll create a `playerMove()` function that uses the Scanner class to retrieve user input.
+
+<CodeBlock code={playerInputCode} language="java" filename="TicTacToe.java" />
+
+<Callout type="note">
+**Static Scanner:** We create a static Scanner object because we'll use player input in multiple methods. Having one instance prevents memory issues and simplifies our code structure.
+</Callout>
+
+## Validating Moves
+
+If you test the current code, you'll notice players can place pieces on top of existing pieces. We need to validate moves before placing them on the board.
+
+**Valid Move Rules:**
+- Moves must be between 1-9
+- The selected position must be empty (contain `_` or `' '`)
+- Cannot place pieces on vertical bars or occupied spaces
+
+<CollapsibleCode 
+  title="playerMove() and isValidMove() Methods" 
+  filename="TicTacToe.java"
+  language="java"
+  code={validateMovesCode}
+/>
+
+<Callout type="test">
+**Checkpoint:** At this point, you have a working board that accepts and validates player input.
+ Test it by running the game and trying to place pieces in the same spot twice—it should reject the 
+ second move.
+</Callout>
+
+<CollapsibleCode 
+  title="Full Code So Far"
+  filename="TicTacToe.java"
+  language="java"
+  code={fullCodeAfterValidation}
+/>
+
+## Simulating the Computer
+
+To keep things simple, we'll simulate the computer using a random number generator. The computer 
+will choose random valid moves.
+
+<CodeBlock code={computerMoveCode} language="java" filename="TicTacToe.java" />
+
+<Callout type="note">
+**Random Number Generation:** The expression `rand.nextInt(9) + 1` generates numbers 1-9. The 
+`nextInt(9)` method returns 0-8, so we add 1 to get our desired range.
+</Callout>
+
+## Winning the Game
+
+Now we need to determine when the game ends. Following traditional Tic Tac Toe rules, there are 8 
+winning conditions plus 1 tie condition.
+
+<Figure
+  src="/images/tictactoe-wins.png"
+  alt="All possible winning combinations in Tic Tac Toe"
+  caption="8 winning combinations: 3 horizontal, 3 vertical, 2 diagonal"
+/>
+
+<CollapsibleCode 
+  title="isGameOver(), printWinner(), and isBoardFull() Methods" 
+  filename="TicTacToe.java"
+  language="java"
+  code={isGameOverCode}
+/>
+
+## Creating the Game Loop
+
+Finally, we need to create the main game loop that allows players to play multiple games and handles 
+the turn-based gameplay.
+
+<CollapsibleCode 
+  title="main() Method - Game Loop" 
+  filename="TicTacToe.java"
+  language="java"
+  code={gameLoopCode}
+/>
+
+<Callout type="celebration">
+**Congratulations!** You now have a complete, functional Tic Tac Toe console game written in Java. 
+Try adding features like a scoring system, difficulty levels, or a graphical interface!
+</Callout>
+
+## Complete Code
+
+Here's the full implementation with all methods combined. Copy this to run the complete game:
+
+<CollapsibleCode 
+  title="TicTacToe.java (Complete)"
+  filename="TicTacToe.java"
+  language="java"
+  code={completeCode}
+/>
+
+## Try It Yourself
+
+Here's an interactive version of the game built with React. It includes the improvements discussed in 
+the retrospective below: robust input handling, help commands, and score tracking.
+
+<TicTacToeGame />
+
+<Callout type="tip">
+**Commands:** Type `1-9` to make a move, `help` for options, `score` to see the score, or `play` to 
+restart.
+</Callout>
+
+## 2025 Retrospective
+
+Looking back at this code four years later, it's a great example of "making it work" vs. "making it 
+maintainable." While the logic holds up, there are three key areas I would change today:
+
+### 1. Separation of Concerns
+
+The original code mixes game data (`X` and `O`) with visual formatting (pipes `|` and underscores `_`)
+in the same array. This makes the logic fragile. If you wanted to change how the board looks, you 
+risk breaking the game math.
+
+**Today's approach:** Keep the data in a 3x3 `char[][]` array and handle visuals strictly in the 
+`printBoard()` method.
+
+<CodeBlock code={cleanBoardCode} language="java" />
+
+### 2. Input Robustness
+
+The original `input.nextInt()` crashes if a user types a letter. We should handle 
+invalid input gracefully.
+
+**Today's approach:** Read input as a `String` and parse it with error handling.
+
+<CodeBlock code={robustInputCode} language="java" />
+
+### 3. Algorithmic Efficiency
+
+The massive switch statements work, but they're hard to read and maintain. Simple coordinate math can 
+replace 50+ lines with 2 lines.
+
+**Today's approach:** Use math to convert positions 1-9 to row/column indices.
+
+<CodeBlock code={coordinateMathCode} language="java" />
+
+### What This Teaches
+
+This retrospective isn't about the original code being "wrong". It reached 75,000+ developers and helped them build something real. That's success.
+
+The switch statements are verbose, yes. But a beginner can read `case 5: gameBoard[1][2]` and understand exactly what's happening. The coordinate math `(position - 1) / 3` is elegant, but it's a puzzle you have to work backwards to understand.
+
+**Good documentation meets people where they are.** 
+
+A tutorial for beginners should prioritize clarity over cleverness. The original code did that. The improvements I'd make today—input validation, separation of concerns—aren't about making the code "smarter." They're about making it more robust and maintainable.
+
+The real lesson? Code evolves with context:
+
+The interactive demo above uses a "production" mindset. The original tutorial uses the "learning" mindset. Both are valid—for their audience.
