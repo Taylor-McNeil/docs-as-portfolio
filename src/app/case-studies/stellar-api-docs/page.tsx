@@ -138,7 +138,7 @@ export default function StellarCaseStudy() {
           </strong>
           . Instead of repeating parameter definitions across dozens of
           endpoints, define them once in{" "}
-          <code className="text-accent">parameters.yml</code> and reference
+          <code className="text-accent">parameters.yaml</code> and reference
           them.
         </p>
       </section>
@@ -165,8 +165,8 @@ export default function StellarCaseStudy() {
           <CollapsibleCode
             code={parametersSnippet}
             language="yaml"
-            filename="parameters.yml"
-            title="parameters.yml"
+            filename="parameters.yaml"
+            title="parameters.yaml"
           />
 
           <p className="text-base text-foreground-muted">
@@ -189,8 +189,8 @@ export default function StellarCaseStudy() {
           <CollapsibleCode
             code={accountsEndpointSnippet}
             language="yaml"
-            filename="endpoints/accounts.yml"
-            title="accounts.yml"
+            filename="endpoints/accounts.yaml"
+            title="accounts.yaml"
           />
 
           <p className="text-base text-foreground-muted">

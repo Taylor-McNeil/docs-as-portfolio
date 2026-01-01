@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ThemeToggle } from "./ThemeToggle";
 import { NavSection } from "../navigation/NavSection";
 import { NavItem } from "../navigation/NavItem";
@@ -9,7 +10,7 @@ export function Sidebar() {
       {/* Header */}
       <div className="p-5 border-b border-border hidden md:flex items-center justify-between">
         <div>
-          <h1 className="text-foreground-heading font-bold text-sm">Taylor McNeil</h1>
+          <Link href="/"><h1 className="text-foreground-heading font-bold text-sm">Taylor McNeil</h1></Link>
           <p className="text-foreground-muted font-mono text-[10px] mt-0.5">docs-as-portfolio v1.1</p>
         </div>
         <ThemeToggle />
