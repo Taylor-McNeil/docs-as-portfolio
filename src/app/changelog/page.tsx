@@ -6,21 +6,31 @@ import { PageHeader } from "@/components/content/PageHeader";
 const responseData = {
   total_uptime: "5 Years",
   deprecated: ["Static PDFs", "Manual Testing", "Road Warrior Mode"],
-  excited_by: ["LLM's for customized learning","AI-Chatbots for personalization","AI usage for language acquisition"],
+  excited_by: [
+    "LLMs for customized learning",
+    "AI-Chatbots for personalization",
+    "AI usage for language acquisition"
+  ],
   latest_release: "AI-Enhanced Workflows",
-  weeks_since_friday_deployment:"2",
+  weeks_since_friday_deployment: "2",
 };
+
+export const metadata = {
+  title: "Changelog",
+  description: "Career history as semantic versioning.",
+};
+
 
 export default function Changelog() {
   return (
     <div className="space-y-8">
       <ResponsePanel data={responseData} />
 
-    <PageHeader
+      <PageHeader
         method="PATCH"
         endpoint="/log/changelog"
         title="Changelog"
-    />
+      />
 
       {/* Timeline */}
       <div className="mt-8">

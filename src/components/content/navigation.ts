@@ -25,13 +25,14 @@ export const navigation: NavSection[] = [
   //     { href: "/playground/year-calendar-api", label: "Year Calendar API", method: "GET" },
   //   ],
   // },
-  // {
-  //   title: "Active Builds",
-  //   items: [
+   {
+     title: "Active Builds",
+     items: [
   //     { href: "/active-builds/ampersand", label: "&mpersand", method: "POST" },
   //     { href: "/active-builds/llm-evaluator", label: "LLM Evaluator", method: "POST" },
-  //   ],
-  // },
+        { href: "/active-builds/the-longview", label: "The Longview", method: "POST"}
+     ],
+   },
    {
     title: "Tutorials",
      items: [

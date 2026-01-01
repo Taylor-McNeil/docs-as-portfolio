@@ -2,7 +2,8 @@ import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
 import { GuideHeader } from "@/components/content/GuideHeader";
 
 export const metadata = {
-  title: "HMAC Authentication Guide | Taylor McNeil",
+  title: "HMAC Authentication Guide",
+  description: "Implement secure API authentication using Hash-based Message Authentication Codes.",
 };
 
 <AnchorSidebar
@@ -23,16 +24,16 @@ export const metadata = {
 />
 
 <GuideHeader 
-title="HMAC Authentication Guide"
-method="GET"
-endpoint="/guides/hmac-authentication"
-mdxPath="src/app/guides/hmac-authentication/page.mdx" 
+  title="HMAC Authentication Guide"
+  method="GET"
+  endpoint="/guides/hmac-authentication"
+  mdxPath="src/app/guides/hmac-authentication/page.mdx" 
 />
 
 Implement secure API authentication using Hash-based Message Authentication Codes.
 
 <Callout type="context">
-This guide was originally written for NCR's developer platform, where it reduced auth-related support tickets by 40%. I have updated it to make it more robust, and use active voice.
+This guide was originally written for NCR's developer platform, where it reduced auth-related support tickets by 40%. I have updated it to make it more robust and use active voice.
 </Callout>
 
 ## What is HMAC Authentication?
@@ -53,13 +54,14 @@ HMAC authentication provides the following guarantees:
 3. **Replay Protection**: Attackers cannot reuse intercepted requests.
 
 
+
 ## Key Components
 
 To implement HMAC, you will use two specific credentials:
 
 | Component | Purpose |
 |-----------|---------|
-| **Shared Key** | The public identifier for your application. Include this with every request |
+| **Shared Key** | The public identifier for your application. Include this with every request. |
 | **Secret Key** | The private key used to generate signatures. **Never transmit this key.** |
 
 The shared key identifies **who** is calling. The secret key proves they are **authorized**.
@@ -70,12 +72,12 @@ Requests are authenticated using the <InlineCode>AccessKey</InlineCode> authoriz
 The <InlineCode>Authorization</InlineCode> header has the following format:
 
 <Example label="Format">
-  Authorization: AccessKey {`<shared-key>`}:{`<signature>`}
+  Authorization: AccessKey &lt;shared-key&gt;:&lt;signature&gt;
 </Example>
 
 Where:
-- <InlineCode>{`<shared-key>`}</InlineCode> is your application's shared key
-- <InlineCode>{`<signature>`}</InlineCode> is the Base64-encoded HMAC signature
+- <InlineCode>&lt;shared-key&gt;</InlineCode> is your application's shared key
+- <InlineCode>&lt;signature&gt;</InlineCode> is the Base64-encoded HMAC signature
 
 ## How HMAC Authentication Works
 
@@ -107,6 +109,8 @@ Concatenate the following components in a fixed order, separated by newline char
 1. **HTTP Method**: Uppercase (e.g., POST, GET).
 2. **Request URI**: The path and query string, URL-encoded.
 
+
+
 <Example label="Example Canonical String">
   POST\n/api/transactions?limit=10
 </Example>
@@ -120,7 +124,7 @@ Newlines and whitespace are significant. Any deviation will cause signature mism
 Create a unique key for each request by combining your Secret Key and the Timestamp.
 
 <Example label="Format">
-  {`<secret-key>`}:{`<timestamp>`}
+  &lt;secret-key&gt;:&lt;timestamp&gt;
 </Example>
 
 <Example label="Example">
@@ -139,16 +143,17 @@ Compute the signature using the derived signing key and your canonical request s
 The resulting signature must be identical to the server’s computed signature for the request to be accepted.
 
 
+
 ### Step 5: Send the Request
 
 Construct your final HTTP request with the following headers:
 
 <Example label="Authorization Header">
-  Authorization: AccessKey {`<shared-key>`}:{`<signature>`}
+  Authorization: AccessKey &lt;shared-key&gt;:&lt;signature&gt;
 </Example>
 
 <Example label="Date Header">
-  Date: {`<timestamp>`}
+  Date: &lt;timestamp&gt;
 </Example>
 
 ## Examples
@@ -262,7 +267,7 @@ If your authentication fails, check these common sources of error.
 | 403 Invalid Key | Incorrect shared key | Confirm the Shared Key matches the intended client credentials |
 
 <Callout type="tip">
-**Debugging Tip:** Log the generated Canonical Request String on both the client and the server. Comparing these strings usually reveals the issue immediately — a single missing newline or character difference will invalidate the signature.
+**Debugging Tip:** Log the generated Canonical Request String on both the client and the server. Comparing these strings usually reveals the issue immediately—a single missing newline or character difference will invalidate the signature.
 </Callout>
 
 ## Next Steps

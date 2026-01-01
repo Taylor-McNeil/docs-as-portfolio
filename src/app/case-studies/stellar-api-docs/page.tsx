@@ -24,6 +24,11 @@ const responseData = {
   status: "Live in production",
 };
 
+export const metadata = {
+  title: "Stellar API Documentation",
+  description: "Building modular OpenAPI specifications.",
+};
+
 export default function StellarCaseStudy() {
   return (
     <div className="space-y-8">
@@ -63,7 +68,7 @@ export default function StellarCaseStudy() {
         <p className="text-base text-foreground-muted">
           <strong className="text-foreground">Horizon</strong> is Stellar&apos;s
           REST API for interacting with the network—querying accounts,
-          submitting transactions, streaming ledger data.
+          submitting transactions, and streaming ledger data.
         </p>
 
         <p className="text-base text-foreground-muted">
@@ -117,6 +122,8 @@ export default function StellarCaseStudy() {
           From there, I designed a modular file structure where components are
           defined once and referenced everywhere:
         </p>
+
+        
 
         <CodeBlock
           code={fileStructure}
@@ -193,7 +200,6 @@ export default function StellarCaseStudy() {
             the links structure with the account data shape.
           </p>
         </div>
-
       </section>
 
       <hr className="border-border" />
@@ -263,42 +269,42 @@ export default function StellarCaseStudy() {
 
       <hr className="border-border" />
 
-   {/* What Else You Can Do */}
-<section className="space-y-4">
-  <h2 className="text-xl font-bold text-foreground-heading">
-    Beyond Documentation
-  </h2>
+      {/* What Else You Can Do */}
+      <section className="space-y-4">
+        <h2 className="text-xl font-bold text-foreground-heading">
+          Beyond Documentation
+        </h2>
 
-  <p className="text-md text-foreground-muted">
-    The spec files aren&apos;t just for docs. Once you have a formal OpenAPI
-    definition, it becomes infrastructure for the entire API lifecycle:
-  </p>
+        <p className="text-base text-foreground-muted">
+          The spec files aren&apos;t just for docs. Once you have a formal OpenAPI
+          definition, it becomes infrastructure for the entire API lifecycle:
+        </p>
+        
+        
 
-  <ul className="list-disc list-outside ml-6 space-y-2 text-md text-foreground-muted">
-    <li>
-      <strong className="text-foreground">SDK generation</strong> —
-      Auto-generate client libraries in Python, JavaScript, Go, etc.
-    </li>
-    <li>
-      <strong className="text-foreground">Mock servers</strong> — Spin up
-      fake APIs for frontend development before the backend is ready
-    </li>
-    <li>
-      <strong className="text-foreground">Contract testing</strong> —
-      Validate that the implementation matches the spec
-    </li>
-    <li>
-      <strong className="text-foreground">Postman collections</strong> —
-      Auto-import endpoints for manual testing
-    </li>
-    <li>
-      <strong className="text-foreground">Changelog diffing</strong> —
-      Compare spec versions to see exactly what changed between releases
-    </li>
-  </ul>
-
-
-</section>
+        <ul className="list-disc list-outside ml-6 space-y-2 text-base text-foreground-muted">
+          <li>
+            <strong className="text-foreground">SDK generation</strong> —
+            Auto-generate client libraries in Python, JavaScript, Go, etc.
+          </li>
+          <li>
+            <strong className="text-foreground">Mock servers</strong> — Spin up
+            fake APIs for frontend development before the backend is ready
+          </li>
+          <li>
+            <strong className="text-foreground">Contract testing</strong> —
+            Validate that the implementation matches the spec
+          </li>
+          <li>
+            <strong className="text-foreground">Postman collections</strong> —
+            Auto-import endpoints for manual testing
+          </li>
+          <li>
+            <strong className="text-foreground">Changelog diffing</strong> —
+            Compare spec versions to see exactly what changed between releases
+          </li>
+        </ul>
+      </section>
     </div>
   );
 }

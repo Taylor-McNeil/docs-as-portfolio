@@ -34,7 +34,7 @@ export default new Candidate({
 
   stack: {
     languages: ['TypeScript', 'Python', 'Java', 'SQL'],
-    frameworks: ['Next.js', 'FastAPI', 'React','Django'],
+    frameworks: ['Next.js', 'FastAPI', 'React', 'Django'],
     tools: ['OpenAPI', 'GitHub Actions', 'MongoDB'],
     ai_workflow: ['Prompt Engineering', 'Multi-Model Evaluation']
   },
@@ -44,6 +44,11 @@ export default new Candidate({
     async_communication: true,
   }
 });`;
+
+export const metadata = {
+  title: "Quickstart",
+  description: "Configure a DevEx Engineer for your team.",
+};
 
 
 export default function Quickstart() {
@@ -105,7 +110,7 @@ export default function Quickstart() {
           ✓ scales developer reach (75k+ developers)
           ✓ eliminates documentation drift
           ✓ respects async-first communication
-          ✓ blocks friday deployments, mostly 😋
+          ✓ blocks Friday deployments, mostly 😋
 
       Test Suites: 1 passed, 1 total
       Tests:       6 passed, 6 total

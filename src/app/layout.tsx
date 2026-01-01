@@ -27,8 +27,29 @@ const geistSans = Geist({
 
 
 export const metadata: Metadata = {
-  title: "Taylor McNeil | Docs-as-Portfolio",
-  description: "Developer Experience Engineer",
+  title: {
+    default: "Taylor McNeil | Developer Experience Engineer",
+    template: "%s | Taylor McNeil", // Pages just set "Quickstart" → becomes "Quickstart | Taylor McNeil"
+  },
+  description: "I design developer systems that reduce friction and scale adoption.",
+  metadataBase: new URL("https://taylormcneil.dev"),
+  openGraph: {
+    title: "Taylor McNeil",
+    description: "I design developer systems that reduce friction and scale adoption.",
+    url: "https://taylormcneil.dev",
+    siteName: "Taylor McNeil",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Taylor McNeil",
+    description: "I design developer systems that reduce friction and scale adoption.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
