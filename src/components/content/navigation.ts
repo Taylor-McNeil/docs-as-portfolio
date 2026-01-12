@@ -26,11 +26,11 @@ export const navigation: NavSection[] = [
   //   ],
   // },
    {
-     title: "Active Builds",
+     title: "Side Projects",
      items: [
   //     { href: "/active-builds/ampersand", label: "&mpersand", method: "POST" },
-  //     { href: "/active-builds/llm-evaluator", label: "LLM Evaluator", method: "POST" },
-        { href: "/active-builds/the-longview", label: "The Longview", method: "POST"}
+  //     { href: "/side-projects/llm-evaluator", label: "LLM Evaluator", method: "POST" },
+        { href: "/side-projects/the-longview", label: "The Long View", method: "POST"}
      ],
    },
    {
@@ -39,6 +39,8 @@ export const navigation: NavSection[] = [
   //     { href: "/tutorials/year-calendar", label: "Year Calendar", method: "GET" },
   //     { href: "/tutorials/react-integration", label: "MongoDB + React", method: "GET" },
        { href: "/tutorials/java-game-dev", label: "Java Game Dev", method: "GET" },
+       { href: "/tutorials/mongodb-tanstack", label: "MongoDB x TanStack", method: "GET" },
+
      ],
    },
   {

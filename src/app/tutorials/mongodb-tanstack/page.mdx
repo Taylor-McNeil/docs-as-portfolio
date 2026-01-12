@@ -1,0 +1,236 @@
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { GuideHeader } from "@/components/content/GuideHeader";
+import { Callout } from "@/components/content/Callout";
+import { ExternalLink } from "lucide-react";
+
+export const metadata = {
+    title: "MongoDB x TanStack Start",
+    description: "A full-stack integration guide for MongoDB's official documentation."
+}
+
+<AnchorSidebar
+  items={[
+    { id: "about-this-tutorial", label: "About This Tutorial", level: 2 },
+    { id: "why-mongodb--tanstack-start", label: "Why MongoDB + TanStack?", level: 3 },
+    { id: "quick-start-tutorial", label: "Quick Start Tutorial", level: 3 },
+    { id: "set-up-your-project", label: "Set Up Your Project", level: 3 },
+    { id: "retrospective", label: "Retrospective", level: 2 },
+    { id: "1-self-contained-content", label: "Self-Contained Content", level: 3 },
+    { id: "2-componentization", label: "Componentization", level: 3 },
+    { id: "3-clearer-product-positioning", label: "Clearer Product Positioning", level: 3 },
+    { id: "4-shortening-the-feedback-loop", label: "Shortening the Feedback Loop", level: 3 },
+    { id: "5-visualizing-the-architecture", label: "Visualizing the Architecture", level: 3 },
+    { id: "links", label: "Links", level: 2 },
+  ]}
+/>
+
+<GuideHeader
+    title="MongoDB x TanStack"
+    method="GET"
+    endpoint="/tutorials/mongodb-tanstack"
+    mdxPath="/src/app/tutorials/mongodb-tanstack"
+/>
+
+A full-stack integration guide for MongoDB's official documentation.
+
+
+
+## About This Tutorial
+
+MongoDB was expanding their docs to cover frameworks with active, growing communities. TanStack Start made the list.
+
+I picked up the assignment, researched the framework, and built a sample application that connects TanStack Start to an Atlas cluster. Then I documented the whole process. It went through MongoDB's review process and shipped as part of their official driver documentation.
+
+What follows is an excerpt showing the structure and approach. The full tutorial covers project setup, backend configuration, frontend components, and running the application.
+
+---
+
+### Overview
+
+This guide demonstrates how to build a modern web application with TanStack Start and MongoDB. TanStack Start is a full-stack framework that integrates frontend and backend development by using React and popular libraries like TanStack Router and TanStack Query from the TanStack ecosystem.
+
+The application in this tutorial consists of the following layers:
+
+- **Database Layer**: MongoDB stores and retrieves data.
+- **Server Layer**: TanStack Start provides the API endpoints and logic to connect your frontend to your MongoDB database.
+- **Data Management Layer**: TanStack Query manages server-side state on the frontend, unifying the logic for data fetching, loading states, and error handling.
+- **Presentation Layer**: React implements the UI by using the TanStack Query data.
+
+### Why MongoDB + TanStack Start?
+
+MongoDB's document model stores data as JSON-like documents, making it easy to work with JavaScript objects without complex mapping. This aligns with TanStack Start's React components and TypeScript interfaces.
+
+TanStack Query handles the data layer efficiently by caching MongoDB responses, managing loading states, and synchronizing data across components. This eliminates manual state management and reduces redundant database calls.
+
+This combination works well for applications that need the following features:
+
+- Flexible data structures that can evolve over time
+- Real-time data updates with minimal client-side code
+- Type safety from database to UI
+- Efficient caching and background data synchronization
+
+### Quick Start Tutorial
+
+This tutorial guides you through building a TanStack Start application that integrates with MongoDB. The application accesses sample restaurant data and displays the results on a locally hosted site. It includes instructions on connecting your MongoDB cluster hosted on MongoDB Atlas and accessing and displaying information from your database.
+
+<Callout type="tip">
+  If you prefer to connect to MongoDB using the Node.js driver without TanStack Start, see the <a href="https://www.mongodb.com/docs/drivers/node/current/get-started/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">Get Started with the Node.js Driver <ExternalLink size={12} className="inline" /></a> guide.
+</Callout>
+
+### Set Up Your Project
+
+Follow the steps in this section to install project dependencies, create an Atlas cluster, and set up the application directories.
+
+**1. Verify the prerequisites**
+
+To create the Quick Start application, ensure you have the following software installed:
+
+<div className="space-y-2 my-4">
+  <div className="flex items-start gap-2">
+    <span className="font-semibold min-w-24"><a href="https://nodejs.org/en" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent hover:underline"> Node.js<ExternalLink size={12} / > </a></span>
+    <span>Use version 20 or later.</span>
+  </div>
+  <div className="flex items-start gap-2">
+    <span className="font-semibold min-w-24">Code Editor</span>
+    <span>This tutorial uses <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent hover:underline">Visual Studio Code <ExternalLink size={12} /></a>, but you can use the editor of your choice.</span>
+  </div>
+  <div className="flex items-start gap-2">
+    <span className="font-semibold min-w-24">Terminal</span>
+    <span>For MacOS users, use Terminal or similar app. For Windows users, use PowerShell.</span>
+  </div>
+</div>
+
+**2. Create a MongoDB Atlas cluster**
+
+MongoDB Atlas is a fully managed cloud database service that hosts your MongoDB deployments. If you do not have a MongoDB deployment, create a free cluster (no credit card required) by completing the MongoDB Get Started tutorial. The MongoDB Get Started tutorial also demonstrates how to load sample databases into your cluster, including the `sample_restaurants` database that is used in this tutorial.
+
+To connect to your cluster, you must use a connection URI. To retrieve your connection URI, follow the instructions in the <a href="https://www.mongodb.com/docs/atlas/connect-to-database-deployment/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent hover:underline">Connect to Your Cluster <ExternalLink size={12} /></a> tutorial in the Atlas documentation.
+
+<Callout type="tip">
+  Save your connection URI in a secure location.
+</Callout>
+
+**3. Create the project skeleton**
+
+Use the official TanStack Start CLI to initialize the project skeleton. Open your terminal and navigate to your desired project directory.
+
+
+
+<Callout type="note" title="Excerpt Ends Here">
+  This covers the introduction, architecture overview, and tutorial setup. The full tutorial continues with Vite configuration, database connections, server functions, React components, and running the application.
+
+  <a href="https://www.mongodb.com/docs/drivers/node-frameworks/tanstack/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">Read the full tutorial on MongoDB Docs <ExternalLink size={12} className="inline" /></a>
+</Callout>
+
+---
+
+## Retrospective
+
+Writing for official documentation means working within existing style guides and content architecture. Here's how I would approach this differently with full control over the content strategy.
+
+### 1. Self-Contained Content
+
+The tutorial links out to separate pages for common setup steps, such as "See the Connect to Your Cluster tutorial" and "follow the instructions in the Get Connection String guide." Each click takes the reader away from their task and increases cognitive load.
+
+I prefer docs that keep readers in flow. The trade-off is repeated material across tutorials, but that's a content architecture problem rather than a writing problem.
+
+```mermaid
+flowchart TB
+    subgraph Before["Current Approach"]
+        direction TB
+        A1[Tutorial Page] --> A2[Link: See Connect to Cluster docs]
+        A2 -.->|reader clicks away| A3[Connect to Cluster Page]
+        A3 -.->|reader clicks again| A4[Get Connection String Page]
+        A4 -.-> A5[😵 Lost context]
+    end
+
+    subgraph After["Proposed Approach"]
+        direction TB
+        B1[Tutorial Page] --> B2[Inline ConnectionString Component]
+        B2 --> B3[Expandable snippet]
+        B3 --> B4[✅ Reader stays in flow]
+    end
+```
+
+### 2. Componentization
+
+The fix for self-contained content without maintenance burden is simple: shared components.
+
+Instead of manually copying the "get your connection string" instructions into every tutorial, create an expandable `<ConnectionString />` component that lives in one place. Update it once, it updates everywhere. Readers get inline content, and writers maintain a single source of truth.
+
+```mermaid
+flowchart TD
+    CS[ConnectionString Component] --> T1[TanStack Guide]
+    CS --> T2[React Integration]
+    CS --> T3[Next.js Guide]
+    CS --> T4[Express Tutorial]
+    
+    ENV[EnvSetup Component] --> T1
+    ENV --> T2
+    ENV --> T3
+    ENV --> T4
+    
+    T1 --> B1[Single source of truth]
+    T2 --> B2[Update once, updates everywhere]
+    T3 --> B3[Consistent UX]
+```
+
+### 3. Clearer Product Positioning
+
+TanStack Start is a nascent framework. We cannot assume developers are familiar with it or the wider TanStack ecosystem. The current introduction jumps straight into technical implementation without establishing the necessary context.
+
+I would add a dedicated "What is TanStack Start?" section at the top. Position the framework against known standards like Next.js or Remix so users understand the architecture immediately. Readers need to understand the mental model—specifically the "Server Function" RPC pattern—before they worry about connecting a database.
+
+### 4. Shortening the Feedback Loop
+
+The current guide requires the user to write the entire application (Database, Server, UI, and Routing) before running `npm run dev` a single time. This prevents the user from validating their progress and makes debugging difficult if they made a typo in step 2.
+
+I would restructure the guide to prioritize an immediate "Hello World." Get the server running first, then layer in the database connection, and finally add the UI components. This iterative approach keeps the user engaged and makes troubleshooting significantly easier.
+
+### 5. Visualizing the Architecture
+
+For developers new to "Server Functions," the boundary between Client and Server can be invisible. The code looks like a standard function import, but it actually triggers a network request.
+
+I would add an architecture diagram that visualizes this RPC (Remote Procedure Call) layer:
+
+```mermaid
+flowchart LR
+    subgraph DB["Database Layer"]
+        MongoDB[(MongoDB Atlas)]
+    end
+
+    subgraph Server["Server Layer"]
+        ServerFn[TanStack Start<br/>Server Functions]
+    end
+
+    subgraph Client["Client (Browser)"]
+        subgraph Data["Data Management"]
+            Query[TanStack Query<br/>Cache + State]
+        end
+
+        subgraph UI["Presentation"]
+            React[React Components]
+        end
+    end
+
+    MongoDB <-->|Node.js Driver| ServerFn
+    ServerFn <-->|"⚡ RPC (network call)"| Query
+    Query <-->|useQuery hooks| React
+```
+
+This helps the reader build a mental model of where their code is actually executing, which is often the biggest hurdle when learning a full-stack framework.
+
+---
+
+## Links
+
+<div className="space-y-2">
+  <a href="https://www.mongodb.com/docs/drivers/node-frameworks/tanstack/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-accent hover:underline">
+    <ExternalLink size={14} />
+    <span>Full Tutorial on MongoDB Docs</span>
+  </a>
+  <a href="https://tanstack.com/start/latest" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-accent hover:underline">
+    <ExternalLink size={14} />
+    <span>TanStack Start Documentation</span>
+  </a>
+</div>

@@ -26,7 +26,7 @@ export default function TheLongView() {
 
       <PageHeader
         method="POST"
-        endpoint="/active-builds/the-longview"
+        endpoint="/side-projects/the-longview"
         title="The Long View"
         description="A year-at-a-glance planner. No signups, no servers."
       />

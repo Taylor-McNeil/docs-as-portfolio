@@ -143,3 +143,95 @@ body {
 .hljs-class .hljs-title {
   color: #f0883e;
 }
+
+/* Mermaid diagram dark mode overrides */
+.dark svg[id^="mermaid"] {
+  background: transparent !important;
+}
+
+/* Node shapes */
+.dark svg[id^="mermaid"] .node rect,
+.dark svg[id^="mermaid"] .node path,
+.dark svg[id^="mermaid"] .node polygon,
+.dark svg[id^="mermaid"] .node circle,
+.dark svg[id^="mermaid"] .node ellipse,
+.dark svg[id^="mermaid"] .basic.label-container {
+  fill: var(--color-surface-card) !important;
+  stroke: var(--color-accent) !important;
+}
+
+/* Node text */
+.dark svg[id^="mermaid"] .nodeLabel,
+.dark svg[id^="mermaid"] .nodeLabel p {
+  color: var(--color-foreground) !important;
+  fill: var(--color-foreground) !important;
+}
+
+/* Cluster/subgraph boxes */
+.dark svg[id^="mermaid"] .cluster rect {
+  fill: var(--color-surface-sidebar) !important;
+  stroke: var(--color-border) !important;
+}
+
+/* Cluster labels */
+.dark svg[id^="mermaid"] .cluster-label .nodeLabel,
+.dark svg[id^="mermaid"] .cluster-label .nodeLabel p {
+  color: var(--color-foreground-muted) !important;
+  fill: var(--color-foreground-muted) !important;
+}
+
+/* Edge labels - light mode (keep background to cover arrow line) */
+svg[id^="mermaid"] .edgeLabel .labelBkg,
+svg[id^="mermaid"] .edgeLabels .labelBkg,
+svg[id^="mermaid"] .labelBkg,
+svg[id^="mermaid"] [class*="edgeLabel"] div,
+svg[id^="mermaid"] span.edgeLabel,
+svg[id^="mermaid"] .edgeLabel {
+  background: var(--color-surface-bg) !important;
+  background-color: var(--color-surface-bg) !important;
+}
+
+svg[id^="mermaid"] span.edgeLabel p,
+svg[id^="mermaid"] .edgeLabel p,
+svg[id^="mermaid"] foreignObject p.text-foreground-muted {
+  background: var(--color-surface-bg) !important;
+  margin-bottom: 0 !important;
+}
+
+/* Edge labels - dark mode (transparent to blend) */
+.dark svg[id^="mermaid"] .edgeLabel .labelBkg,
+.dark svg[id^="mermaid"] .edgeLabels .labelBkg,
+.dark svg[id^="mermaid"] .labelBkg,
+.dark svg[id^="mermaid"] [class*="edgeLabel"] div,
+.dark svg[id^="mermaid"] span.edgeLabel,
+.dark svg[id^="mermaid"] .edgeLabel {
+  background: var(--color-surface-bg) !important;
+  background-color: var(--color-surface-bg) !important;
+}
+
+.dark svg[id^="mermaid"] span.edgeLabel p,
+.dark svg[id^="mermaid"] .edgeLabel p,
+.dark svg[id^="mermaid"] foreignObject p.text-foreground-muted {
+  background: var(--color-surface-bg) !important;
+}
+
+.dark svg[id^="mermaid"] .edgeLabel,
+.dark svg[id^="mermaid"] .edgeLabel p {
+  color: var(--color-foreground-muted) !important;
+  fill: var(--color-foreground-muted) !important;
+}
+
+/* Edge paths/arrows */
+.dark svg[id^="mermaid"] .edgePath path {
+  stroke: var(--color-foreground-muted) !important;
+}
+
+.dark svg[id^="mermaid"] .arrowMarkerPath {
+  fill: var(--color-foreground-muted) !important;
+  stroke: var(--color-foreground-muted) !important;
+}
+
+.dark svg[id^="mermaid"] marker path {
+  fill: var(--color-foreground-muted) !important;
+  stroke: var(--color-foreground-muted) !important;
+}

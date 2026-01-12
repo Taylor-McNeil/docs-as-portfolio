@@ -57,10 +57,15 @@ export default function Home() {
         </h2>
 
         <p className="text-lg text-foreground-muted">
-          I wanted a portfolio that could handle everything I throw at it:
-          writing, code, case studies, weird interactive demos. Seems to be
-          holding up. <em>Time will tell.</em>
+          I wanted a portfolio that works the way I work: structured, searchable, 
+          and slightly overengineered for the joy of it.
         </p>
+
+        <p className="text-lg text-foreground-muted">
+          Also, I thought it would be funny. <br/> It was. <br/> For about 40 hours of Next.js debugging.
+        </p>
+
+
       </section>
 
       <hr className="border-border" />
@@ -106,14 +111,14 @@ export default function Home() {
           </li>
           <li>
             <Link
-              href="/active-builds/the-longview"
+              href="/tutorials/mongodb-tanstack"
               className="text-accent hover:underline font-medium"
             >
-              /active-builds
+              /tutorials
             </Link>
             <span className="text-foreground-muted">
               {" "}
-              — What I&apos;m building now
+              — How I approach teaching
             </span>
           </li>
         </ul>

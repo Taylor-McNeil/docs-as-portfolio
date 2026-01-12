@@ -2,10 +2,15 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { Clock, Eye, Calendar, ExternalLink } from "lucide-react";
 import { CopyMarkdownButton } from "./CopyMarkdownButton";
+import { MethodBadge } from "../navigation/MethodBadge";
+
+type Method = "GET" | "POST" | "PUT" | "PATCH";
 
 interface TutorialHeaderProps {
   title: string;
   description?: string;
+  method?: Method;
+  endpoint?: string;
   readTime?: string;
   views?: string;
   date?: string;
@@ -19,6 +24,8 @@ interface TutorialHeaderProps {
 export function TutorialHeader({
   title,
   description,
+  method,
+  endpoint,
   readTime,
   views,
   date,
@@ -47,9 +54,15 @@ export function TutorialHeader({
   }
 
   return (
-    <header className="mt-4 mb-6">
+    <header className="mt-4 mb-6 space-y-4">
+      {method && endpoint && (
+        <div className="flex items-center gap-3">
+          <MethodBadge method={method} active size="md" />
+          <span className="font-mono text-sm text-foreground-muted">{endpoint}</span>
+        </div>
+      )}
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold text-foreground-heading">{title}</h1>
+        <h1 className="text-3xl font-bold text-foreground-heading leading-none">{title}</h1>
         {encodedMarkdown && <CopyMarkdownButton encodedMarkdown={encodedMarkdown} />}
       </div>
       

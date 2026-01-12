@@ -3,6 +3,7 @@ import { TutorialHeader } from "@/components/content/TutorialHeader";
 import { Figure } from "@/components/content/Figure";
 import { TicTacToeGame } from "@/components/interactive/TicTacToeGame";
 import { ResponsePanel } from "@/components/layout/ResponsePanel";
+import { Callout } from "@/components/content/Callout";
 import {
   buildBoardCode,
   updateBoardCode,
@@ -57,12 +58,18 @@ export const metadata = {
     { id: "complete-code", label: "Complete Code", level: 2 },
     { id: "try-it-yourself", label: "Try It Yourself", level: 2 },
     { id: "2025-retrospective", label: "2025 Retrospective", level: 2 },
+    { id: "1-separation-of-concerns", label: "Separation of Concerns", level: 3 },
+    { id: "2-input-robustness", label: "Input Robustness", level: 3 },
+    { id: "3-algorithmic-efficiency", label: "Algorithmic Efficiency", level: 3 },
+    { id: "what-this-teaches", label: "What This Teaches", level: 3 },
   ]}
 />
 
 <TutorialHeader
   title="Tic Tac Toe in Java"
   description="A step-by-step tutorial for implementing Tic Tac Toe via the console."
+  method="GET"
+  endpoint="/tutorials/java-game-dev"
   readTime="11 min read"
   views="75K+ views"
   date="May 6, 2021"
@@ -70,8 +77,11 @@ export const metadata = {
   mdxPath="src/app/tutorials/java-game-dev/page.mdx"
 />
 
-<Callout type="context">
-**Editor's Note (2025):** This tutorial was originally written when I was first learning Java. I've kept the original code below as a time capsule of my learning journey. If you want to see how I would write this today—with proper input validation and error handling—check out the interactive demo and retrospective at the bottom.
+<Callout type="context" title="Editor's Note 2025">
+This tutorial was originally written when I was first learning Java. 
+I've kept the original code below as a time capsule of my learning journey. 
+If you want to see how I would write this today, with proper input validation 
+and error handling, check out the interactive demo and retrospective at the bottom.
 </Callout>
 
 ## About This Tutorial
