@@ -1,6 +1,7 @@
 import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
 import { GuideHeader } from "@/components/content/GuideHeader";
 import { Callout } from "@/components/content/Callout";
+import { Mermaid } from "@/components/content/Mermaid";
 import { ExternalLink } from "lucide-react";
 
 export const metadata = {
@@ -134,8 +135,7 @@ The tutorial links out to separate pages for common setup steps, such as "See th
 
 I prefer docs that keep readers in flow. The trade-off is repeated material across tutorials, but that's a content architecture problem rather than a writing problem.
 
-```mermaid
-flowchart TB
+<Mermaid chart={`flowchart TB
     subgraph Before["Current Approach"]
         direction TB
         A1[Tutorial Page] --> A2[Link: See Connect to Cluster docs]
@@ -149,8 +149,7 @@ flowchart TB
         B1[Tutorial Page] --> B2[Inline ConnectionString Component]
         B2 --> B3[Expandable snippet]
         B3 --> B4[✅ Reader stays in flow]
-    end
-```
+    end`} />
 
 ### 2. Componentization
 
@@ -158,22 +157,20 @@ The fix for self-contained content without maintenance burden is simple: shared 
 
 Instead of manually copying the "get your connection string" instructions into every tutorial, create an expandable `<ConnectionString />` component that lives in one place. Update it once, it updates everywhere. Readers get inline content, and writers maintain a single source of truth.
 
-```mermaid
-flowchart TD
+<Mermaid chart={`flowchart TD
     CS[ConnectionString Component] --> T1[TanStack Guide]
     CS --> T2[React Integration]
     CS --> T3[Next.js Guide]
     CS --> T4[Express Tutorial]
-    
+
     ENV[EnvSetup Component] --> T1
     ENV --> T2
     ENV --> T3
     ENV --> T4
-    
+
     T1 --> B1[Single source of truth]
     T2 --> B2[Update once, updates everywhere]
-    T3 --> B3[Consistent UX]
-```
+    T3 --> B3[Consistent UX]`} />
 
 ### 3. Clearer Product Positioning
 
@@ -193,19 +190,18 @@ For developers new to "Server Functions," the boundary between Client and Server
 
 I would add an architecture diagram that visualizes this RPC (Remote Procedure Call) layer:
 
-```mermaid
-flowchart LR
+<Mermaid chart={`flowchart LR
     subgraph DB["Database Layer"]
         MongoDB[(MongoDB Atlas)]
     end
 
     subgraph Server["Server Layer"]
-        ServerFn[TanStack Start<br/>Server Functions]
+        ServerFn[TanStack Start Server Functions]
     end
 
-    subgraph Client["Client (Browser)"]
+    subgraph Client["Client Browser"]
         subgraph Data["Data Management"]
-            Query[TanStack Query<br/>Cache + State]
+            Query[TanStack Query Cache + State]
         end
 
         subgraph UI["Presentation"]
@@ -214,9 +210,8 @@ flowchart LR
     end
 
     MongoDB <-->|Node.js Driver| ServerFn
-    ServerFn <-->|"⚡ RPC (network call)"| Query
-    Query <-->|useQuery hooks| React
-```
+    ServerFn <-->|RPC network call| Query
+    Query <-->|useQuery hooks| React`} />
 
 This helps the reader build a mental model of where their code is actually executing, which is often the biggest hurdle when learning a full-stack framework.
 
