@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeMermaid],
+    rehypePlugins: [[rehypeMermaid, { strategy: 'img-svg' }]],
   },
 });
 
