@@ -30,6 +30,7 @@ export const metadata = {
     method="GET"
     endpoint="/tutorials/mongodb-tanstack"
     mdxPath="/src/app/tutorials/mongodb-tanstack"
+    liveDocUrl="https://www.mongodb.com/docs/drivers/node-frameworks/tanstack/"
 />
 
 A full-stack integration guide for MongoDB's official documentation.
@@ -38,11 +39,14 @@ A full-stack integration guide for MongoDB's official documentation.
 
 ## About This Tutorial
 
+<Callout type="context">
+
 MongoDB was expanding their docs to cover frameworks with active, growing communities. TanStack Start made the list.
-
+<br/>
 I picked up the assignment, researched the framework, and built a sample application that connects TanStack Start to an Atlas cluster. Then I documented the whole process. It went through MongoDB's review process and shipped as part of their official driver documentation.
-
+<br />
 What follows is an excerpt showing the structure and approach. The full tutorial covers project setup, backend configuration, frontend components, and running the application.
+</Callout>
 
 ---
 
@@ -186,7 +190,7 @@ I would restructure the guide to prioritize an immediate "Hello World." Get the 
 
 ### 5. Visualizing the Architecture
 
-For developers new to "Server Functions," the boundary between Client and Server can be invisible. The code looks like a standard function import, but it actually triggers a network request.
+For developers new to server functions, the boundary between client and server can be invisible. The code looks like a standard function import, but it actually triggers a network request.
 
 I would add an architecture diagram that visualizes this RPC (Remote Procedure Call) layer:
 

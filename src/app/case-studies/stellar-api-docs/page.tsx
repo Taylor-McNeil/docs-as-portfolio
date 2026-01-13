@@ -194,7 +194,7 @@ export default function StellarCaseStudy() {
           />
 
           <p className="text-base text-foreground-muted">
-            Notice every <code className="text-accent">$ref</code>—the endpoint
+            Check out the <code className="text-accent">$ref</code>s,  the endpoint
             doesn&apos;t duplicate definitions, it composes them. The response
             schema uses <code className="text-accent">allOf</code> to combine
             the links structure with the account data shape.
@@ -261,9 +261,9 @@ export default function StellarCaseStudy() {
             rel="noopener noreferrer"
             className="text-accent hover:underline"
           >
-            stellar-docs repository
+            stellar-docs
           </a>
-          .
+           <span> repo. </span>
         </Callout>
       </section>
 

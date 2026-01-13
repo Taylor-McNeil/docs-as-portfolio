@@ -7,7 +7,7 @@ import Link from "next/link";
 const faqResponse = {
   "status": 200,
   "faq": [
-    { "q": "What have you been doing the past 18 months?", "a": "Building. See /active-builds" },
+    { "q": "What have you been doing the past 18 months?", "a": "Building. Learning. Improving my skills." },
     { "q": "What are you working on right now?", "a": "&mpersand, LLM Eval, this portfolio" },
     { "q": "Can you use AI? LLMs? CI/CD?", "a": "See /methodology. This website uses all three." },
     { "q": "Road warrior?", "a": "Deprecated in v4.0" },

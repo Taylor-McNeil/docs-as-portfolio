@@ -1,6 +1,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import { CopyMarkdownButton } from "./CopyMarkdownButton";
+import { LiveDocButton } from "./LiveDocButton";
 import { MethodBadge } from "../navigation/MethodBadge";
 
 type Method = "GET" | "POST" | "PUT" | "PATCH";
@@ -11,9 +12,10 @@ interface GuideHeaderProps {
   method?: Method;
   endpoint?: string;
   mdxPath?: string;
+  liveDocUrl?: string;
 }
 
-export function GuideHeader({ title, description, method, endpoint, mdxPath }: GuideHeaderProps) {
+export function GuideHeader({ title, description, method, endpoint, mdxPath, liveDocUrl }: GuideHeaderProps) {
   let encodedMarkdown: string | undefined;
 
   if (mdxPath) {
@@ -44,7 +46,10 @@ export function GuideHeader({ title, description, method, endpoint, mdxPath }: G
       )}
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-3xl font-bold text-foreground-heading leading-none">{title}</h1>
-        {encodedMarkdown && <CopyMarkdownButton encodedMarkdown={encodedMarkdown} />}
+        <div className="flex items-center gap-2">
+          {liveDocUrl && <LiveDocButton href={liveDocUrl} />}
+          {encodedMarkdown && <CopyMarkdownButton encodedMarkdown={encodedMarkdown} />}
+        </div>
       </div>
       {description && (
         <p className="text-lg text-foreground-muted">{description}</p>
