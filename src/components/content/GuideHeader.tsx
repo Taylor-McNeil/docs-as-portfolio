@@ -57,3 +57,46 @@ export function GuideHeader({ title, description, method, endpoint, mdxPath, liv
     </header>
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { GuideHeader } from "@/components/content/GuideHeader";
+ *
+ * <GuideHeader
+ *   title="Create a Message"
+ *   description="Send a message to start a conversation with Claude."
+ *   method="POST"
+ *   endpoint="/v1/messages"
+ *   mdxPath="src/app/guides/messages/page.mdx"
+ *   liveDocUrl="https://docs.anthropic.com/messages"
+ * />
+ *
+ * <GuideHeader
+ *   title="Getting Started"
+ *   description="Learn the basics of the API."
+ * />
+ *
+ * Props:
+ * - title: string (required) - Page title
+ * - description?: string - Subtitle/description
+ * - method?: "GET" | "POST" | "PUT" | "PATCH" - HTTP method badge
+ * - endpoint?: string - API endpoint path
+ * - mdxPath?: string - Path to MDX file (enables copy markdown button)
+ * - liveDocUrl?: string - Link to live documentation
+ *
+ * ASCII REPRESENTATION:
+ *
+ * ┌──────┐
+ * │ POST │  /v1/messages
+ * └──────┘
+ *
+ * Create a Message          [See Live Doc] [Copy Markdown]
+ *
+ * Send a message to start a conversation with Claude.
+ *
+ * Features:
+ * - Method badge + endpoint display
+ * - Live doc button (external link)
+ * - Copy markdown button (base64 encoded content)
+ */

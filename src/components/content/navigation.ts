@@ -1,4 +1,4 @@
-export type Method = "GET" | "POST" | "PUT" | "PATCH";
+export type Method = "GET" | "POST" | "PUT" | "PATCH" | "HEAD";
 
 export interface NavItem {
   href: string;
@@ -61,7 +61,8 @@ export const navigation: NavSection[] = [
   {
     title: "Case Studies",
     items:[
-      {href: "/case-studies/stellar-api-docs",label:"Stellar API Docs",method:"GET"}
+      { href: "/case-studies/stellar-api-docs",label:"Stellar API Docs",method:"GET" },
+      { href: "/case-studies/on-good-tutorials", label:" On Good Tutorials", method: "HEAD"}
     ]
   },
   {

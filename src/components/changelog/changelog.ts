@@ -1,4 +1,11 @@
-export type BadgeType = "shipped" | "built" | "led" | "improved";
+export type BadgeType =
+  | "shipped" | "shipping"
+  | "built" | "building"
+  | "led" | "leading"
+  | "improved" | "improving"
+  | "writing"
+  | "consulting"
+  | "iterating";
 export type VersionColor = "green" | "blue" | "purple" | "orange" | "yellow" | "gray" | "pink";
 
 export interface ChangelogEntry {
@@ -19,19 +26,20 @@ export interface ChangelogVersion {
 
 export const changelogData: ChangelogVersion[] = [
   {
-    version: "4.0.0",
-    title: "Current",
-    dateRange: "Sep 2025 - Present",
-    summary: "Pivoted from traditional DevRel to the frontier of AI-assisted documentation. Now building tools for writers and training models to write like developers.",
-    isCurrent: true,
-    color: "green",
-    entries: [
-      { type: "built", text: "&mpersand — visual outlining tool for complex narratives" },
-      { type: "shipped", text: "Multi-model AI evaluation frameworks for documentation workflows" },
-      { type: "shipped", text: "Training data for LLM development (problem-solution pairs, code samples)" },
-      { type: "improved", text: "AI-generated documentation quality via prompt engineering" },
-    ],
-    stack: ["Next.js", "TypeScript", "Postgres", "MongoDB", "LLM APIs"],
+   version: "4.0.0",
+   title: "Current",
+   dateRange: "Sep 2025 - Present",
+   summary: "Building tools that help people see complexity—whether that's a seven-book fantasy series or three competing LLM outputs. Shipping solo projects, consulting on AI evaluation, and writing docs that help developers ship faster.",
+   isCurrent: true,
+   color: "green",
+   entries: [
+    { type: "building", text: "&mpersand — creative workspace for fiction writers with Investigation Boards and modular wiki systems" },
+    { type: "shipping", text: "DevRel Playground — multi-model comparison tool for evaluating AI-generated content" },
+    { type: "writing", text: "Developer documentation and API guides" },
+    { type: "consulting", text: "LLM evaluation rubrics and gold-standard training data" },
+    { type: "iterating", text: "taylormcneil.dev — docs-as-portfolio" },
+  ],
+  stack: ["Next.js", "TypeScript", "Python", "PostgreSQL", "MongoDB", "LLM APIs", "Docs-as-Code"],
   },
   {
     version: "3.2.0",
@@ -44,7 +52,7 @@ export const changelogData: ChangelogVersion[] = [
       { type: "shipped", text: "Mastercard x Postman public workspace" },
       { type: "built", text: "Interactive Postman collections and sandbox training materials" },
       { type: "led", text: "TechCrunch Disrupt 2023 — lead developer liaison" },
-      { type: "led", text: "HackWashU 2023 — 1,200+ developers, 300+ projects" },
+      { type: "led", text: "MC Internal Hackathons — 1,200+ developers, 300+ projects, 3 Continents" },
       { type: "improved", text: "Onboarding time: -23%" },
       { type: "improved", text: "Sandbox usage: +20%" },
     ],

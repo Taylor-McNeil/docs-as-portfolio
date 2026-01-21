@@ -62,3 +62,43 @@ export function CodeHighlight({ code, language }: CodeHighlightProps) {
     />
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { CodeHighlight } from "@/components/content/Highlight";
+ *
+ * <pre>
+ *   <CodeHighlight
+ *     code={`function hello() {
+ *   console.log("Hello, World!");
+ * }`}
+ *     language="javascript"
+ *   />
+ * </pre>
+ *
+ * <CodeHighlight code="print('Hello')" language="python" />
+ *
+ * Props:
+ * - code: string (required) - Code to syntax highlight
+ * - language?: string - Language identifier
+ *
+ * Supported languages:
+ * java, javascript/js, typescript/ts, python/py,
+ * bash/shell, json, css, html, xml, yaml/yml, plaintext/text
+ *
+ * ASCII REPRESENTATION:
+ *
+ * Input:  function hello() { return "hi"; }
+ *
+ * Output (with colors applied):
+ * ┌────────────────────────────────────────┐
+ * │ function hello() { return "hi"; }     │
+ * │ ~~~~~~~~ ~~~~~      ~~~~~~ ~~~~       │
+ * │ keyword  name       keyword string    │
+ * └────────────────────────────────────────┘
+ *
+ * Typically wrapped in <pre> tag.
+ * Used internally by CodeBlock and CollapsibleCode.
+ * Auto-detects language if not specified.
+ */

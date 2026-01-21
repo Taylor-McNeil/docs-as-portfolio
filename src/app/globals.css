@@ -33,6 +33,8 @@
   --color-method-put-bg: #ffedd5;
   --color-method-patch: #ea580c;
   --color-method-patch-bg: #ffedd5;
+  --color-method-head: #db2777;
+  --color-method-head-bg: #fce7f3;
 
   /* Active nav in light mode */
   --color-nav-active-bg: #fed7aa;
@@ -74,6 +76,8 @@
   --color-method-put-bg: rgba(234, 179, 8, 0.1);
   --color-method-patch: #c084fc;
   --color-method-patch-bg: rgba(168, 85, 247, 0.1);
+  --color-method-head: #ec4899;
+  --color-method-head-bg: rgba(236, 72, 153, 0.1);
 
   /* Active nav in dark mode */
   --color-nav-active-bg: rgba(59, 130, 246, 0.1);
@@ -196,6 +200,13 @@ svg[id^="mermaid"] .edgeLabel p,
 svg[id^="mermaid"] foreignObject p.text-foreground-muted {
   background: var(--color-surface-bg) !important;
   margin-bottom: 0 !important;
+}
+
+/* Edge label text - light mode */
+svg[id^="mermaid"] .edgeLabel,
+svg[id^="mermaid"] .edgeLabel p {
+  color: var(--color-foreground) !important;
+  fill: var(--color-foreground) !important;
 }
 
 /* Edge labels - dark mode (transparent to blend) */

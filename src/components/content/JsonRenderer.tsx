@@ -92,3 +92,49 @@ export function JsonRenderer({ data }: JsonRendererProps) {
 
   return <span>{String(data)}</span>;
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { JsonRenderer, JsonValue } from "@/components/content/JsonRenderer";
+ *
+ * const apiResponse: JsonValue = {
+ *   id: "msg_123",
+ *   type: "message",
+ *   content: [
+ *     { type: "text", text: "Hello!" }
+ *   ],
+ *   model: "claude-3",
+ *   usage: {
+ *     input_tokens: 10,
+ *     output_tokens: 25
+ *   }
+ * };
+ *
+ * <pre className="font-mono text-sm">
+ *   <JsonRenderer data={apiResponse} />
+ * </pre>
+ *
+ * Props:
+ * - data: JsonValue (required) - JSON data to render
+ * - isRoot?: boolean - Internal prop for recursion
+ *
+ * ASCII REPRESENTATION:
+ *
+ * {
+ *     "id": "msg_123",           <- strings in green
+ *     "type": "message",
+ *     "usage": {
+ *         "input_tokens": 10,    <- numbers in blue
+ *         "output_tokens": 25
+ *     },
+ *     "active": true             <- booleans in yellow
+ * }
+ *
+ * Features:
+ * - Recursive rendering for nested objects/arrays
+ * - Color-coded by type (strings, numbers, booleans, null)
+ * - URLs become clickable links
+ * - Theme-aware colors (dark/light mode)
+ * - Proper indentation with pl-4
+ */

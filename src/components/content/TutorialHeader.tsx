@@ -104,3 +104,50 @@ export function TutorialHeader({
     </header>
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { TutorialHeader } from "@/components/content/TutorialHeader";
+ *
+ * <TutorialHeader
+ *   title="Building a Chatbot with Claude"
+ *   description="Learn how to create an interactive chatbot using the Messages API."
+ *   method="POST"
+ *   endpoint="/v1/messages"
+ *   readTime="15 min read"
+ *   views="12.5k views"
+ *   date="March 2024"
+ *   source={{
+ *     name: "Anthropic Docs",
+ *     url: "https://docs.anthropic.com/tutorials/chatbot"
+ *   }}
+ *   mdxPath="src/app/tutorials/chatbot/page.mdx"
+ * />
+ *
+ * Props:
+ * - title: string (required) - Tutorial title
+ * - description?: string - Brief description
+ * - method?: "GET" | "POST" | "PUT" | "PATCH" - API method badge
+ * - endpoint?: string - API endpoint
+ * - readTime?: string - Estimated reading time
+ * - views?: string - View count
+ * - date?: string - Publication date
+ * - source?: { name: string, url: string } - External source link
+ * - mdxPath?: string - Path for copy markdown button
+ *
+ * ASCII REPRESENTATION:
+ *
+ * ┌──────┐
+ * │ POST │  /v1/messages
+ * └──────┘
+ *
+ * Building a Chatbot with Claude       [Copy Markdown]
+ *
+ * Learn how to create an interactive chatbot using the
+ * Messages API.
+ *
+ * [🕐] 15 min read  [👁] 12.5k views  [📅] March 2024  [↗] Anthropic Docs
+ *
+ * More metadata than GuideHeader - suited for tutorials/articles.
+ */
