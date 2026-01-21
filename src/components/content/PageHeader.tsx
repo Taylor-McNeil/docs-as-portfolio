@@ -25,3 +25,41 @@ export function PageHeader({ method, endpoint, title, description }: PageHeaderP
     </header>
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { PageHeader } from "@/components/content/PageHeader";
+ *
+ * <PageHeader
+ *   method="POST"
+ *   endpoint="/v1/messages"
+ *   title="Create a Message"
+ *   description="Send a structured message to Claude and receive a response."
+ * />
+ *
+ * <PageHeader
+ *   method="GET"
+ *   endpoint="/v1/models"
+ *   title="List Models"
+ * />
+ *
+ * Props:
+ * - method: "GET" | "POST" | "PUT" | "PATCH" (required)
+ * - endpoint: string (required) - API path
+ * - title: string (required) - Page title
+ * - description?: string - Optional subtitle
+ *
+ * ASCII REPRESENTATION:
+ *
+ * ┌──────┐
+ * │ POST │  /v1/messages
+ * └──────┘
+ *
+ * Create a Message
+ *
+ * Send a structured message to Claude and receive a response.
+ *
+ * Simpler than GuideHeader - no copy/live doc buttons.
+ * Use for API reference pages.
+ */

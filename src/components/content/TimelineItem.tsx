@@ -110,3 +110,63 @@ export function TimelineItem({ version, defaultExpanded = false, isLast = false 
     </div>
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { TimelineItem } from "@/components/content/TimelineItem";
+ * import { ChangelogVersion } from "@/components/changelog/changelog";
+ *
+ * const version: ChangelogVersion = {
+ *   version: "v2.0",
+ *   title: "Acme Corp",
+ *   dateRange: "Jan 2023 - Present",
+ *   summary: "Led development of the core API platform.",
+ *   color: "blue",
+ *   entries: [
+ *     { type: "shipped", text: "Launched v2 API with 99.9% uptime" },
+ *     { type: "built", text: "Real-time streaming infrastructure" },
+ *     { type: "led", text: "Team of 5 engineers" }
+ *   ],
+ *   stack: ["TypeScript", "Node.js", "PostgreSQL"]
+ * };
+ *
+ * <TimelineItem
+ *   version={version}
+ *   defaultExpanded={true}
+ *   isLast={false}
+ * />
+ *
+ * Props:
+ * - version: ChangelogVersion (required) - Timeline entry data
+ * - defaultExpanded?: boolean - Start expanded (default: false)
+ * - isLast?: boolean - Hide connecting line (default: false)
+ *
+ * ASCII REPRESENTATION (collapsed):
+ *
+ * ●  v2.0 — Acme Corp                           ▶
+ * │  Jan 2023 - Present
+ * │
+ * │  Led development of the core API platform.
+ * │
+ *
+ * ASCII REPRESENTATION (expanded):
+ *
+ * ●  v2.0 — Acme Corp                           ▼
+ * │  Jan 2023 - Present
+ * │
+ * │  Led development of the core API platform.
+ * │
+ * │  ┌───────────────────────────────────────────┐
+ * │  │ [SHIPPED]  Launched v2 API with 99.9%...  │
+ * │  │ [BUILT]    Real-time streaming infra...   │
+ * │  │ [LED]      Team of 5 engineers            │
+ * │  └───────────────────────────────────────────┘
+ * │
+ * │  ┌──────────┐ ┌─────────┐ ┌────────────┐
+ * │  │TypeScript│ │ Node.js │ │ PostgreSQL │
+ * │  └──────────┘ └─────────┘ └────────────┘
+ * │
+ *
+ * Colors: green, blue, purple, orange, yellow, pink, gray
+ */

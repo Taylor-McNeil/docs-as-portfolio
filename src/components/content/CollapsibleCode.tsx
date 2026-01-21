@@ -76,3 +76,50 @@ export function CollapsibleCode({
     </div>
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { CollapsibleCode } from "@/components/content/CollapsibleCode";
+ *
+ * <CollapsibleCode
+ *   title="View full implementation"
+ *   code={`public class Example {
+ *     public static void main(String[] args) {
+ *         System.out.println("Hello!");
+ *     }
+ * }`}
+ *   language="java"
+ *   filename="Example.java"
+ *   defaultOpen={false}
+ * />
+ *
+ * Props:
+ * - title: string (required) - Header text
+ * - code: string (required) - The code to display
+ * - language?: string - Language for highlighting (default: "java")
+ * - filename?: string - Shown in parentheses after title
+ * - defaultOpen?: boolean - Start expanded (default: false)
+ *
+ * ASCII REPRESENTATION (collapsed):
+ *
+ * ┌─────────────────────────────────────────────┐
+ * │ ▶ View full implementation (Example.java)  │
+ * │                              42 lines [📋] │
+ * └─────────────────────────────────────────────┘
+ *
+ * ASCII REPRESENTATION (expanded):
+ *
+ * ┌─────────────────────────────────────────────┐
+ * │ ▼ View full implementation (Example.java)  │
+ * │                              42 lines [📋] │
+ * ├─────────────────────────────────────────────┤
+ * │                                             │
+ * │  public class Example {                     │
+ * │      public static void main(...) {         │
+ * │          System.out.println("Hello!");      │
+ * │      }                                      │
+ * │  }                                          │
+ * │                                             │
+ * └─────────────────────────────────────────────┘
+ */

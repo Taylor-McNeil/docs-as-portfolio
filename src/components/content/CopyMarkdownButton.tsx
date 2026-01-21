@@ -38,3 +38,31 @@ export function CopyMarkdownButton({ encodedMarkdown }: CopyMarkdownButtonProps)
     </button>
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { CopyMarkdownButton } from "@/components/content/CopyMarkdownButton";
+ *
+ * // Markdown must be base64 encoded
+ * const encodedMarkdown = btoa("# Hello World\n\nThis is markdown content.");
+ *
+ * <CopyMarkdownButton encodedMarkdown={encodedMarkdown} />
+ *
+ * Props:
+ * - encodedMarkdown: string (required) - Base64 encoded markdown content
+ *
+ * ASCII REPRESENTATION:
+ *
+ * Before click:
+ * ┌─────────────────────┐
+ * │ [📋] Copy Markdown  │
+ * └─────────────────────┘
+ *
+ * After click (2s feedback):
+ * ┌─────────────────────┐
+ * │ [✓] Copied          │
+ * └─────────────────────┘
+ *
+ * Typically used in GuideHeader/TutorialHeader to copy page content.
+ */

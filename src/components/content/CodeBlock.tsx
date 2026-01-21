@@ -48,3 +48,37 @@ export function CodeBlock({ code, language, filename }: CodeBlockProps) {
     </div>
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { CodeBlock } from "@/components/content/CodeBlock";
+ *
+ * <CodeBlock
+ *   code={`const greeting = "Hello, World!";
+ * console.log(greeting);`}
+ *   language="javascript"
+ *   filename="example.js"
+ * />
+ *
+ * Props:
+ * - code: string (required) - The code to display
+ * - language?: string - Language for syntax highlighting
+ * - filename?: string - Displayed in header (falls back to language)
+ *
+ * ASCII REPRESENTATION:
+ *
+ * ┌─────────────────────────────────────────────┐
+ * │ example.js                            [📋] │
+ * ├─────────────────────────────────────────────┤
+ * │                                             │
+ * │  const greeting = "Hello, World!";          │
+ * │  console.log(greeting);                     │
+ * │                                             │
+ * └─────────────────────────────────────────────┘
+ *
+ * Features:
+ * - Syntax highlighting via CodeHighlight
+ * - Copy button with success feedback
+ * - Horizontal scroll for long lines
+ */

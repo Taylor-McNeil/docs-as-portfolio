@@ -64,10 +64,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <thead className="bg-surface-card text-foreground-heading">{children}</thead>
     ),
     th: ({ children }) => (
-      <th className="px-4 py-2 text-left font-semibold border-b border-border">{children}</th>
+      <th className="px-4 py-2 text-center first:text-left font-semibold border-b border-border">{children}</th>
     ),
     td: ({ children }) => (
-      <td className="px-4 py-2 text-foreground-muted border-b border-border">{children}</td>
+      <td className="px-4 py-2 text-center first:text-left text-foreground-muted border-b border-border">{children}</td>
     ),
     pre: ({ children }) => {
       // Extract code content and metadata from the child

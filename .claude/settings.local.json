@@ -4,7 +4,8 @@
       "Bash(npm run build:*)",
       "Bash(cat:*)",
       "Bash(bun remove:*)",
-      "Bash(bun add:*)"
+      "Bash(bun add:*)",
+      "Bash(tree:*)"
     ]
   }
 }

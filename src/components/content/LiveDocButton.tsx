@@ -18,3 +18,33 @@ export function LiveDocButton({ href }: LiveDocButtonProps) {
     </a>
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { LiveDocButton } from "@/components/content/LiveDocButton";
+ *
+ * <LiveDocButton href="https://docs.anthropic.com/en/api/messages" />
+ *
+ * <div className="flex gap-2">
+ *   <LiveDocButton href="https://docs.example.com/guide" />
+ *   <CopyMarkdownButton encodedMarkdown={content} />
+ * </div>
+ *
+ * Props:
+ * - href: string (required) - External documentation URL
+ *
+ * ASCII REPRESENTATION:
+ *
+ * ┌─────────────────────┐
+ * │ [↗] See Live Doc    │  <- Opens in new tab
+ * └─────────────────────┘
+ *
+ * Hover state:
+ * ┌─────────────────────┐
+ * │ [↗] See Live Doc    │  <- Background and text color change
+ * └─────────────────────┘
+ *
+ * Used in GuideHeader alongside CopyMarkdownButton.
+ * Links to external documentation source.
+ */

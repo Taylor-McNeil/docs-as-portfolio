@@ -11,7 +11,7 @@ export function Sidebar() {
       <div className="p-5 border-b border-border hidden md:flex items-center justify-between">
         <div>
           <Link href="/"><h1 className="text-foreground-heading font-bold text-sm">Taylor McNeil</h1></Link>
-          <p className="text-foreground-muted font-mono text-[10px] mt-0.5">docs-as-portfolio v1.2</p>
+          <p className="text-foreground-muted font-mono text-[10px] mt-0.5">docs-as-portfolio v1.3</p>
         </div>
         <ThemeToggle />
       </div>

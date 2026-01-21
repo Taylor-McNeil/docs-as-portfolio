@@ -56,3 +56,46 @@ export function CodeTabs({ tabs }: CodeTabsProps) {
     </div>
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { CodeTabs } from "@/components/content/CodeTabs";
+ *
+ * <CodeTabs
+ *   tabs={[
+ *     {
+ *       label: "JavaScript",
+ *       language: "javascript",
+ *       filename: "example.js",
+ *       code: `console.log("Hello");`
+ *     },
+ *     {
+ *       label: "Python",
+ *       language: "python",
+ *       filename: "example.py",
+ *       code: `print("Hello")`
+ *     },
+ *     {
+ *       label: "cURL",
+ *       language: "bash",
+ *       code: `curl https://api.example.com`
+ *     }
+ *   ]}
+ * />
+ *
+ * ASCII REPRESENTATION:
+ *
+ * ┌─────────────┬─────────────┬─────────────┐
+ * │ JavaScript  │   Python    │    cURL     │  <- Tab buttons
+ * │ ──────────  │             │             │     (underline = active)
+ * ├─────────────┴─────────────┴─────────────┤
+ * │ example.js                        [📋]  │
+ * ├─────────────────────────────────────────┤
+ * │                                         │
+ * │  console.log("Hello");                  │
+ * │                                         │
+ * └─────────────────────────────────────────┘
+ *
+ * Click tabs to switch between code examples.
+ */

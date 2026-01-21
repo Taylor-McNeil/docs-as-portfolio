@@ -1,0 +1,459 @@
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { GuideHeader } from "@/components/content/GuideHeader";
+import { Callout } from "@/components/content/Callout";
+import { Mermaid } from "@/components/content/Mermaid";
+import { ExternalLink, MessageSquare, Lightbulb } from "lucide-react";
+import { NumberedList, NumberedListItem } from "@/components/content/NumberedList";
+import { DownloadCard, DownloadCardGroup } from "@/components/content/DownloadCard";
+import { RubricCard, RubricCardGroup } from "@/components/content/RubricCard";
+import { Card, CardGroup } from "@/components/content/Card";
+import { Annotation } from "@/components/content/Annotation";
+import { SkillPill, SkillList } from "@/components/content/SkillPill";
+
+
+export const metadata = {
+    title: "On Good Tutorials",
+    description: ""
+}
+
+<AnchorSidebar
+    items={[
+        { id: "the-tool", label: "The Tool" },
+        { id: "defining-good", label: "Defining Good" },
+        { id: "multiple-experiments", label: "Multiple Experiments" },
+        { id: "what-numbers-can-t-tell-you", label: "What Numbers Can't Tell You" },
+        { id: "my-assumptions-are-the-data", label: "My Assumptions are the Data" },
+        { id: "where-does-that-leave-us", label: "Where Does That Leave Us" },
+        { id: "a-deeper-dive-into-the-tool", label: "A Deeper Dive into the Tool" },
+    ]}
+/>
+
+<GuideHeader
+    title="On Good Tutorials"
+    method="HEAD"
+    endpoint="/case-studies/on-good-tutorials"
+    mdxPath="/src/app/case-studies/on-good-tutorials"
+/>
+
+
+<Callout type="warning">
+Before you grab your pitchfork and come after me about writing better prompts (deterministic): 
+
+1. A tool is only as useful as the people who use it. Not everyone is a prompt warrior. 
+2. The problems revealed below would still exist with a perfect prompt.
+3. The takeaway is not about the prompts, its about how <b><i>you</i></b> teach and <b><i>who</i></b> you are teaching.
+</Callout>
+
+In the summer of 2025, I was laid off, spending too much time thinking about LLMs, and I decided
+ to see if I could make my DevRel life easier, or at least my future DevRel life, whenever that 
+ materialized, by building a tool that would help me compare AI-generated content. The idea was 
+ practical: I write a lot of tutorials and docs, and if models could help with that, I wanted to 
+ know which ones were actually good at it and why.
+
+What I got instead were fascinating questions and no real answers, which is maybe more valuable, 
+or at least more interesting to write about. Because what does it mean for something to be "good"?
+
+## The Tool
+
+<a href="https://www.devrel-playground.com/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent hover:underline">DevRel Playground <ExternalLink size={12} /></a> lets you send a prompt to multiple models at once, stream their responses side-by-side, 
+and then run an evaluation pass that scores each one against a rubric you define. I built it because I 
+was tired of copy-pasting between ChatGPT and Claude and whatever else, and because I wanted something 
+more systematic than "this one feels better."
+
+The problem is that "systematic" requires criteria, and criteria require you to answer questions like: 
+what makes a tutorial good? What makes an error message helpful? I had opinions about this, years of 
+opinions actually, built up from writing docs and watching developers struggle with bad ones, 
+but I'd never had to formalize them into weights and checklists that a model could evaluate against.
+
+## Defining "Good"
+
+The tool supports different content types: tutorials, code examples, error messages, API docs, 
+community Q&A, and each one needed its own rubric. So I sat down and wrote checklists based on 
+what I'd learned from years of doing this work, which is to say, based on pattern-matching and 
+intuition and some amount of vibes.
+
+Here's what I came up with:
+
+<RubricCardGroup>
+    <RubricCard
+        title="Tutorial Writer"
+        criteria={[
+            { name: "Clarity", weight: 30 },
+            { name: "Comprehensiveness", weight: 30 },
+            { name: "Step By Step", weight: 30 },
+            { name: "Efficiency", weight: 10 },
+        ]}
+        checklist={[
+            "Clear learning objectives stated",
+            "Prerequisites mentioned upfront",
+            "Step-by-step instructions",
+            "Screenshots or visual aids",
+            "Troubleshooting tips",
+            "Next steps suggested",
+            "Hands-on exercises",
+    ]}
+    />
+
+    <RubricCard
+        title="Code Examples"
+        criteria={[
+            { name: "Code Quality", weight: 80 },
+            { name: "Clarity", weight: 10 },
+            { name: "Comprehensiveness", weight: 5 },
+            { name: "Efficiency", weight: 5 },
+        ]}
+        checklist={[
+            "Produces correct output",
+            "Compiles without errors",
+            "Handles edge cases",
+            "Best practices shown",
+            "Comments explain concepts",
+            "Error handling included",
+            "Dependencies specified",
+            "Real-world use cases",
+        ]}
+    />
+
+    <RubricCard
+        title="Error Messages"
+        criteria={[
+            { name: "Clarity", weight: 50 },
+            { name: "Helpfulness", weight: 30 },
+            { name: "Comprehensiveness", weight: 10 },
+            { name: "Efficiency", weight: 10 },
+        ]}
+        checklist={[
+            "Root cause explained",
+            "Multiple solutions",
+            "Step-by-step resolution",
+            "Prevention tips",
+            "Documentation links",
+            "Context about error",
+            "Skill levels addressed",
+        ]}
+    />
+
+    <RubricCard
+        title="API Documentation"
+        criteria={[
+            { name: "Comprehensiveness", weight: 40 },
+            { name: "Code Quality", weight: 30 },
+            { name: "Clarity", weight: 20 },
+            { name: "Efficiency", weight: 10 },
+        ]}
+        checklist={[
+            "Auth methods explained",
+            "Error codes covered",
+            "Rate limits mentioned",
+            "Request/response format",
+            "Multi-language examples",
+            "Endpoints documented",
+            "Parameters specified",
+        ]}
+    />
+
+    <RubricCard
+        title="Community Q&A"
+        criteria={[
+            { name: "Comprehensiveness", weight: 40 },
+            { name: "Clarity", weight: 30 },
+            { name: "Code Quality", weight: 20 },
+            { name: "Efficiency", weight: 10 },
+        ]}
+        checklist={[
+            "Question fully addressed",
+            "Multiple approaches",
+            "Relevant code examples",
+            "Best practices highlighted",
+            "Common pitfalls",
+            "Additional resources",
+            "Follow-ups anticipated",
+        ]}
+    />
+
+    <RubricCard
+        title="General Purpose"
+        criteria={[
+            { name: "Comprehensiveness", weight: 25 },
+            { name: "Code Quality", weight: 25 },
+            { name: "Clarity", weight: 25 },
+            { name: "Efficiency", weight: 25 },
+        ]}
+        checklist={[
+            "Addresses core question",
+            "Actionable information",
+            "Appropriate tone",
+            "Relevant examples",
+            "Logical structure",
+        ]}
+    />
+
+</RubricCardGroup>
+
+Where did these numbers come from? They felt right, which is not a satisfying answer but is the 
+honest one. I've written a lot of tutorials and I've read a lot of bad ones, and over time you
+develop intuitions about what separates the ones that work from the ones that don't. 
+"A good tutorial has learning objectives" isn't controversial, but how much should that matter 
+relative to troubleshooting tips? I made a call, and the tool now trusts that call every time 
+it evaluates something. For better or for worse. ¯\\_(ツ)_/¯ 
+
+## Multiple Experiments
+I ran a lot of prompts through this system while building it, tweaking weights, adjusting checklists, 
+watching the scores shift in ways that sometimes made sense and sometimes didn't. 
+One particular run stuck with me, not because the results were surprising but because they revealed,
+I had been circling a drain.
+
+<Annotation label="Prompt" icon={MessageSquare}>
+Write a step-by-step tutorial for Nuxt aimed at beginner developers for connecting their
+frontend to Neon. Include prerequisites, clear learning objectives, hands-on exercises, and
+troubleshooting tips.
+</Annotation>
+
+| Model | Score | Criteria Met |
+|:--:|:--:|:--:|
+| Claude Sonnet 4 | 88.5 | 6/7 |
+| Kimi-K2-Instruct | 87.5 | 6/7 |
+| GPT-5 | 87.5 | 6/7 |
+
+All three scored within one point of each other, and all three hit 6 of 7 checklist items; 
+everyone missed "visual aids," which is fair since generating screenshots is a different 
+problem entirely. By the numbers, these tutorials are interchangeable.
+
+<DownloadCardGroup layout="stack">
+    <DownloadCard
+        title="Kimi-K2-Instruct V1 Response"
+        fileType="document"
+        format="PDF"
+        href="/reports/Kimi-v1.pdf"
+    />
+     <DownloadCard
+        title="GPT5 V1 Response"
+        fileType="document"
+        format="PDF"
+        href="/reports/GPT5-v1.pdf"
+    />
+      <DownloadCard
+        title="Sonnet 4 V1 Response"
+        fileType="document"
+        format="PDF"
+        href="/reports/Sonnet4-v1.pdf"
+    />
+      <DownloadCard
+        title="Comparison V1 Results"
+        fileType="document"
+        format="PDF"
+        href="/reports/Comparison-v1.pdf"
+    />
+</DownloadCardGroup>
+
+
+Except they're not interchangeable at all, and that's what made me realize the numbers 
+might be capturing something real while missing something important...
+
+### Like A Good Arm Chair Scientist, I Ran it Again and Again
+
+Same prompt. Same models. Didn't change a thing. Here's what I got the second time:
+
+| Model | Score | Criteria Met |
+|:--:|:--:|:--:|
+| Claude Sonnet 4 | 85.3 | 6/7 |
+| Kimi-K2-Instruct | 80.0 | 5/7 |
+| GPT-5 | 91.3 | 6/7 |
+
+The spread went from 1 point to 11 points. The winner changed. Kimi dropped from 87.5 to 80. GPT-5 jumped from 87.5 to 91.3.
+
+
+<DownloadCardGroup layout="stack">
+    <DownloadCard
+        title="Kimi-K2-Instruct V2 Response"
+        fileType="document"
+        format="PDF"
+        href="/reports/Kimi-v2.pdf"
+    />
+     <DownloadCard
+        title="GPT5 V2 Response"
+        fileType="document"
+        format="PDF"
+        href="/reports/GPT5-v2.pdf"
+    />
+      <DownloadCard
+        title="Sonnet 4 V2 Response"
+        fileType="document"
+        format="PDF"
+        href="/reports/Sonnet4-v2.pdf"
+    />
+      <DownloadCard
+        title="Comparison V2 Results"
+        fileType="document"
+        format="PDF"
+        href="/reports/Comparison-v2.pdf"
+    />
+</DownloadCardGroup>
+
+
+I didn't change the rubric, the weights, or the prompt. The evaluator, GPT-4o applying my criteria, 
+just scored the same content differently on a different day. Which raises a question I hadn't 
+thought to ask: if the measurement itself isn't stable, what am I actually measuring?
+
+
+## What Numbers Can't Tell You
+
+When I actually read the three tutorials—not skimmed, but read them the way a developer would if 
+they were trying to learn something—they turned out to be written for entirely different people 
+with entirely different goals.
+
+<CardGroup layout="scroll">
+    <Card
+        title="Kimi-K2-Instruct"
+        list={[
+            "@neondatabase/serverless driver",
+            "No ORM; suggests Drizzle later",
+            "30-minute lean tutorial",
+            "Production checklist included",
+            "Assumes Vercel deployment"
+        ]}
+    >
+        <p className="text-xs text-foreground-muted italic">"Here's how a senior dev would set this up."</p>
+    </Card>
+    <Card
+        title="GPT-5"
+        list={[
+            "@neondatabase/serverless driver",
+            "Reusable db helper with caching",
+            "Full CRUD implementation",
+            "Structured exercises",
+            "Architecture overview"
+        ]}
+    >
+        <p className="text-xs text-foreground-muted italic">"Here's a solid foundation with room to grow."</p>
+    </Card>
+
+      <Card
+        title="Sonnet 4"
+        list={[
+          "Prisma ORM (not raw driver)",
+          "18 pages, relational model",
+          "Users + Posts schema",
+          "Prisma Studio debugging",
+          "Tailwind setup included"
+        ]}
+    >
+        <p className="text-xs text-foreground-muted italic">"Let me show you how all the pieces connect."</p>
+    </Card>
+
+</CardGroup>
+
+Kimi wrote a tutorial for someone who wants to ship something today and figure out the details later. 
+Claude wrote for someone who wants to understand how all the pieces connect before they start building.
+GPT-5 landed somewhere in the middle, practical but thorough, the kind of tutorial that would work for 
+most people but wouldn't be perfect for anyone in particular.
+
+My rubric doesn't have a checkbox for "who is this for" or "what kind of understanding are we building." 
+It asks whether learning objectives exist, not whether they're calibrated to the audience. 
+It checks for step-by-step instructions but doesn't ask whether those steps build intuition or 
+just get you to a working app as fast as possible.
+
+## My Assumptions are the Data
+
+This is the part I keep thinking about, the thing that turned a side project into something worth writing about.
+
+There are three layers to the measurement problem, and I didn't see all of them until I'd been using 
+the tool for a while.
+
+
+<NumberedList>
+    <NumberedListItem title="The Rubrics">
+    I wrote the checklists and I set the weights, which means the evaluation model is judging responses against my
+    definition of good, and the models being evaluated have no idea what that definition is. They're optimizing for
+    their own sense of helpfulness, whatever that means internally, while I'm scoring them against criteria they've 
+    never seen. I'm grading students on a test, they didn't know they were taking.
+    </NumberedListItem>
+
+    <NumberedListItem title="What the Rubrics Cannot See">
+    My rubric has blind spots, big ones that I didn't notice until I started seeing the results. I wrote a [Tic Tac 
+    Toe](/tutorials/java-game-dev) tutorial years ago that reached 75,000+ developers. Looking back at it now, the code is verbose—lots of 
+    switch statements where a more experienced developer would use coordinate math. 
+    <br/>
+    But I kept the switch statements because a beginner can read `case 5: gameBoard[1][2]` and understand immediately 
+    what's happening, whereas  `(position - 1) / 3` requires you to stop and work backwards. The "better" code is 
+    actually harder to learn from, which means "better" depends entirely on who you're teaching and what you're 
+    trying to accomplish. "Step-by-step instructions provided" doesn't capture "these steps are calibrated to where 
+    the learner currently is." <i> My checklist measures structure, not teaching</i>.
+    </NumberedListItem>
+
+    <NumberedListItem title="The Judge">
+    Even if I had a perfect rubric, I'm asking an LLM to apply it. And that LLM, GPT-4o in this case, doesn't apply 
+    my criteria the same way twice. Same inputs, different scores, different winner. The measurement isn't just 
+    imperfect; it's non-deterministic. I'm using a tool that gives different answers on different days to tell 
+    me which tutorial is "better."
+    </NumberedListItem>
+
+</NumberedList>
+
+## Where Does That Leave Us
+
+I don't have a clean takeaway here, which is probably obvious by now. The tool works and the scores are... something. 
+Having a rubric is better than not having one because it forces you to articulate what you think matters, and it 
+gives you something concrete to push against when you disagree with the results.
+
+But I started this project thinking I could measure "good," and I ended up with three reasons why that's harder than 
+it sounds: my rubric encodes my assumptions, my assumptions have blind spots I can't see, and the evaluator applying 
+my rubric isn't even consistent with itself.
+
+The scores converge and then they diverge. The winner changes between runs. Three tutorials that look identical by 
+the numbers turn out to be written for entirely different people. And if I only looked at the numbers I'd miss the 
+thing that actually matters: which one is right for this learner, this context, this goal?
+
+That's not a question a rubric can answer. It's a question I have to answer before I prompt, not after I score.
+
+
+
+<Annotation label="The Main Idea" icon={Lightbulb}>
+    The models didn't fail. They answered different questions—questions I never asked. What kind of beginner? Learning toward what? Building on which foundation?
+    The evaluation couldn't catch the mismatch because I never gave it the one input that would have mattered: who is this for, and what do they already understand?
+</Annotation>
+
+
+When I teach someone 1:1, I always ask what they're into before I explain anything. If they play soccer, rates of change become ball trajectory and sprint acceleration. 
+The math doesn't change; the frame does. And honestly, the frame never breaks—you just keep finding paths back to whatever they already know deeply.
+The models don't do that. They assume a generic learner and fill in the rest. Which, now that I'm writing it out, is exactly what my rubric did too.
+So where does that leave the tool? Still useful, but less as a judge and more as a mirror. It showed me how I'd defined "good," and then it showed me everything that definition couldn't see.
+
+
+## A Deeper Dive into the Tool
+
+DevRel Playground started as a way to compare LLM outputs without copy-pasting between 
+browser tabs, and it grew into an evaluation system, which forced me to think much harder 
+about what I was actually trying to measure than I expected to when I started.
+
+<Mermaid chart={`---
+title: How It Works
+---
+flowchart LR
+        subgraph Providers[Providers]
+            direction TB
+            OpenAI["OpenAI<br/>GPT-5, GPT-5 Mini"]
+            OpenAI --- Anthropic["Anthropic<br/>Claude Sonnet/Haiku"]
+            Anthropic --- HuggingFace["HuggingFace<br/>Kimi-K2, Mistral"]
+        end
+
+        Prompt["Your Prompt"] --> Providers
+        Providers --> Streaming["Streaming<br/>Responses"]
+        Streaming --> Rubric["Your Rubric<br/>weights, checklists"]
+        Rubric --> Scores["Scores"]
+
+        linkStyle 0 stroke:none
+        linkStyle 1 stroke:none
+`} />
+
+<SkillList title="Stack">
+  <SkillPill label="Next.js 15" category="frontend" />
+  <SkillPill label="React 19" category="frontend" />
+  <SkillPill label="TypeScript" category="language" />
+  <SkillPill label="Mantine UI" category="frontend" />
+  <SkillPill label="OpenAI" category="tool" />
+  <SkillPill label="Anthropic" category="tool" />
+  <SkillPill label="HuggingFace" category="tool" />
+  <SkillPill label="react-pdf" category="frontend" />
+</SkillList>
+ 

@@ -4,8 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MethodBadge } from "./MethodBadge";
 import { useMobileMenu } from "@/components/layout/MobileMenuContext";
-
-type Method = "GET" | "POST" | "PUT" | "PATCH";
+import { Method } from "@/components/content/navigation";
 
 interface NavItemProps {
   href: string;
@@ -18,6 +17,7 @@ const activeStyles: Record<Method, string> = {
   POST: "bg-method-post-bg text-method-post",
   PUT: "bg-method-put-bg text-method-put",
   PATCH: "bg-method-patch-bg text-method-patch",
+  HEAD: "bg-method-head-bg text-method-head",
 };
 
 export function NavItem({ href, label, method }: NavItemProps) {

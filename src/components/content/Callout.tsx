@@ -54,3 +54,41 @@ export function Callout({ type = "note", title, children }: CalloutProps) {
     </div>
   );
 }
+
+/*
+ * USAGE EXAMPLE:
+ *
+ * import { Callout } from "@/components/content/Callout";
+ *
+ * <Callout type="note">
+ *   This is a note callout with default styling.
+ * </Callout>
+ *
+ * <Callout type="warning" title="Be Careful">
+ *   This action cannot be undone.
+ * </Callout>
+ *
+ * <Callout type="tip">
+ *   Pro tip: Use keyboard shortcuts for faster navigation.
+ * </Callout>
+ *
+ * Types: "note" | "warning" | "tip" | "context" | "test" | "celebration"
+ *
+ * ASCII REPRESENTATION:
+ *
+ * ┌────────────────────────────────────────┐
+ * │ ▌  [i] NOTE                            │
+ * │ ▌  Optional Title                      │
+ * │ ▌                                      │
+ * │ ▌  Your callout content goes here.    │
+ * │ ▌  Can include links and formatting.  │
+ * └────────────────────────────────────────┘
+ *
+ * The left border color changes based on type:
+ * - note:        blue accent
+ * - warning:     orange/put color
+ * - tip:         green success
+ * - context:     gray muted
+ * - test:        blue/get color
+ * - celebration: green success
+ */

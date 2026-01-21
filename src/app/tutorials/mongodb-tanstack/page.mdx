@@ -3,6 +3,8 @@ import { GuideHeader } from "@/components/content/GuideHeader";
 import { Callout } from "@/components/content/Callout";
 import { Mermaid } from "@/components/content/Mermaid";
 import { ExternalLink } from "lucide-react";
+import { NumberedList, NumberedListItem } from "@/components/content/NumberedList";
+
 
 export const metadata = {
     title: "MongoDB x TanStack Start",
@@ -86,40 +88,99 @@ This tutorial guides you through building a TanStack Start application that inte
 
 Follow the steps in this section to install project dependencies, create an Atlas cluster, and set up the application directories.
 
-**1. Verify the prerequisites**
+<NumberedList>
+    <NumberedListItem title="Verify the prerequisites">
+        To create the Quick Start application, ensure you have the following software installed:
 
-To create the Quick Start application, ensure you have the following software installed:
+        | Prerequisite | Requirement |
+        |-------------|-------------|
+        | **[Node.js](https://nodejs.org/)** | Version 20 or later |
+        | **Code Editor** | [Visual Studio Code](https://code.visualstudio.com/) (or editor of your choice) |
+        | **Terminal** | MacOS: Terminal or similar app. Windows: PowerShell |
+    </NumberedListItem>
 
-<div className="space-y-2 my-4">
-  <div className="flex items-start gap-2">
-    <span className="font-semibold min-w-24"><a href="https://nodejs.org/en" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent hover:underline"> Node.js<ExternalLink size={12} / > </a></span>
-    <span>Use version 20 or later.</span>
-  </div>
-  <div className="flex items-start gap-2">
-    <span className="font-semibold min-w-24">Code Editor</span>
-    <span>This tutorial uses <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent hover:underline">Visual Studio Code <ExternalLink size={12} /></a>, but you can use the editor of your choice.</span>
-  </div>
-  <div className="flex items-start gap-2">
-    <span className="font-semibold min-w-24">Terminal</span>
-    <span>For MacOS users, use Terminal or similar app. For Windows users, use PowerShell.</span>
-  </div>
-</div>
+    <NumberedListItem title="Create a MongoDB Atlas cluster">
+        MongoDB Atlas is a fully managed cloud database service that hosts your MongoDB deployments. If you do not have a MongoDB deployment, create a free cluster (no credit card required) by completing the MongoDB Get Started tutorial. The MongoDB Get Started tutorial also demonstrates how to load sample databases into your cluster, including the sample_restaurants database that is used in this tutorial.
 
-**2. Create a MongoDB Atlas cluster**
+        To connect to your cluster, you must use a connection URI. To retrieve your connection URI, follow the instructions in the Connect to Your Cluster tutorial in the Atlas documentation.
 
-MongoDB Atlas is a fully managed cloud database service that hosts your MongoDB deployments. If you do not have a MongoDB deployment, create a free cluster (no credit card required) by completing the MongoDB Get Started tutorial. The MongoDB Get Started tutorial also demonstrates how to load sample databases into your cluster, including the `sample_restaurants` database that is used in this tutorial.
+        <Callout type="tip">
+        Save your connection URI in a secure location.
+        </Callout>
+    </NumberedListItem>
 
-To connect to your cluster, you must use a connection URI. To retrieve your connection URI, follow the instructions in the <a href="https://www.mongodb.com/docs/atlas/connect-to-database-deployment/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent hover:underline">Connect to Your Cluster <ExternalLink size={12} /></a> tutorial in the Atlas documentation.
+    <NumberedListItem title="Create the project skeleton">
+        Use the official TanStack Start CLI to initialize the project skeleton. Open your terminal and navigate to your desired project directory.
 
-<Callout type="tip">
-  Save your connection URI in a secure location.
-</Callout>
+        Run the initialization command:
 
-**3. Create the project skeleton**
+        ```bash
+        npm create @tanstack/start@latest
+        ```
 
-Use the official TanStack Start CLI to initialize the project skeleton. Open your terminal and navigate to your desired project directory.
+        The installation wizard guides you through the setup. Select the following options:
 
+        | Prompt | Input | Action |
+        |--------|-------|--------|
+        | What would you like to name your project? | Your desired project name | Type the name, press Enter |
+        | Would you like to use Tailwind CSS? | Yes | Type Y, press Enter |
+        | Select a toolchain | Default (None) | Select None, press Enter |
+        | Select your deployment adapter | Default: (Nitro) | Press Enter |
+        | What add-ons would you like for your project? | None | Press Enter |
+        | Would you like any examples? | None | Press Enter |
 
+        After installation completes, navigate into your project directory.
+    </NumberedListItem>
+
+    <NumberedListItem title="Configure Vite for MongoDB compatibility">
+        TanStack Start uses Vite as the build tool. By default, Vite attempts to bundle dependencies for the browser. However, the Node.js Driver relies on `mongodb-client-encryption`, a server-side native module that causes errors when Vite bundles it for browser environments.
+
+        To prevent this, configure Vite to exclude the `mongodb-client-encryption` module from optimization and server-side rendering.
+
+        Navigate to `vite.config.ts` in your project root and replace the contents with the following code:
+
+        ```typescript
+        import { defineConfig } from 'vite'
+        import { devtools } from '@tanstack/devtools-vite'
+        import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+        import viteReact from '@vitejs/plugin-react'
+        import viteTsConfigPaths from 'vite-tsconfig-paths'
+        import tailwindcss from '@tailwindcss/vite'
+        import { nitro } from 'nitro/vite'
+
+        const config = defineConfig({
+          plugins: [
+            devtools(),
+            nitro(),
+            viteTsConfigPaths({
+              projects: ['./tsconfig.json'],
+            }),
+            tailwindcss(),
+            tanstackStart(),
+            viteReact(),
+          ],
+          optimizeDeps: {
+            exclude: ['mongodb-client-encryption'],
+          },
+          ssr: {
+            external: ['mongodb-client-encryption'],
+          },
+        })
+
+        export default config
+        ```
+    </NumberedListItem>
+
+    <NumberedListItem title="Install MongoDB & TanStack Query">
+        Install the Node.js Driver to allow the server code to connect to the database and install TanStack Query to manage data fetching on the frontend.
+
+        Run the following command in your project root:
+
+        ```bash
+        npm install mongodb @tanstack/react-query
+        ```
+    </NumberedListItem>
+</NumberedList>
 
 <Callout type="note" title="Excerpt Ends Here">
   This covers the introduction, architecture overview, and tutorial setup. The full tutorial continues with Vite configuration, database connections, server functions, React components, and running the application.

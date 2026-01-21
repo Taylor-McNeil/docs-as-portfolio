@@ -1,4 +1,4 @@
-type Method = "GET" | "POST" | "PUT" | "PATCH";
+import { Method } from "@/components/content/navigation";
 
 interface MethodBadgeProps {
   method: Method;
@@ -11,6 +11,7 @@ const methodStyles: Record<Method, string> = {
   POST: "bg-method-post-bg text-method-post border-method-post/30",
   PUT: "bg-method-put-bg text-method-put border-method-put/30",
   PATCH: "bg-method-patch-bg text-method-patch border-method-patch/30",
+  HEAD:  "bg-method-head-bg text-method-head border-method-head/30",
 };
 
 const inactiveStyle = "border-border text-foreground-muted bg-transparent";
