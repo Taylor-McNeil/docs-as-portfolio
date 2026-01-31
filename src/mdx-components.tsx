@@ -6,6 +6,8 @@ import { Example } from "@/components/content/Example";
 import { CodeTabs } from "@/components/content/CodeTabs";
 import { TutorialHeader } from "@/components/content/TutorialHeader";
 import { Figure } from "@/components/content/Figure";
+import { LayoutDiagram } from "@/components/content/LayoutDiagram";
+import { DevlogCTA } from "@/components/content/DevlogCTA";
 import { TicTacToeGame } from "@/components/interactive/TicTacToeGame";
 
 
@@ -36,6 +38,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         </h3>
       );
     },
+    hr: () => (
+      <div className="flex items-center justify-center gap-3 my-10 select-none" aria-hidden="true">
+        <span className="h-px flex-1 bg-border" />
+        <span className="text-xs font-mono tracking-widest text-foreground-muted/40">~#~</span>
+        <span className="h-px flex-1 bg-border" />
+      </div>
+    ),
     p: ({ children }) => (
       <p className="text-foreground-muted leading-relaxed mb-4">{children}</p>
     ),
@@ -106,8 +115,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     CodeBlock,
     CodeTabs,
     CollapsibleCode,
+    LayoutDiagram,
     TutorialHeader,
     Figure,
+    DevlogCTA,
     TicTacToeGame,
 
     ...components,

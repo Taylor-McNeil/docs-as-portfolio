@@ -1,0 +1,251 @@
+import { GuideHeader } from "@/components/content/GuideHeader";
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { Callout } from "@/components/content/Callout";
+import { ExternalLink } from "lucide-react";
+
+<GuideHeader
+    title="A Siren's Song"
+    method="PUT"
+    endpoint="/aampersand/a-sirens-song"
+    mdxPath="src/app/aampersand/a-sirens-song/page.mdx"
+/>
+
+<AnchorSidebar
+    items={[
+        { id: "setting-sail", label: "Setting Sail" },
+        { id: "a-deceptive-note", label: "A Deceptive Note" },
+        { id: "sinking-to-the-bottom", label: "Sinking to the Bottom" },
+        { id: "finding-shore", label: "Finding Shore" },
+        { id: "gazing-into-the-ocean", label: "Gazing into the Ocean" },
+        
+    ]}
+/>
+
+
+<Callout type = "context">
+This is the design companion to <a href="https://www.aampersand.com/devlog/jan-2026" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">What if Icarus Had Sunscreen? <ExternalLink size={12} className="inline" /></a>.
+That piece is about flying high. This one is about crashing into rocks
+because VS Code sang a beautiful note.
+</Callout>
+
+
+## Setting Sail
+
+I was forty-four chapters into my fantasy novel when I realized I’d dropped a plotline.
+
+Not a minor thread, but the entire premise of book two.
+
+***How?***
+
+I had outlines, notes, spreadsheets, and Google Docs. All the things writers use. 
+Yet that plotline still fell through the cracks, along with my hopes for easter eggs and plot twists.
+
+So, in typical type A fashion, I looked for more tools:
+
+| Tool | Goal | What it helps you do|
+|--|--|--|
+|**Google Docs**| Write| Put words on a page. Knows nothing about your story.|
+|**Scrivener**|	Organize & Write|	Manage files and notes. Structure your project.
+|**NovelCrafter**|	Write w/ AI|	AI enhanced writing. Story Bible integration.
+|**???**|	Reveal|	See your story. Surface what you’d otherwise miss.
+
+Google Docs doesn’t care about your content. It’s a word processor. Scrivener cares, but only enough 
+to help you organize it into files and folders.  NovelCrafter sits at this strange intersection of AI 
+and creative writing, and that wasn't quite what I needed either.
+
+None of them asks: what’s in this chapter, what can you ***see***, and what should you do next?
+
+I wanted the fourth row. A tool that would show me the plotlines weaving through chapters, the threads 
+I’d picked up and dropped, the shape of my story. Not organization, ***revelation***.
+
+But a visualization tool that lived outside my drafting environment was a dead end. Export, analyze, go 
+back to Google Docs, repeat. The friction would kill it. The visualization had to live ***inside*** the writing experience.
+
+Which meant building a writing tool. And I thought I knew exactly what to model it on.
+
+Coming from a tech background, I live in VS Code. I love VS Code. Its flexibility, its multi-pane layouts, 
+its “anything can go anywhere” architecture. It’s an interesting piece of developer tooling. Combine that 
+power with a writing-first editor, and you’d have something no writer had ever seen.
+
+***I was sure this was going to work.***
+
+## A Deceptive Note
+
+The first version took less than a weekend.
+
+<LayoutDiagram title="Design One">
+{`┌─────────────────────────────────────┐
+│           Header                    │
+├──────────┬──────────────────────────┤
+│          │                          │
+│ Sidebar  │    Main (Editor)         │
+│ (fixed)  │                          │
+│          │                          │
+└──────────┴──────────────────────────┘`}
+</LayoutDiagram>
+
+Simple. Header, sidebar, main content area. I knew the design wasn’t great, but I told myself that was because 
+the features weren’t there yet. Once I added chapter management, scene organization, and plotline tracking, 
+***then*** it would come together.
+
+But I had two competing needs. I wanted to ***see*** my story (visualization) and ***write*** my story (drafting). 
+My solution was obvious: more panes.
+
+<LayoutDiagram title="Design Two">
+{`┌─────────────────────────────────────────────────┐
+│           Header                                │
+├──────────┬──────────────────────────────────────┤
+│          │                │          │          │
+│ Sidebar  │   Pane 1       │  Pane 2  │  Pane 3  │
+│ (fixed)  │   (Editor)     │ (Editor) │ (Editor) │
+│          │                │          │          │
+└──────────┴──────────────────────────────────────┘`}
+</LayoutDiagram>
+
+A pane in `write` mode for drafting. A pane in `read` mode for reference. A pane in `canvas` mode for visualization. 
+Maximum flexibility, maximum power. Exactly like VS Code.
+
+
+<LayoutDiagram title="Design Three">
+{`┌──────────┬───────────────┬───────────────┐
+│ Sidebar  │ Pane 1: EDIT  │ Pane 2: READ  │
+│          │ (Scene 5)     │ (Chapter 1)   │
+└──────────┴───────────────┴───────────────┘`}
+</LayoutDiagram>
+
+I started using it.
+
+And fell overboard.
+
+## Sinking to the Bottom
+
+I spent about three weeks in this state: knowing something was wrong, unsure how to fix it.
+
+The tool wasn’t even usable yet, but that wasn’t the problem. I could see past the missing features. What I couldn’t see 
+past was this feeling that the ***shape*** was wrong. I used VS Code every day. Why did this feel so bad?
+
+I started wireframing obsessively. ASCII diagrams were faster than any design tool. I could sketch ten variations in the 
+time it took to drag boxes in Figma.
+
+<LayoutDiagram title="Design Four">
+{`┌─────────────────────────────────────────────────────────┐
+│                     Header                              │
+├─────┬───┬────────────┬───┬────────────┬───┬─────────────┤
+│  S  │░░░│   Pane 1   │░░░│   Pane 2   │░░░│   Pane 3    │
+│  i  │░░░│  (Editor)  │░░░│  (Editor)  │░░░│  (Editor)   │
+│  d  │░░░│            │   │            │   │             │
+│  e  │░░░│            │   │            │   │             │
+│  b  │   │            │   │            │   │             │
+│  a  │   │            │   │            │   │             │
+│  r  │   │            │   │            │   │             │
+└─────┴───┴────────────┴───┴────────────┴───┴─────────────┘`}
+</LayoutDiagram>
+
+The layouts looked right. The architecture was clean. But using it — even just ***imagining*** using it — felt exhausting. 
+I eventually realized what I was actually asking users to track:
+
+**Cognitive load in the VS Code model:**
+
+* Which pane holds my current chapter?
+* Which pane holds my reference material?
+* What mode is each pane in (write? read? edit? canvas?)
+* Where did I drag my notes?
+* Which panes are still relevant vs. leftover from earlier
+
+This wasn't writing. This was ***management***.
+
+## Finding Shore
+
+To be honest, two panes didn't feel like a win. It felt like giving something up.
+
+There's a reason power tools look the way they do. Photoshop. Premiere Pro. CAD. Buttons everywhere, as far as the eye can see. Panels stacked on panels. The visual complexity signals capability. And users accept the tradeoff: if it's powerful, it won't be simple.
+
+I didn't want to accept that.
+
+The answer was to stop thinking of panes as containers and start thinking of them as ***roles***.
+
+<LayoutDiagram title="Design Five">
+{`┌─────────────┬────────────────────────────────────────┬───────────────────────────────────┬────┐
+│             │                                        │                                   │    │
+│ CHAPTERS    │ Chapter 44 - Preservation Techniques   │ Wiki: Azim Khazahari              │ ⌕  │
+│ ─────────── │ ───────────────────────────────────────│ ───────────────────────────────── │    │
+│             │ Write │ 3 scenes │ 4,892 w             │ SECRETS KNOWN:                    │ =  │
+│ v Book 1    │ ───────────────────────────────────────│ * The reason Reid is being        │    │
+│   Ch 1      │                                        │   investigated                    │ ⊞  │
+│   Ch 2      │ "What's written in the flesh always    │ * [Redacted]                      │    │
+│   ...       │ comes to light."                       │                                   │ ◈  │
+│ > Ch 44 *   │                                        │ LAST APPEARANCE: Ch 10            │    │
+│   Ch 45     │ The last time Azim had seen Rauri      │                                   │    │
+│             │ alive the kid had been spazzing out    │ RELATIONSHIPS:                    │ ⚙  │
+│             │ trying to burn the club down.          │ * Reid -- [Redacted]              │    │
+│             │                                        │ * Ghazi -- Cousin                 │    │
+│             │ It was unnerving to watch his lungs... │                                   │    │
+└─────────────┴────────────────────────────────────────┴───────────────────────────────────┴────┘`}
+</LayoutDiagram>
+
+The left pane is always the chapter. That's the unit of work. That's where you write.
+
+The right pane is ***support*** — whatever you need to inform the writing:
+
+| What lives there | Job it's doing |
+|--|--|
+| Another chapter | You decide — reviewing, editing, writing. |
+| Wiki slice | Context — character secrets, relationships, last appearance |
+| Notes | Planning — scene intentions, things to include |
+| Timeline view | Orientation — where this chapter sits in the story's chronology |
+| Search results | Discovery — find mentions without leaving your chapter |
+
+The rule: The support pane ***informs***. When you need to ***create*** or ***edit*** something substantial, i.e., build out a character's backstory, restructure your timeline, you leave the writing view and go to that dedicated page. The chapter stays at the center of the universe.
+
+Cognitive load in the constrained model?
+
+***Nothing***. 
+
+The left pane is always the chapter. The right pane is always support.
+
+This forced me to think about who I was actually building for.
+
+Around this time, I went to a writing conference. Hundreds of writers, all around me. They were building sprawling fantasy worlds, intricate magic systems, multi-generational sagas. And they were doing it on laptops. Some on tablets. A few on their phones.
+
+How many writers have a 55-inch ultrawide monitor? Almost none. The infinite-pane fantasy assumed screen real estate my users don't have.
+
+Two panes isn't a compromise. It's designing for reality.
+
+## Gazing into the Ocean
+
+Interface patterns don't port across domains — even when the surface-level problem looks the same.
+
+VS Code and aampersand are both tools for managing complex information. From a distance, they look like the same problem. Multi-file projects. Hierarchical organization. The need to see multiple things at once. The pattern seemed transferable.
+
+It wasn't.
+
+Developers navigate by location. Writers navigate by narrative. Developers hunt across files. Writers orbit a single chapter. Developers need to see everything because the bug could be anywhere. Writers need to see less because the story is already in their head — they just need the tool to stay out of the way.
+
+VS Code is a masterpiece. ***For developers.***
+
+That "for developers" part is load-bearing.
+
+The siren's song was: ***this interface is beautiful and powerful, and power is what your users need.***
+
+The truth was: ***this interface is beautiful and powerful for a different kind of work entirely.***
+
+---
+
+If you're building a tool that someone lives in, you have to understand the shape of the work before you design the interface.
+
+Not "what features do they need?" — that comes later.
+
+First: What's the fundamental unit of work? What does the user hold in their head? What should the tool track so they don't have to?
+
+VS Code answers those questions for developers.
+
+You have to answer them for your users.
+
+I figured out the panes. I'm still figuring out everything else.
+
+<DevlogCTA
+  linkText="Read: What if Icarus Had Sunscreen?"
+  linkHref="https://www.aampersand.com/devlog/jan-2026"
+>
+aampersand is what I built after I stopped following the sirens. A writing tool that reveals rather than manages — because writers don't need more power. They need to see what's already there.
+</DevlogCTA>

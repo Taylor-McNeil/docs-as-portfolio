@@ -41,7 +41,7 @@ export function CodeBlock({ code, language, filename }: CodeBlockProps) {
 
       {/* Code */}
       <div className="bg-surface-terminal overflow-x-auto">
-        <pre className="p-4 text-sm leading-relaxed">
+        <pre className="p-4 text-sm leading-tight font-mono">
           <CodeHighlight code={code} language={language} />
         </pre>
       </div>

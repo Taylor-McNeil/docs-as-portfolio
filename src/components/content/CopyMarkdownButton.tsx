@@ -21,7 +21,7 @@ export function CopyMarkdownButton({ encodedMarkdown }: CopyMarkdownButtonProps)
   return (
     <button
       onClick={handleCopy}
-      className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono text-foreground-muted hover:text-foreground bg-surface-card border border-border rounded-md hover:bg-surface-sidebar transition-colors"
+      className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono whitespace-nowrap text-foreground-muted hover:text-foreground bg-surface-card border border-border rounded-md hover:bg-surface-sidebar transition-colors"
       title="Copy page as Markdown"
     >
       {copied ? (

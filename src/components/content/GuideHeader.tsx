@@ -44,9 +44,9 @@ export function GuideHeader({ title, description, method, endpoint, mdxPath, liv
           <span className="font-mono text-sm text-foreground-muted">{endpoint}</span>
         </div>
       )}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-3xl font-bold text-foreground-heading leading-none">{title}</h1>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {liveDocUrl && <LiveDocButton href={liveDocUrl} />}
           {encodedMarkdown && <CopyMarkdownButton encodedMarkdown={encodedMarkdown} />}
         </div>

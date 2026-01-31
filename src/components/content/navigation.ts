@@ -19,12 +19,12 @@ export const navigation: NavSection[] = [
       { href: "/quickstart", label: "Quickstart", method: "GET" },
     ],
   },
-  // {
-  //   title: "Playground",
-  //   items: [
-  //     { href: "/playground/year-calendar-api", label: "Year Calendar API", method: "GET" },
-  //   ],
-  // },
+   {
+     title: "aampersand",
+     items: [
+       { href: "/aampersand/a-sirens-song", label: "Devlog #1", method: "PUT" },
+     ],
+ },
    {
      title: "Side Projects",
      items: [
@@ -37,7 +37,6 @@ export const navigation: NavSection[] = [
     title: "Tutorials",
      items: [
   //     { href: "/tutorials/year-calendar", label: "Year Calendar", method: "GET" },
-  //     { href: "/tutorials/react-integration", label: "MongoDB + React", method: "GET" },
        { href: "/tutorials/java-game-dev", label: "Java Game Dev", method: "GET" },
        { href: "/tutorials/mongodb-tanstack", label: "MongoDB x TanStack", method: "GET" },
 

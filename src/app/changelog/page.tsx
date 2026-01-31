@@ -12,7 +12,7 @@ const responseData = {
     "AI usage for language acquisition"
   ],
   latest_release: "AI-Enhanced Workflows",
-  weeks_since_friday_deployment: "2",
+  weeks_since_friday_deployment: "0",
 };
 
 export const metadata = {
