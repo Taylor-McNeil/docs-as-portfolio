@@ -23,7 +23,7 @@ export function ShellInner({ sidebar, children }: ShellProps) {
       <header className="md:hidden flex items-center justify-between p-4 border-b border-border bg-surface-sidebar">
         <div>
           <h1 className="text-foreground-heading font-bold text-sm">Taylor McNeil</h1>
-          <p className="text-foreground-muted font-mono text-[10px]">docs-as-portfolio v1.4</p>
+          <p className="text-foreground-muted font-mono text-[10px]">docs-as-portfolio v1.5</p>
         </div>
         <div className="flex items-center gap-4">
           <ThemeToggle />
