@@ -24,6 +24,12 @@
   --color-accent: #ea580c;
   --color-accent-success: #0d9488;
 
+  /* Semantic callout colors */
+  --color-callout-warn: #c2410c;
+  --color-callout-warn-bg: #fff7ed;
+  --color-callout-ok: #0d9488;
+  --color-callout-ok-bg: #f0fdfa;
+
   /* Light mode method badges - 5 unique colors */
   --color-method-get: #0d9488;
   --color-method-get-bg: #ccfbf1;
@@ -66,6 +72,12 @@
 
   --color-accent: #60a5fa;
   --color-accent-success: #4ade80;
+
+  /* Semantic callout colors */
+  --color-callout-warn: #f87171;
+  --color-callout-warn-bg: rgba(239, 68, 68, 0.1);
+  --color-callout-ok: #4ade80;
+  --color-callout-ok-bg: rgba(74, 222, 128, 0.1);
 
   /* Dark mode method badges - colorful */
   --color-method-get: #60a5fa;

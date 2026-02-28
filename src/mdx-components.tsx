@@ -9,6 +9,15 @@ import { Figure } from "@/components/content/Figure";
 import { LayoutDiagram } from "@/components/content/LayoutDiagram";
 import { DevlogCTA } from "@/components/content/DevlogCTA";
 import { TicTacToeGame } from "@/components/interactive/TicTacToeGame";
+import { BreadcrumbPill } from "@/components/content/BreadcrumbPill";
+import { DevlogCallout } from "@/components/content/DevlogCallout";
+import { HeroQuote } from "@/components/content/HeroQuote";
+import { EmphasizedText } from "@/components/content/EmphasizedText";
+import { AnatomyOfABeat } from "@/components/content/AnatomyOfABeat";
+import { FeatureCard, FeatureCardGroup } from "@/components/content/FeatureCard";
+import { ContrastCallout } from "@/components/content/ContrastCallout";
+import { AnnotatedCodeBlock } from "@/components/content/AnnotatedCodeBlock";
+import { FooterTeaser } from "@/components/content/FooterTeaser";
 
 
 
@@ -120,6 +129,16 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Figure,
     DevlogCTA,
     TicTacToeGame,
+    BreadcrumbPill,
+    DevlogCallout,
+    HeroQuote,
+    EmphasizedText,
+    AnatomyOfABeat,
+    FeatureCard,
+    FeatureCardGroup,
+    ContrastCallout,
+    AnnotatedCodeBlock,
+    FooterTeaser,
 
     ...components,
   };
