@@ -46,8 +46,11 @@ export default new Candidate({
 });`;
 
 export const metadata = {
-  title: "Quickstart",
-  description: "Configure a DevEx Engineer for your team.",
+  title: "TL;DR · Developer Experience Engineer",
+  description: "The TL;DR on Taylor McNeil — skills, stack, and career stats, formatted as a developer config file.",
+  alternates: {
+    canonical: '/quickstart',
+  },
 };
 
 

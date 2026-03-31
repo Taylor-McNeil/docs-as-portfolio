@@ -9,6 +9,17 @@ import { AnatomyOfABeat } from "@/components/content/AnatomyOfABeat";
 import { FeatureCard, FeatureCardGroup } from "@/components/content/FeatureCard";
 import { ContrastCallout } from "@/components/content/ContrastCallout";
 import { FooterTeaser } from "@/components/content/FooterTeaser";
+import { JsonLd } from "@/components/content/JsonLd";
+
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Peering into Lethe",
+  "description": "How aampersand's beat system tracks story claims independently from prose — so deleted text doesn't destroy your plot.",
+  "author": { "@type": "Person", "name": "Taylor McNeil", "url": "https://taylormcneil.dev" },
+  "url": "https://taylormcneil.dev/aampersand/peering-into-lethe"
+}} />
 
 <GuideHeader
     title="Peering into Lethe"

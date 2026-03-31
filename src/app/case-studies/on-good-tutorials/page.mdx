@@ -9,12 +9,17 @@ import { RubricCard, RubricCardGroup } from "@/components/content/RubricCard";
 import { Card, CardGroup } from "@/components/content/Card";
 import { Annotation } from "@/components/content/Annotation";
 import { SkillPill, SkillList } from "@/components/content/SkillPill";
+import { JsonLd } from "@/components/content/JsonLd";
 
 
-export const metadata = {
-    title: "On Good Tutorials",
-    description: ""
-}
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "On Good Tutorials",
+  "description": "I built a tool to score AI-generated tutorials against rubrics. The scores converged — then diverged. What the numbers can't tell you about teaching.",
+  "author": { "@type": "Person", "name": "Taylor McNeil", "url": "https://taylormcneil.dev" },
+  "url": "https://taylormcneil.dev/case-studies/on-good-tutorials"
+}} />
 
 <AnchorSidebar
     items={[

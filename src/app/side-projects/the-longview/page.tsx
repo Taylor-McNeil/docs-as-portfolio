@@ -5,7 +5,10 @@ import Link from "next/link";
 
 export const metadata = {
   title: "The Long View",
-  description: "A year-at-a-glance planner.",
+  description: "A free, no-signup year-at-a-glance digital planner. Built with React and localStorage — everything stays on your device.",
+  alternates: {
+    canonical: '/side-projects/the-longview',
+  },
 };
 
 export default function TheLongView() {

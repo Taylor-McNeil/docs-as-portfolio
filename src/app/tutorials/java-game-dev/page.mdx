@@ -19,11 +19,17 @@ import {
   robustInputCode,
   coordinateMathCode,
 } from "@/components/snippets/tictactoe-snippets";
+import { JsonLd } from "@/components/content/JsonLd";
 
-export const metadata = {
-  title: "Tic Tac Toe in Java",
-  description: "A step-by-step tutorial for implementing Tic Tac Toe via the console.",
-};
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Tic Tac Toe in Java",
+  "description": "A step-by-step Java tutorial for building Tic Tac Toe in the console. 75,000+ views. Kept intentionally beginner-friendly.",
+  "author": { "@type": "Person", "name": "Taylor McNeil", "url": "https://taylormcneil.dev" },
+  "url": "https://taylormcneil.dev/tutorials/java-game-dev"
+}} />
 
 <ResponsePanel
   data={{

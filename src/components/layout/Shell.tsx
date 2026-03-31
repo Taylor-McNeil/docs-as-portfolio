@@ -56,8 +56,13 @@ export function ShellInner({ sidebar, children }: ShellProps) {
             ? panelWidth === "narrow" ? "lg:pr-56" : panelWidth === "medium" ? "lg:pr-72" : "lg:pr-96"
             : ""
         }`}>
-          <div className="max-w-3xl mx-auto p-6 md:p-12">
-            {children}
+          <div className="max-w-3xl mx-auto p-6 md:p-12 min-h-full flex flex-col">
+            <div className="flex-1">
+              {children}
+            </div>
+            <footer className="mt-16 pt-4 border-t border-border text-xs text-foreground-muted text-center">
+              <p>✏️ Taylor McNeil is a Developer Experience Engineer and the creator of aampersand, a writing tool that helps fiction writers see the shape of their story.</p>
+            </footer>
           </div>
         </main>
       </div>

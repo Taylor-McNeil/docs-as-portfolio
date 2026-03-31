@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, JetBrains_Mono, Geist, Geist_Mono } from 'next/font/
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { Shell } from "@/components/layout/Shell";
 import { Sidebar } from "@/components/layout/Sidebar";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({ 
@@ -28,8 +29,8 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   title: {
-    default: "Taylor McNeil | Developer Experience Engineer",
-    template: "%s | Taylor McNeil", // Pages just set "Quickstart" → becomes "Quickstart | Taylor McNeil"
+    default: "Taylor McNeil · Developer Experience Engineer",
+    template: "%s · Taylor McNeil",
   },
   description: "I design developer systems that reduce friction and scale adoption.",
   metadataBase: new URL("https://taylormcneil.dev"),
@@ -65,6 +66,7 @@ export default function RootLayout({
             {children}
           </Shell>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

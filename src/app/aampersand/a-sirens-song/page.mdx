@@ -4,7 +4,17 @@ import { Callout } from "@/components/content/Callout";
 import { ExternalLink } from "lucide-react";
 import { HeroQuote } from "@/components/content/HeroQuote";
 import { EmphasizedText } from "@/components/content/EmphasizedText";
+import { JsonLd } from "@/components/content/JsonLd";
 
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "A Siren's Song",
+  "description": "Why VS Code's multi-pane interface is wrong for writers, and how a failed first design led to a two-pane architecture for complex fiction.",
+  "author": { "@type": "Person", "name": "Taylor McNeil", "url": "https://taylormcneil.dev" },
+  "url": "https://taylormcneil.dev/aampersand/a-sirens-song"
+}} />
 
 <GuideHeader
     title="A Siren's Song"

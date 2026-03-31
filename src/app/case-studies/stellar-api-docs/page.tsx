@@ -25,12 +25,29 @@ const responseData = {
 };
 
 export const metadata = {
-  title: "Stellar API Documentation",
-  description: "Building modular OpenAPI specifications.",
+  title: "Stellar API Documentation Case Study",
+  description: "How I derived OpenAPI specs from Stellar's codebase to create auto-generated API documentation that can't drift out of sync.",
+  alternates: {
+    canonical: '/case-studies/stellar-api-docs',
+  },
 };
 
 export default function StellarCaseStudy() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Stellar API Documentation',
+    description: "How I derived OpenAPI specs from Stellar's codebase to create auto-generated API documentation that can't drift out of sync.",
+    author: { '@type': 'Person', name: 'Taylor McNeil', url: 'https://taylormcneil.dev' },
+    url: 'https://taylormcneil.dev/case-studies/stellar-api-docs',
+  }
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     <div className="space-y-8">
       <ResponsePanel data={responseData} />
 
@@ -306,5 +323,6 @@ export default function StellarCaseStudy() {
         </ul>
       </section>
     </div>
+    </>
   );
 }
