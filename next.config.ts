@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm";
 
 const nextConfig: NextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  allowedDevOrigins: ["192.168.*.*"],
 };
 
 const withMDX = createMDX({
