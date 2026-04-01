@@ -1,0 +1,239 @@
+import { GuideHeader } from "@/components/content/GuideHeader";
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { Callout } from "@/components/content/Callout";
+import { ExternalLink } from "lucide-react";
+import { HeroQuote } from "@/components/content/HeroQuote";
+import { EmphasizedText } from "@/components/content/EmphasizedText";
+import { LayoutDiagram } from "@/components/content/LayoutDiagram";
+import { CodeBlock } from "@/components/content/CodeBlock";
+import { DevlogCTA } from "@/components/content/DevlogCTA";
+import { MySpaceCustomizer } from "@/components/interactive/MySpaceCustomizer";
+import { JsonLd } from "@/components/content/JsonLd";
+
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "A Broken Astrolabe",
+  "description": "A Tailwind CSS collision broke my navbar. Fixing it revealed that wild user customization requires rigid UI primitives underneath.",
+  "author": { "@type": "Person", "name": "Taylor McNeil", "url": "https://taylormcneil.dev" },
+  "url": "https://taylormcneil.dev/aampersand/a-broken-astrolabe"
+}} />
+
+<GuideHeader
+    title="A Broken Astrolabe"
+    method="PUT"
+    endpoint="/aampersand/a-broken-astrolabe"
+    mdxPath="src/app/aampersand/a-broken-astrolabe/page.mdx"
+/>
+
+<AnchorSidebar
+    items={[
+        { id: "dust-on-the-glass", label:"Dust on the Glass"},
+        { id: "the-wrong-lens", label: "The Wrong Lens" },
+        { id: "and-then-the-navbar-turned-cream", label: "And Then the Navbar Turned Cream" },
+        { id: "furniture-and-floors", label: "Furniture and Floors" },
+        { id: "the-founders-bargain", label: "The Founder's Bargain" },
+        { id: "true-north", label: "True North" },
+    ]}
+/>
+
+<Callout type = "context">
+This is the design companion to <a href="/https://www.aampersand.com/devlog/mar-2026" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">Stranded in Crete<ExternalLink size={12} className="inline" /></a>.
+That piece is about cows and finding grand things in dark places. This one is about perception.
+</Callout>
+
+
+## Dust on the Glass
+
+<HeroQuote>
+Somewhere around day 15, my left navbar changed color.
+</HeroQuote>
+
+Not because I redesigned it. It just quietly shifted from a high-contrast dark gray to cream.
+
+***A real conundrum.***
+
+I hadn't touched layout code in weeks. I was already in the weeds. I had spent half the month pulling my hair out trying to design a feature that just wasn't jelling for me. I had finally landed on something... and suddenly... the navbar was cream.
+
+A normal person would have written a quick CSS override. A hotfix and proceeded to code desperately to try to make up the lost 15 days.
+
+But aampersand is essentially an instrument of measurement. It's designed to be an astrolabe for your narrative. And you can't trust the measurements if the instrument itself is lying to you.
+
+
+## The Wrong Lens
+
+Up until this month, I was my only user persona. I plan stories with sticky notes, vibes and spreadsheets, so the software was built to accommodate that style of thinking.
+
+For March, I was supposed to be building the "Lab". One of the core "altitudes" of the software. Each altitude asks you a different question about your story and helps you visualize your story in a different way.
+
+<LayoutDiagram title="The Altitudes">
+{`
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   LAB                    "What could happen in my story?"       │
+│                           Plan, architect, explore              │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   BRAID                  "What is the history of my story?"     │
+│                           Temporal truth, chronology            │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   WIKI                   "What's in my world?"                  │
+│                           Characters, locations, lore           │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   INVESTIGATION BOARDS   "What happens in my story?"            │
+│                           Track plotlines, beats, continuity    │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   EDITOR                 "What are the words of my story?"      │
+│                           The prose                             │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+`}
+</LayoutDiagram>
+
+Lab answers the question, ***"What is my story?"***
+
+It's the second highest-level architectural view, and the one that helps writers plan.
+
+But because I don't plan visually. At least not in the way that "visual" planning comes to mind. I don't have mood boards, or Miro's or collages about how things feel or look or flow charts.
+
+But I knew this was something that other people did, so I set out to design for them.
+
+I spent two weeks trying to build a structured infinite canvas, a smarter Miro for fiction writers.
+
+***I hated it.***
+
+It felt clunky. Wrong.
+
+I don't plan that way, and trying to force my system into a giant, chaotic digital whiteboard was a disaster.
+
+The breakthrough came from watching how writers actually plan and... talking to other authors. Some start with structure and fill in details. Some start writing and discover the structure later. The tool had to serve both, not by forcing one workflow, but by letting the same story data flow in either direction.
+
+The Lab ended up being a multi-layer system, from freeform brainstorming down to linear outline. But that's its own story. For March, I scoped down to just one layer: the Clothesline. A horizontal timeline where chapters hang from a wire with plotline threads connecting them across the book. And crucially — it could auto-populate from beats the writer had already tagged in the Editor. Discovery writers wouldn't have to plan at all. They'd just write, tag, and the Clothesline would reveal the structure they'd vibed into existence.
+
+<Callout type="context">
+An astrolabe has interchangeable plates called tympans. You swap the plate, and the same sky reveals different information. The Lab is a plate.
+</Callout>
+
+
+## And Then the Navbar Turned Cream
+
+Because I was fifteen days behind — and navigating a major interruption in my personal life — my coding window had shrunk to practically nothing. I made a bargain. I would only code the Clothesline for now and just work on bugs from last month.
+
+That was simultaneously the best and worst decision I could have made.
+
+I tried to rush a "simple" UI panel split so I could just get to the fun part of wiring up the Clothesline.
+
+Almost immediately, everything went up in flames. The rapid-prototyping workflow I had relied on for two months collapsed. I couldn't get the new panel to match the rest of the app no matter how hard I tried. The text was hardcoded. The borders were rendering strangely. I found myself drowning in a loop of endless QA, context-switching between five different workstreams just to keep the app running.
+
+Meanwhile, the Clothesline kept surfacing its own bizarre bugs: plotline threads rendering on top of cards, bezier curves going wild. A test suite spat out 37 distinct bugs, and I knew deep down there were more. I felt completely demoralized. Every session felt like I was just returning to something half-finished.
+
+***And then, the right rail turned cream.***
+
+I finally took my hands off the keyboard and stopped trying to brute-force the feature. I started asking my codebase questions. I hunted down why the rail had changed, and I found it buried in my CSS variables. I had set up my tokens like this:
+
+<CodeBlock
+  language="css"
+  filename="tokens.css"
+  code={`:root {
+  --color-rail: #2D402F;
+  --color-rail-text: #EBEAE4;
+}`}
+/>
+
+In Tailwind CSS v4, this creates a silent namespace collision. Because of how it parses custom properties to generate utility classes, the `--color-rail-text` token was essentially swallowing the `--color-rail` token. The shorter token just vanished from the compilation.
+
+My tools hadn't just broken; they had been lying to me. The codebase was compiling exactly as I had accidentally instructed it to. The frame holding the astrolabe was cracked.
+
+
+## Furniture and Floors
+
+From the very beginning, I wanted aampersand to have a MySpace or Tumblr level of deep user customization. Not just light mode and dark mode. I wanted writers to make it theirs — their colors, their fonts, their borders, their personality baked into the tool they live in every day.
+
+I had built robust theme documents with color palettes, border rules, and typography scales. I thought that was the hard part. I thought the themes were the system.
+
+Rather than explain what I mean, let me give you the keys. *Taste not included.*
+
+<MySpaceCustomizer />
+
+Everything you just changed was controlled by a handful of CSS variables. Every heading, every border, every background on this page was listening to the same set of tokens. Move one, and the whole page moves together.
+
+That's the dream. That's what aampersand's Theme Editor will eventually do — pulleys and doodads that reshape the entire application's look and feel.
+
+***My codebase was not doing that.***
+
+I didn't realize that theme documents are just furniture. They tell you how to decorate the room. But if you skip building the foundation, the furniture falls right through.
+
+Because I had skipped building the foundation, I had three different implementations of a timeline and nine different ways to render a button. My components were making their own independent styling decisions. Before this month, a simple card in my codebase looked like the Wild West:
+
+<CodeBlock
+  language="jsx"
+  filename="The Wild West"
+  code={`<div className="bg-[#EBEAE4] border border-[#D6D4CB] rounded-md shadow-sm p-4 text-[#282E34]">
+  {content}
+</div>`}
+/>
+
+If I ever shipped that Theme Editor and a user moved the global border-radius slider, half the app wouldn't respond. `rounded-md` was hardcoded. The font was hardcoded. The colors were hex values, not variables. The design system was a suggestion, not a law.
+
+The revelation: to allow for wild, chaotic customization, you need absolute, rigid primitives underneath. The component has to become entirely ignorant of its own appearance. The primitive becomes the single point of truth:
+
+<CodeBlock
+  language="jsx"
+  filename="The Law"
+  code={`<Card variant="surface" elevation="soft">
+  {content}
+</Card>`}
+/>
+
+***GROUND BREAKING... I know...***
+
+I paused all feature work. I spent the remaining days of the month building 19 strict UI primitives from scratch and migrating hundreds of inline styling instances.
+
+To prove the foundation was finally sound, I built a diagnostic route: `/design`. It acts as an MRI for the codebase — it doesn't just display colors, it actively queries the DOM to audit whether CSS variables are resolving correctly. A Theme Comparison Strip renders Warm Paper next to Terminal next to Sylvan using the exact same component blueprints. If a primitive isn't listening, the MRI catches it.
+
+{/* TODO: Screenshot(s) of /design diagnostic page */}
+
+Before the primitives, the MRI showed 1 out of 20 variables resolving in Warm Paper. Zero out of 20 in Terminal. After: clean across the board. The instrument was finally calibrated.
+
+
+## The Founder's Bargain
+
+March crystallized a new way of building for me: **Explore** (throwing away bad prototypes until the UX clicks), **Build** (wiring up the data, even if it looks terrible), and **Polish** (applying the primitives).
+
+It is incredibly difficult for me to build something ugly. But the reality of being a solo founder working hours every night after a day job is that perfectionism only exists when you don't have deadlines.
+
+I had to make a hard call. That original panel split that started this entire cascade of problems? I left it ugly. I traded aesthetic debt in a secondary feature to pay off the discovery debt blocking my primary feature.
+
+***And it worked.***
+
+{/* TODO: Images of the Clothesline — maybe three in a carousel. Needs to work on mobile */}
+
+
+## True North
+
+In tech, we constantly romanticize the Herculean sprint — the 24-hour coding montage where a massive, shiny new feature magically appears.
+
+But progress doesn't always look like that. Invisible progress works both ways. It is the slow, emotional work of decomposing a problem, peeling back the onion, and chipping away at a broken foundation until you hit bedrock. It's accepting that the visible output will be small so the invisible progress can be enormous.
+
+March wasn't about looking at the stars. It was about taking a monkey wrench to the astrolabe, banging on it, fixing the cracked frame, and calibrating the instrument so the measurements could be trusted again.
+
+---
+
+Last month, I promised you an astrolabe. We found one. It was broken. But a calibrated instrument still isn't enough — not all stories are built inside an editor. Some arrive fully formed, and our job is to whip them into shape.
+
+<EmphasizedText>Next month, we get to oil wrestle Proteus.</EmphasizedText>
+
+<DevlogCTA
+  linkText="Read: Stranded in Crete"
+  linkHref="https://taylormcneil.dev/aampersand/devlog/mar-2026"
+>
+aampersand allows you to peer into your world.
+</DevlogCTA>

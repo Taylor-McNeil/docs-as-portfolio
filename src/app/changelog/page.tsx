@@ -16,8 +16,11 @@ const responseData = {
 };
 
 export const metadata = {
-  title: "Changelog",
-  description: "Career history as semantic versioning.",
+  title: "Career Timeline",
+  description: "Career history as semantic versioning — from community building at Georgia State to API documentation at Stellar, Mastercard, and beyond.",
+  alternates: {
+    canonical: '/changelog',
+  },
 };
 
 

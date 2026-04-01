@@ -18,6 +18,8 @@ import { FeatureCard, FeatureCardGroup } from "@/components/content/FeatureCard"
 import { ContrastCallout } from "@/components/content/ContrastCallout";
 import { AnnotatedCodeBlock } from "@/components/content/AnnotatedCodeBlock";
 import { FooterTeaser } from "@/components/content/FooterTeaser";
+import { HorizontalScroll } from "@/components/content/HorizontalScroll";
+import { ScrollImage } from "@/components/content/ScrollImage";
 
 
 
@@ -139,6 +141,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ContrastCallout,
     AnnotatedCodeBlock,
     FooterTeaser,
+    HorizontalScroll,
+    ScrollImage,
 
     ...components,
   };

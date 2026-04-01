@@ -6,7 +6,8 @@
       "Bash(bun remove:*)",
       "Bash(bun add:*)",
       "Bash(tree:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(npx next:*)"
     ]
   }
 }

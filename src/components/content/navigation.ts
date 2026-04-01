@@ -24,6 +24,8 @@ export const navigation: NavSection[] = [
      items: [
        { href: "/aampersand/a-sirens-song", label: "Jan 2026", method: "PUT" },
        { href: "/aampersand/peering-into-lethe", label: "Feb 2026", method: "PUT"},
+       { href: "/aampersand/a-broken-astrolabe", label: "Mar 2026", method: "PUT"},
+
      ],
  },
    {
