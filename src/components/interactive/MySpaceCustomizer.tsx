@@ -105,9 +105,9 @@ export function MySpaceCustomizer() {
     return () => {
       if (styleTag.current) document.head.removeChild(styleTag.current);
       if (fallingInterval.current) clearInterval(fallingInterval.current);
-      // Restore originals on unmount
+      // Remove inline overrides on unmount so the CSS cascade (dark/light class) works
       CSS_VARS.forEach((v) => {
-        if (orig[v]) document.documentElement.style.setProperty(v, orig[v]);
+        document.documentElement.style.removeProperty(v);
       });
     };
   }, []);
@@ -211,8 +211,8 @@ export function MySpaceCustomizer() {
 
   const reset = useCallback(() => {
     if (!originals.current) return;
-    Object.entries(originals.current).forEach(([prop, value]) => {
-      document.documentElement.style.setProperty(prop, value);
+    CSS_VARS.forEach((v) => {
+      document.documentElement.style.removeProperty(v);
     });
     if (fallingInterval.current) clearInterval(fallingInterval.current);
     fallingInterval.current = null;
