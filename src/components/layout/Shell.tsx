@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X, PanelRightOpen } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { RightPanelProvider, useRightPanel } from "./RightPanelContext";
@@ -15,6 +16,16 @@ interface ShellProps {
 export function ShellInner({ sidebar, children }: ShellProps) {
   const { isOpen: mobileMenuOpen, setIsOpen: setMobileMenuOpen } = useMobileMenu();
   const { content: rightPanelContent, width: panelWidth, isCollapsed, toggleCollapsed } = useRightPanel();
+  const isToolRoute = usePathname()?.startsWith("/tools/") ?? false;
+
+  if (isToolRoute) {
+    return (
+      <div className="h-screen overflow-hidden">
+        <ScrollToTop />
+        <main className="h-full w-full overflow-auto">{children}</main>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen bg-surface-bg overflow-hidden grid grid-rows-[auto_1fr] md:grid-rows-[1fr]">
@@ -56,13 +67,15 @@ export function ShellInner({ sidebar, children }: ShellProps) {
             ? panelWidth === "narrow" ? "lg:pr-56" : panelWidth === "medium" ? "lg:pr-72" : "lg:pr-96"
             : ""
         }`}>
-          <div className="max-w-3xl mx-auto p-6 md:p-12 min-h-full flex flex-col">
+          <div className={isToolRoute ? "w-full min-h-full flex flex-col" : "max-w-3xl mx-auto p-6 md:p-12 min-h-full flex flex-col"}>
             <div className="flex-1">
               {children}
             </div>
-            <footer className="mt-16 pt-4 border-t border-border text-xs text-foreground-muted text-center">
-              <p>✏️ Taylor McNeil is a Developer Experience Engineer and the creator of aampersand, a writing tool that helps fiction writers see the shape of their story.</p>
-            </footer>
+            {!isToolRoute && (
+              <footer className="mt-16 pt-4 border-t border-border text-xs text-foreground-muted text-center">
+                <p>✏️ Taylor McNeil is a Developer Experience Engineer and the creator of aampersand, a writing tool that helps fiction writers see the shape of their story.</p>
+              </footer>
+            )}
           </div>
         </main>
       </div>
