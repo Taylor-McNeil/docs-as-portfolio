@@ -1,0 +1,258 @@
+import { GuideHeader } from "@/components/content/GuideHeader";
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { Callout } from "@/components/content/Callout";
+import { EmphasizedText } from "@/components/content/EmphasizedText";
+import { LayoutDiagram } from "@/components/content/LayoutDiagram";
+import { DevlogCTA } from "@/components/content/DevlogCTA";
+import { JsonLd } from "@/components/content/JsonLd";
+import { StoryGraph } from "@/components/interactive/story-graph";
+import { ContrastCallout } from "@/components/content/ContrastCallout";
+import { ExternalLink } from "lucide-react";
+import { Zap } from "lucide-react";
+import { HeroQuote } from "@/components/content/HeroQuote";
+
+
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Oily Bodies in Karpathos",
+  "description": "A tagging experiment reveals that stories aren't timelines — they're graphs. How a schema crisis and a lucky bug led to aampersand's annotation engine.",
+  "author": { "@type": "Person", "name": "Taylor McNeil", "url": "https://taylormcneil.dev" },
+  "url": "https://taylormcneil.dev/aampersand/oily-bodies-in-karpathos"
+}} />
+
+<GuideHeader
+    title="Oily Bodies in Karpathos"
+    method="PUT"
+    endpoint="/aampersand/oily-bodies-in-karpathos"
+    mdxPath="src/app/aampersand/oily-bodies-in-karpathos/page.mdx"
+/>
+
+<AnchorSidebar
+    items={[
+        { id: "glistening-in-the-sun", label: "Glistening in the Sun" },
+        { id: "to-fix-a-bad-plan-make-another-bad-plan", label: "To Fix A Bad Plan, Make Another Bad Plan" },
+        { id: "two-buckets-of-seal-skin", label: "Two Buckets of Seal Skin" },
+        { id: "the-shape-i-couldnt-see", label: "The Shape I Couldn't See" },
+        { id: "combinatorics-in-the-sun", label: "Combinatorics in the Sun" },
+        { id: "on-wrestling-oily-old-men", label: "On Wrestling Oily Old Men" },
+    ]}
+/>
+
+<Callout type= "context">
+This is a cross post from <a href="www.aampersand.com/devlog/apr-2026" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">aampersand.com<ExternalLink size={12} className="inline" /></a>.
+This month's story transcends genres.
+</Callout>
+
+
+## Glistening in the Sun
+
+<HeroQuote>
+I shipped the March devlog at 2:00 AM. Digitally, it was a success. Internally, it was a failure.
+</HeroQuote>
+
+Hours earlier, I been dogfooding aampersand, trying to get screenshots for a demo. I wanted to tag something about Azim's gauntlet. For continuity. I wanted to remember the color and how I had described it the first time the reader saw it. I opened the tagging menu, and the system asked me to create a beat.
+
+Except a gauntlet description, isn't a beat.
+
+A beat moves the story forward. Azim's gauntlet... was a fact about him. Essentially metadata. The kind that belongs in file properties...or a wiki? It was 9:59 PM and the devlog was due at midnight. I tagged it anyway, because... I was running out of time and there was no where to put it.
+
+So I just kept going. After twenty minutes I had a list, after thirty minutes, I had a problem. More than half the things I wanted to tag were not "beats".
+
+| What I wanted to tag                                | What it actually was                          |
+| --------------------------------------------------- | --------------------------------------------- |
+| Azim's gauntlet is obsidian                         | **World fact** — belongs in a wiki            |
+| Reid gets mugged                                    | **Beat** — plot moves forward                 |
+| Ghazi watches and admits to not helping Reid before  | **Character Moment** — Ghazi is kinda a putz  |
+| Reed lies during interrogation                      | **Catalyst** — cascade of consequences        |
+| The presence of the necklace                        | **Foreshadowing** — the necklace would return |
+
+I'd built aampersand around the assumption that beats were the atomic unit of story telling. (There is an entire genre of craft books confirming this fact.) Every feature I had built was about beats: displaying them, tracking them, organizing them. Beats were king.
+
+Except they weren't. They were just one type of structural knowledge sitting alongside a half-dozen other types, and I had been trying to shove them all into a single box. Sitting with that realization felt like the ground was shifting under me.
+
+I did what any good founder would do, I shipped the devlog and went to bed.
+
+
+## To Fix A Bad Plan, Make Another Bad Plan
+
+April was supposed to be a light month. The plan was simple: migrate the local database (Dexie) to Neon in the cloud, write up the authentication in Clerk, and build an import wizard so writers could bring their manuscripts in without copy-pasting chapter by chapter. Infrastructure work. Important work, but not architectural or glamorous work.
+
+Except, I wasn't going out like that.
+
+The migration to the cloud meant I was committing to a schema, not just blowing up my local database every 2.5 business seconds. Real tables, in a real database, with a real schema. And I knew viscerally, in no uncertain terms, that the current schema was wrong. Beats as the atomic unit was wrong.
+
+So I made a decision that looked, from the outside, like terrible.
+
+I threw out the April plan and ran an experiment.
+
+The rules: build fast, build dirty, and don't care about code quality. The only thing that mattered was chasing the idea — untangling the concept of how to "view" a story with more than just beats. I gave myself two weeks.
+
+
+## Two Buckets of Seal Skin
+
+The experiment started with that tagging list from above. (Tbh the real one is much longer). I stared at it long enough to see the pattern. Items fell naturally into two buckets.
+
+**Bucket One: Narrative Moments.** Things that happened in the story. A character made a decision. A clue was planted. A promise was made to the reader. A beat landed. These were about _momentum_ — the story moving, shifting, building toward something.
+
+**Bucket Two: World Facts.** Things that were true about the world. A character is poor. A city has circular walls. A gauntlet is made of obsidian. These were about _gravity_ — the weight of the world holding the story in place.
+
+Both originated from the same act: me reading my own prose and going _this matters_. But _why_ it mattered determined where the information should live.
+
+I called the first type **Sparks**⚡. Something in the prose **sparked** something — an idea, a tension, a structural obligation. They carry types: beat, reveal, foreshadow, clue, romance, red herring. The types aren't enforced; they're author-defined suggestions. If a writer wants to track every mention of food, they create a type called "food" and tag to their heart's content. The system doesn't decide what matters. The writer does.
+
+<EmphasizedText>Mirror, not oracle.</EmphasizedText>
+
+I called the second type **Etches** ✎. Something pressed into the world. Etches target something in your world: a character, a location, an artifact, an organization. Etches feed wiki pages. When you highlight a sentence about Azim's gauntlet and create an Etch, that information routes to Azim's wiki page automatically. Tag enough Etches, and the page starts to fill itself, not with generated content, but with your own words, organized by the system you defined.
+
+The critical thing: Sparks and Etches are not tags with different labels. They represent fundamentally different _relationships to the prose_.
+
+<ContrastCallout
+  variant="card"
+  leftLabel="Sparks"
+  rightLabel="Etches"
+  leftIcon={<Zap size={13} className="text-accent" />}
+  rightIcon={<span className="text-sm leading-none">✎</span>}
+  leftDescriptor="momentum"
+  rightDescriptor="truth"
+  leftChildren={<p>"Something happened here in the narrative."</p>}
+  rightChildren={<p>"Something is true about the world, and I noticed it here."</p>}
+/>
+
+One is about momentum. The other is about truth. They originate from the same sentences and can in fact be the same sentence, but they live in different places and serve different purposes. And because they're different data types with different targets, the system can do different things with them.
+
+
+## The Shape I Couldn't See
+
+I built a dirty prototype in about a week. The Sparks worked. The Etches worked. The wiki, which was never supposed to exist until after launch (such naivety) now had a reason to exist, because the Etches needed somewhere to go. I pulled it forward by roughly a year.
+
+Then I started tagging properly: the full prologue, Chapter 1, Chapter 2. I created wiki pages as I went: Azim, Reid, Ghazi, Commander Khazahari, The Lower Docks, Florist Gump.
+
+And then the Clothesline changed.
+And the problem shifted again.
+
+Previously, it only showed beats. One type of action, one type of view. But now it was dirty full of crap. Essentially, it was the entire table above on several little cards.
+
+Useless. Or was it?
+
+It was very clear, that it needed a filter. So I whipped one up really quick, and what happened after, changed everything.
+
+Because Sparks carried facets (types) -- beat, reveal, foreshadow, clue, romance, whatever, I could use those to filter.
+
+I clicked "Clue." The Clothesline dimmed everything except clues. Every clue, across every chapter, isolated.
+
+I clicked "Foreshadow." Same thing. Every forward-pointing promise I'd made to the reader, laid out in sequence.
+
+I clicked "Clue" AND "Foreshadow" together. And I could see, for the first time, the entire architecture of the mystery. Where the clues landed, where the promises were made, *and* where the gaps were. Chapters with no foreshadowing. Stretches where I'd dropped clues but never set them up.
+
+The Clothesline had stopped being a timeline.
+
+It had become a ***query surface***.
+
+<LayoutDiagram title="The Clothesline Query Surface">
+{`+-------------------------------------------------------------------------+
+|                    CLOTHESLINE QUERY SURFACE                            |
+|                                                                         |
+|   +------+      +------+      +------+      +------+      +------+      |
+|   | Ch 1 |------| Ch 2 |------| Ch 3 |------| Ch 4 |------| Ch 5 |      |
+|   +--+---+      +--+---+      +--+---+      +--+---+      +--+---+      |
+|      |             |             |             |             |          |
+|   +--+-------+  +--+-------+  +--+-------+     .        +--+-------+    |
+|   | CLUE     |  | BEAT     |  | CLUE     |   (gap)      | CLUE     |    |
+|   +----------+  +----------+  +----------+              +----------+    |
+|   +----------+  +----------+                            +----------+    |
+|   |FORESHADOW|  |FORESHADOW|                            | BEAT     |    |
+|   +----------+  +----------+                            +----------+    |
+|                                                                         |
+|   Filter: [Clue] [Foreshadow] [+ Add filter]                            |
+|   "Show me every clue and every promise, in order."                     |
++-------------------------------------------------------------------------+`}
+</LayoutDiagram>
+
+That alone, made April sexy. However, this story is not finished yet. Because a *bug* allowed me to make yet another even bigger discovery.
+
+In the Spark creation modal, I had accidentally included the ability to tie a Spark to a wiki page. This was not designed. It was leftover UI from an earlier iteration where I was testing how Sparks and Etches might cross-reference.
+
+But it was there. So I said YOLO. I tied several Sparks to Azim's character page — beats involving him, reveals about him, moments where he made decisions.
+
+Then I opened Azim's wiki page.
+
+Every Spark I'd linked to him was listed in chronological order. His appearances. His decisions. His reveals. His arc. The wiki page was just showing me every Spark that referenced Azim, sorted by manuscript position.
+
+<EmphasizedText>It was a POV timeline. One, I had not designed.</EmphasizedText>
+
+Sparks had types. Sparks knew who they were about. Sparks had manuscript positions. The wiki page was just a query: "Show me everything tagged to this character, in order." The timeline assembled itself.
+
+And then I realized: the Clothesline was doing the same thing. It wasn't a feature, it was a query surface over the same data. So was the filtered view. So was the wiki page.
+
+<EmphasizedText>They were all views over a single bidirectional graph. </EmphasizedText>
+
+<LayoutDiagram title="The Annotation Graph">
+{`+---------------------------------------------------------+
+|                    ANNOTATION GRAPH                     |
+|                                                         |
+|    Sparks  <------------------------>  Etches           |
+|       |                                  |              |
+|       +-- plotlines                      +-- pages      |
+|       +-- facets                         +-- categories |
+|       +-- entities                       +-- entities   |
+|       +-- position                       +-- position   |
++------------------------------+--------------------------+
+                                 |
+                +----------------+----------------+
+                |                |                |
+     +--------+--------+ +-----+-----+ +--------+--------+
+     |   CLOTHESLINE   | | WIKI PAGE | |     BOARDS      |
+     |                 | |           | |                 |
+     |  Show sparks    | | Show all  | |  Show sparks    |
+     |  by chapter     | | tagged to | |  by plotline    |
+     |  and facet      | | character | |  and status     |
+     +-----------------+ +-----------+ +-----------------+`}
+</LayoutDiagram>
+
+I didn't build six features. I built one engine with multiple lenses.
+
+
+## Combinatorics in the Sun
+
+We read stories top to bottom. This happened, then this, Bob's your uncle. This leads us to imagining stories as a line. It's so fundamental we don't even think about it. Every tool we've ever built for writers assumes it. Spreadsheets have rows. Timelines have lines. Outlines have hierarchies.
+
+Because a story is a sequence....right?
+
+Look a bit closer at that ASCII clothesline.
+
+When I clicked "Clue," I didn't see a line. I saw points scattered across chapters, connected by _subject_, not by reading order. A clue planted in chapter one does not automatically make it related to chapter two. When I opened Azim's wiki page, I saw every scene that touched him — Chapter 2, 7, 12, 19 — connected by ***character***, not sequence.
+
+Think about it like rooms. This scene happens in this room, with these characters. The next scene happens in another room, with different characters. There's a line between the rooms — chapter two follows chapter one. That's the reading order.
+
+But inside those rooms, there are characters who also appear in _other_ rooms. Clues planted in one room that pay off three rooms later. A gauntlet described in the first room that has to match the gauntlet in a room sixty chapters from now. Those connections don't follow the line. They cut across it. They reach backward and forward and sideways.
+
+A story was never a line. The line is how we _read_ it. But the story itself, the actual architecture of connections between characters, clues, promises, and world facts, is a graph.
+
+<StoryGraph />
+
+Every spreadsheet, every timeline, every color-coded document you've ever used to manage your story was trying to hold a graph in a container made for lines.
+
+That's why they break.
+
+
+## On Wrestling Oily Old Men
+
+Every shape I grabbed this month shifted. The schema was wrong — shift. The Clothesline was full of junk — another shift. A bug connected things that weren't supposed to connect — mega shift. I held on anyway.
+
+Underneath every transformation, the true form was always the same thing. Not a feature. Not a timeline. A graph.
+I just couldn't see it until I stopped insisting on the shape I expected and held on long enough for the real one to appear.
+
+---
+
+Next month, aampersand leaves the workshop. Five authors. One cabin. Hands that didn't build the instrument, picking it up for the first time.
+
+<EmphasizedText>In May, we need to see a man about a forge.</EmphasizedText>
+
+<DevlogCTA
+  linkText="Read the marketing spin"
+  linkHref="www.aampersand.com/devlog/apr-2026"
+>
+aampersand lets you wrestle with the shape of your story.
+</DevlogCTA>

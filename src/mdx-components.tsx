@@ -20,6 +20,7 @@ import { AnnotatedCodeBlock } from "@/components/content/AnnotatedCodeBlock";
 import { FooterTeaser } from "@/components/content/FooterTeaser";
 import { HorizontalScroll } from "@/components/content/HorizontalScroll";
 import { ScrollImage } from "@/components/content/ScrollImage";
+import { StoryGraph } from "@/components/interactive/story-graph";
 
 
 
@@ -143,6 +144,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     FooterTeaser,
     HorizontalScroll,
     ScrollImage,
+    StoryGraph,
 
     ...components,
   };

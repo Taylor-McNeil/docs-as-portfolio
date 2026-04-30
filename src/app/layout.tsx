@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono, Geist, Geist_Mono } from 'next/font/google'
+import { Plus_Jakarta_Sans, Geist, Geist_Mono } from 'next/font/google'
+import localFont from 'next/font/local'
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { Shell } from "@/components/layout/Shell";
 import { Sidebar } from "@/components/layout/Sidebar";
@@ -11,9 +12,10 @@ const plusJakarta = Plus_Jakarta_Sans({
   variable: '--font-sans'
 })
 
-const jetbrainsMono = JetBrains_Mono({ 
-  subsets: ['latin'],
-  variable: '--font-jetbrains'
+const jetbrainsMono = localFont({
+  src: '../../public/fonts/jetbrains-mono-400.woff2',
+  variable: '--font-jetbrains',
+  display: 'swap',
 })
 
 const geistMono = Geist_Mono({ 
