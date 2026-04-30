@@ -10,7 +10,6 @@ export const metadata: Metadata = {
     title: "Oily Bodies in Karpathos",
     description: "A tagging experiment reveals that stories aren't timelines — they're graphs. How a schema crisis and a lucky bug led to aampersand's annotation engine.",
     type: "article",
-    images: [{ width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
