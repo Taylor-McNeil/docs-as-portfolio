@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /test-game
 Disallow: /reports/
+Disallow: /tools/
 
 Sitemap: https://taylormcneil.dev/sitemap.xml

@@ -46,6 +46,16 @@
   --color-nav-active-bg: #fed7aa;
   --color-nav-active-text: #c2410c;
 
+  /* StoryGraph connection colors — blue / green / amber / red spread */
+  --color-edge-character: #4A7FAA;
+  --color-edge-clue: #3D8B5D;
+  --color-edge-promise: #B8860B;
+  --color-edge-consequence: #BF4F3F;
+
+  /* StoryGraph node styling */
+  --color-node-stroke: #94a3b8;
+  --color-node-fill: #ffffff;
+
   /* Timeline colors - Current is teal, others orange in light mode */
   --color-timeline-green: #0d9488;
   --color-timeline-blue: #ea580c;
@@ -94,6 +104,16 @@
   /* Active nav in dark mode */
   --color-nav-active-bg: rgba(59, 130, 246, 0.1);
   --color-nav-active-text: #60a5fa;
+
+  /* StoryGraph connection colors — blue / green / amber / red spread */
+  --color-edge-character: #6BB8E8;
+  --color-edge-clue: #5EC47A;
+  --color-edge-promise: #E8B84D;
+  --color-edge-consequence: #F07060;
+
+  /* StoryGraph node styling */
+  --color-node-stroke: #64748b;
+  --color-node-fill: #1e293b;
 
   /* Timeline colors - colorful in dark mode */
   --color-timeline-green: #4ade80;

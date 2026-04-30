@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useLayoutEffect, useCallback } from 'react';
 import { toPng } from 'html-to-image';
-import { Download, RefreshCw, Palette, Type, Tag as TagIcon, Quote, Layers, ChevronUp, ChevronDown, X, Plus, Star, AlignLeft, AlignCenter, AlignRight, AlignJustify, Bold, Italic, Underline } from 'lucide-react';
+import { Download, RefreshCw, Palette, Type, Tag as TagIcon, Quote, Layers, ChevronUp, ChevronDown, X, Plus, Star, AlignLeft, AlignCenter, AlignRight, AlignJustify, Bold, Italic, Underline, TextQuote } from 'lucide-react';
 
 // ─── Self-hosted fonts (same-origin, no CORS issues) ─────────────
 const LOCAL_FONTS = [
@@ -125,8 +125,12 @@ export default function TropeCloud() {
   const [themeKey, setThemeKey] = useState(DEFAULTS.theme);
   const [fontKey, setFontKey] = useState(DEFAULTS.font);
   const [tags, setTags] = useState(DEFAULTS.tags);
+  const [tagRadius, setTagRadius] = useState(2);
   const [excerptLines, setExcerptLines] = useState(DEFAULTS.excerptLines);
   const [excerptAlign, setExcerptAlign] = useState('center');
+  const [showExcerptBar, setShowExcerptBar] = useState(false);
+  const [excerptBarWidth, setExcerptBarWidth] = useState(3);
+  const [excerptBarColor, setExcerptBarColor] = useState(null);
   const [activeLineIdx, setActiveLineIdx] = useState(null);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [chapterInfo, setChapterInfo] = useState(DEFAULTS.chapterInfo);
@@ -287,7 +291,6 @@ export default function TropeCloud() {
         prevBlank = true;
         return;
       }
-      const isShort = line.text.length < 30;
       let color = theme.text;
       let baseWeight = 400;
       let letterSpacing = 'normal';
@@ -295,8 +298,6 @@ export default function TropeCloud() {
         color = theme.accent;
         baseWeight = 500;
         letterSpacing = '0.03em';
-      } else if (isShort) {
-        color = theme.textMuted;
       }
       if (line.color) color = line.color;
       out.push(
@@ -426,6 +427,20 @@ export default function TropeCloud() {
           {/* Tags */}
           <div className="mb-6">
             {sectionHeader(TagIcon, `Tags (${tags.length}/${MAX_TAGS})`)}
+            <div className="mb-3">
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">Pill Radius</label>
+                <span className="text-xs text-gray-400 tabular-nums w-6 text-right">{tagRadius}</span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={20}
+                value={tagRadius}
+                onChange={(e) => setTagRadius(Number(e.target.value))}
+                className="w-full accent-indigo-500"
+              />
+            </div>
             <ul className="space-y-1.5 mb-3">
               {tags.map((tag, i) => {
                 const p = palette[i % palette.length];
@@ -433,7 +448,7 @@ export default function TropeCloud() {
                   <li key={i} className="flex items-center gap-2">
                     <span
                       className="flex-1 truncate px-2.5 py-1 rounded text-xs"
-                      style={{ background: p.bg, color: p.color, borderRadius: theme.radius === 0 ? 2 : 20 }}
+                      style={{ background: p.bg, color: p.color, borderRadius: tagRadius }}
                     >
                       {tag}
                     </span>
@@ -498,7 +513,67 @@ export default function TropeCloud() {
                   </button>
                 );
               })}
+              <button
+                type="button"
+                onClick={() => setShowExcerptBar(prev => !prev)}
+                title="Blockquote bar"
+                aria-label="Blockquote bar"
+                aria-pressed={showExcerptBar}
+                className={`flex-1 flex items-center justify-center py-1.5 rounded-md border transition-colors ${showExcerptBar ? 'bg-indigo-50 border-indigo-300 text-indigo-700' : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'}`}
+              >
+                <TextQuote className="w-4 h-4" />
+              </button>
             </div>
+            {showExcerptBar && (
+              <div className="mb-3 p-2.5 bg-gray-50 border border-gray-200 rounded-md space-y-2.5">
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-[10px] text-gray-500 uppercase tracking-wider">Thickness</label>
+                    <span className="text-[10px] text-gray-400 tabular-nums">{excerptBarWidth}px</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={1}
+                    max={8}
+                    value={excerptBarWidth}
+                    onChange={(e) => setExcerptBarWidth(Number(e.target.value))}
+                    className="w-full accent-indigo-500"
+                  />
+                </div>
+                <div>
+                  <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1.5">Color</p>
+                  <div className="flex gap-1.5 flex-wrap items-center">
+                    <button
+                      type="button"
+                      onClick={() => setExcerptBarColor(null)}
+                      title="Theme accent (default)"
+                      className={`w-6 h-6 rounded-full border transition-transform hover:scale-110 ${excerptBarColor === null ? 'ring-2 ring-offset-1 ring-indigo-500 border-indigo-500' : 'border-gray-300'}`}
+                      style={{ background: theme.accent }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setExcerptBarColor(theme.textDim)}
+                      title="Diamond color"
+                      className={`w-6 h-6 rounded-full border transition-transform hover:scale-110 ${excerptBarColor === theme.textDim ? 'ring-2 ring-offset-1 ring-indigo-500 border-indigo-500' : 'border-gray-300'}`}
+                      style={{ background: theme.textDim }}
+                    />
+                    {palette.map((p, i) => {
+                      const selected = excerptBarColor === p.color;
+                      return (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => setExcerptBarColor(p.color)}
+                          title={p.color}
+                          className={`w-6 h-6 rounded-full border transition-transform hover:scale-110 ${selected ? 'ring-2 ring-offset-1 ring-indigo-500 border-indigo-500' : 'border-gray-300'}`}
+                          style={{ background: p.color }}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="flex gap-1 mb-3" role="group" aria-label="Line formatting">
               {[
                 { prop: 'bold',      Icon: Bold,      label: 'Bold' },
@@ -735,7 +810,7 @@ export default function TropeCloud() {
                         padding: '5px 12px',
                         fontSize: 12,
                         fontFamily: "'Crimson Pro', Georgia, serif",
-                        borderRadius: theme.radius === 0 ? 2 : 20,
+                        borderRadius: tagRadius,
                         display: 'inline-block',
                         lineHeight: 1.2,
                       }}
@@ -753,9 +828,9 @@ export default function TropeCloud() {
                 style={{
                   textAlign: 'center',
                   color: theme.textDim,
-                  fontSize: 8,
-                  letterSpacing: 16,
-                  paddingBottom: 8,
+                  fontSize: 12,
+                  letterSpacing: 6,
+                  paddingBottom: 0,
                 }}
               >
                 ◆◆◆
@@ -765,7 +840,7 @@ export default function TropeCloud() {
             {/* Excerpt block */}
             <div
               style={{
-                padding: '24px 32px 28px',
+                padding: '12px 32px 28px',
                 borderTop: theme.ornament ? 'none' : `1px solid ${theme.border}`,
                 fontFamily: font.family,
                 fontSize: 15.5,
@@ -773,7 +848,11 @@ export default function TropeCloud() {
                 textAlign: excerptAlign,
               }}
             >
-              {renderedExcerpt}
+              {showExcerptBar ? (
+                <div style={{ borderLeft: `${excerptBarWidth}px solid ${excerptBarColor || theme.accent}`, paddingLeft: 16, marginLeft: -8 }}>
+                  {renderedExcerpt}
+                </div>
+              ) : renderedExcerpt}
             </div>
 
             {/* Footer bar */}

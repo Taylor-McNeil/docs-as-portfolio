@@ -72,7 +72,7 @@ export function ShellInner({ sidebar, children }: ShellProps) {
               {children}
             </div>
             {!isToolRoute && (
-              <footer className="mt-16 pt-4 border-t border-border text-xs text-foreground-muted text-center">
+              <footer className="mt-8 pt-4 border-t border-border text-xs text-foreground-muted text-center">
                 <p>✏️ Taylor McNeil is a Developer Experience Engineer and the creator of aampersand, a writing tool that helps fiction writers see the shape of their story.</p>
               </footer>
             )}

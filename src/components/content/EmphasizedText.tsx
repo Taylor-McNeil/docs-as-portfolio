@@ -19,9 +19,9 @@ const colorStyles: Record<EmphasizedColor, string> = {
 
 export function EmphasizedText({ children, color = "orange" }: EmphasizedTextProps) {
   return (
-    <span className={`font-semibold px-1 rounded ${colorStyles[color]}`}>
+    <p className={`font-semibold rounded mb-4 ${colorStyles[color]}`}>
       {children}
-    </span>
+    </p>
   );
 }
 
@@ -30,11 +30,9 @@ export function EmphasizedText({ children, color = "orange" }: EmphasizedTextPro
  *
  * import { EmphasizedText } from "@/components/content/EmphasizedText";
  *
- * <p>
- *   <EmphasizedText>I had to stop trusting the prose.</EmphasizedText>
- *   <EmphasizedText color="purple">Purple emphasis</EmphasizedText>
- *   <EmphasizedText color="green">Green emphasis</EmphasizedText>
- * </p>
+ * <EmphasizedText>I had to stop trusting the prose.</EmphasizedText>
+ * <EmphasizedText color="purple">Purple emphasis</EmphasizedText>
+ * <EmphasizedText color="green">Green emphasis</EmphasizedText>
  *
  * Props:
  * - children: ReactNode (required) - The text to emphasize
