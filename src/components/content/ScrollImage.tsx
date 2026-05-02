@@ -223,7 +223,7 @@ export function ScrollImage({
             onTouchEnd={handleTouchEnd}
             onDoubleClick={handleDoubleClick}
           >
-            {/* Using img tag in lightbox for full-res display */}
+            {/* eslint-disable-next-line @next/next/no-img-element -- Lightbox needs direct full-resolution image rendering with pan/zoom transforms. */}
             <img
               src={src}
               alt={alt}

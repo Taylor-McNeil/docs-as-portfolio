@@ -8,6 +8,7 @@ export interface NavItem {
 
 export interface NavSection {
   title: string;
+  subtitle?: string;
   items: NavItem[];
 }
 
@@ -21,7 +22,9 @@ export const navigation: NavSection[] = [
   },
    {
      title: "aampersand",
+     subtitle: "building in public",
      items: [
+       { href: "/aampersand", label: "Overview", method: "GET" },
        { href: "/aampersand/a-sirens-song", label: "Jan 2026", method: "PUT" },
        { href: "/aampersand/peering-into-lethe", label: "Feb 2026", method: "PUT"},
        { href: "/aampersand/a-broken-astrolabe", label: "Mar 2026", method: "PUT"},

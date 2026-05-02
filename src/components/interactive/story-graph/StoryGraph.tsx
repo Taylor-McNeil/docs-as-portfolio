@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useSyncExternalStore } from "react";
 import { StoryGraphSVG } from "./StoryGraphSVG";
 import { useForceSimulation } from "./useForceSimulation";
 import {
@@ -17,6 +17,17 @@ import {
 } from "./data";
 
 const DRAG_THRESHOLD = 5;
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeToReducedMotion(onStoreChange: () => void) {
+  const mq = window.matchMedia(REDUCED_MOTION_QUERY);
+  mq.addEventListener("change", onStoreChange);
+  return () => mq.removeEventListener("change", onStoreChange);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
 
 export function StoryGraph() {
   const [mode, setMode] = useState<ViewMode>("linear");
@@ -25,7 +36,11 @@ export function StoryGraph() {
   const [nodePositions, setNodePositions] = useState<NodePosition[]>(
     computeLinearPositions,
   );
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const reducedMotion = useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionSnapshot,
+    () => false,
+  );
   const [viewBox, setViewBox] = useState({ y: 130, h: 120 });
   const viewBoxRef = useRef({ y: 130, h: 120 });
 
@@ -40,20 +55,14 @@ export function StoryGraph() {
   } | null>(null);
 
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-
-  useEffect(() => {
     const targetY = mode === "linear" ? 130 : 0;
     const targetH = mode === "linear" ? 120 : SVG_HEIGHT;
     if (reducedMotion) {
-      viewBoxRef.current = { y: targetY, h: targetH };
-      setViewBox({ y: targetY, h: targetH });
-      return;
+      const raf = requestAnimationFrame(() => {
+        viewBoxRef.current = { y: targetY, h: targetH };
+        setViewBox({ y: targetY, h: targetH });
+      });
+      return () => cancelAnimationFrame(raf);
     }
     const startY = viewBoxRef.current.y;
     const startH = viewBoxRef.current.h;
@@ -198,7 +207,7 @@ export function StoryGraph() {
   );
 
   const handlePointerUp = useCallback(
-    (_e: React.PointerEvent) => {
+    () => {
       if (!dragState.current) return;
       if (dragState.current.dragged) {
         releaseNode(dragState.current.nodeId);

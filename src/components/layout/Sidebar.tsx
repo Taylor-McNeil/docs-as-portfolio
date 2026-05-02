@@ -19,7 +19,11 @@ export function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto p-4 space-y-8">
         {navigation.map((section) => (
-          <NavSection key={section.title} title={section.title}>
+          <NavSection
+            key={section.title}
+            title={section.title}
+            subtitle={section.subtitle}
+          >
             {section.items.map((item) => (
               <NavItem
                 key={item.href}
@@ -35,7 +39,7 @@ export function Sidebar() {
       {/* CTA */}
       <div className="p-4 border-t border-border">
         <a
-          href="mailto:mcneiltaylor@live.com"
+          href="https://linkedin.com/in/taylormcneil"
           className="block w-full bg-accent text-white text-xs font-medium py-2.5 rounded hover:opacity-90 transition-opacity text-center"
         >
           Contact API →

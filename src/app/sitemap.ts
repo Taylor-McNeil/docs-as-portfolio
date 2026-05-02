@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: baseUrl, lastModified: new Date(), priority: 1.0 },
     { url: `${baseUrl}/quickstart`, priority: 0.9 },
     { url: `${baseUrl}/changelog`, priority: 0.6 },
+    { url: `${baseUrl}/aampersand`, priority: 0.8 },
     { url: `${baseUrl}/aampersand/a-sirens-song`, priority: 0.8 },
     { url: `${baseUrl}/aampersand/peering-into-lethe`, priority: 0.8 },
     { url: `${baseUrl}/aampersand/a-broken-astrolabe`, priority: 0.8 },

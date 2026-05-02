@@ -1,7 +1,5 @@
 import { ResponsePanel } from "@/components/layout/ResponsePanel";
 import { PageHeader } from "@/components/content/PageHeader";
-import { Callout } from "@/components/content/Callout";
-import Link from "next/link";
 
 export const metadata = {
   title: "The Long View",

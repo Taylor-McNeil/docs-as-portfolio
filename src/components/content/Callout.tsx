@@ -6,6 +6,7 @@ type CalloutType = "note" | "warning" | "tip" | "context" | "test" | "celebratio
 interface CalloutProps {
   type?: CalloutType;
   title?: string;
+  label?: string | false;
   children: ReactNode;
 }
 
@@ -36,21 +37,25 @@ const labels: Record<CalloutType, string> = {
   celebration: "Celebrate",
 };
 
-export function Callout({ type = "note", title, children }: CalloutProps) {
+export function Callout({ type = "note", title, label, children }: CalloutProps) {
+  const displayLabel = label === undefined ? labels[type] : label;
+
   return (
     <div className={`border-l-4 rounded-r-lg p-4 my-6 ${styles[type]}`}>
-      <div className="flex items-center gap-2">
-        {icons[type]}
-        <span className="text-xs font-bold uppercase tracking-wide text-foreground-muted">
-          {labels[type]}
-        </span>
-      </div>
+      {displayLabel && (
+        <div className="flex items-center gap-2">
+          {icons[type]}
+          <span className="text-xs font-bold uppercase tracking-wide text-foreground-muted">
+            {displayLabel}
+          </span>
+        </div>
+      )}
       {title && (
         <div className="mt-1 text-sm font-semibold text-foreground">
           {title}
         </div>
       )}
-      <div className="mt-2 text-sm text-foreground-muted [&>p]:m-0 [&_a]:text-accent [&_a]:underline [&_a]:hover:opacity-80">{children}</div>
+      <div className={`${displayLabel || title ? "mt-2" : ""} text-sm text-foreground-muted [&>p]:m-0 [&_a]:text-accent [&_a]:underline [&_a]:hover:opacity-80`}>{children}</div>
     </div>
   );
 }

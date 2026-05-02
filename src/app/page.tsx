@@ -24,7 +24,7 @@ export default function Home() {
       'API Documentation',
       'Developer Experience',
       'Technical Writing',
-      'OpenAPI',
+      'OpenAPI'
     ],
     sameAs: [
       'https://github.com/Taylor-McNeil',
@@ -46,13 +46,12 @@ export default function Home() {
             roles: [
               "Developer Experience Engineer",
               "Technical Writer",
-              "Developer Advocate",
+              "Developer Advocate"
             ],
             location: "Remote",
-            email: "mcneiltaylor@live.com",
             github: "https://github.com/taylor-mcneil",
             linkedin: "https://linkedin.com/in/taylormcneil",
-            availability: "Open for opportunities",
+            availability: "Busy building"
           },
         }}
       />
@@ -113,6 +112,18 @@ export default function Home() {
               /quickstart
             </Link>
             <span className="text-foreground-muted"> — The TL;DR</span>
+          </li>
+          <li>
+            <Link
+              href="/aampersand"
+              className="text-accent hover:underline font-medium"
+            >
+              /aampersand
+            </Link>
+             <span className="text-foreground-muted">
+              {" "}
+              — A writing tool that unfolds your story
+            </span>
           </li>
           <li>
             <Link
