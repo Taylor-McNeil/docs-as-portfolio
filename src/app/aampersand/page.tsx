@@ -7,7 +7,7 @@ export const metadata = {
   description:
     "A builder's journal for aampersand, a writing tool that helps fiction writers unfold the shape of their story.",
   alternates: {
-    canonical: "/aampersand",
+    canonical: "https://www.taylormcneil.dev/aampersand",
   },
 };
 

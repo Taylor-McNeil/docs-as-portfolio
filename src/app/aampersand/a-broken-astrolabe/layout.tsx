@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "A Broken Astrolabe — Why Deep Customization Demands Strict Primitives",
   description: "A Tailwind CSS collision broke my navbar. Fixing it revealed that wild user customization requires rigid UI primitives underneath — not the other way around. aampersand devlog 3.",
   alternates: {
-    canonical: '/aampersand/a-broken-astrolabe',
+    canonical: 'https://www.taylormcneil.dev/aampersand/a-broken-astrolabe',
   },
 };
 
