@@ -35,14 +35,14 @@ export const metadata: Metadata = {
     template: "%s · Taylor McNeil",
   },
   description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a visual narrative management tool for fiction writers.",
-  metadataBase: new URL("https://www.taylormcneil.dev"),
+  metadataBase: new URL("https://taylormcneil.dev"),
   alternates: {
-    canonical: 'https://www.taylormcneil.dev',
+    canonical: 'https://taylormcneil.dev',
   },
   openGraph: {
     title: "Taylor McNeil",
     description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a visual narrative management tool for fiction writers.",
-    url: "https://www.taylormcneil.dev",
+    url: "https://taylormcneil.dev",
     siteName: "Taylor McNeil",
     locale: "en_US",
     type: "website",
