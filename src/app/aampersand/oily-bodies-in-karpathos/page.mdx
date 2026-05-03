@@ -15,11 +15,11 @@ import { HeroQuote } from "@/components/content/HeroQuote";
 
 <JsonLd data={{
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Oily Bodies in Karpathos",
-  "description": "A tagging experiment reveals that stories aren't timelines — they're graphs. How a schema crisis and a lucky bug led to aampersand's annotation engine.",
-  "author": { "@type": "Person", "name": "Taylor McNeil", "url": "https://taylormcneil.dev" },
-  "url": "https://taylormcneil.dev/aampersand/oily-bodies-in-karpathos"
+  "@type": "BlogPosting",
+  "headline": "Annotation Architecture for Fiction Writing Software — aampersand Technical Devlog #4",
+  "datePublished": "2026-04-01",
+  "author": { "@type": "Person", "name": "Taylor McNeil" },
+  "url": "https://www.taylormcneil.dev/aampersand/oily-bodies-in-karpathos"
 }} />
 
 <GuideHeader
@@ -41,7 +41,7 @@ import { HeroQuote } from "@/components/content/HeroQuote";
 />
 
 <Callout type= "context">
-This is a cross post from <a href="www.aampersand.com/devlog/apr-2026" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">aampersand.com<ExternalLink size={12} className="inline" /></a>.
+This is a cross post from <a href="https://www.aampersand.com/devlog/apr-2026" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">aampersand.com<ExternalLink size={12} className="inline" /></a>.
 This month's story transcends genres.
 </Callout>
 
@@ -52,11 +52,11 @@ This month's story transcends genres.
 I shipped the March devlog at 2:00 AM. Digitally, it was a success. Internally, it was a failure.
 </HeroQuote>
 
-Hours earlier, I been dogfooding aampersand, trying to get screenshots for a demo. I wanted to tag something about Azim's gauntlet. For continuity. I wanted to remember the color and how I had described it the first time the reader saw it. I opened the tagging menu, and the system asked me to create a beat.
+Hours earlier, I'd been dogfooding aampersand, trying to get screenshots for a demo. I wanted to tag something about Azim's gauntlet. For continuity. I wanted to remember the color and how I had described it the first time the reader saw it. I opened the tagging menu, and the system asked me to create a beat.
 
-Except a gauntlet description, isn't a beat.
+Except a gauntlet description isn't a beat.
 
-A beat moves the story forward. Azim's gauntlet... was a fact about him. Essentially metadata. The kind that belongs in file properties...or a wiki? It was 9:59 PM and the devlog was due at midnight. I tagged it anyway, because... I was running out of time and there was no where to put it.
+A beat moves the story forward. Azim's gauntlet... was a fact about him. Essentially metadata. The kind that belongs in file properties... or a wiki? It was 9:59 PM and the devlog was due at midnight. I tagged it anyway, because... I was running out of time and there was nowhere to put it.
 
 So I just kept going. After twenty minutes I had a list, after thirty minutes, I had a problem. More than half the things I wanted to tag were not "beats".
 
@@ -64,11 +64,11 @@ So I just kept going. After twenty minutes I had a list, after thirty minutes, I
 | --------------------------------------------------- | --------------------------------------------- |
 | Azim's gauntlet is obsidian                         | **World fact** — belongs in a wiki            |
 | Reid gets mugged                                    | **Beat** — plot moves forward                 |
-| Ghazi watches and admits to not helping Reid before  | **Character Moment** — Ghazi is kinda a putz  |
-| Reed lies during interrogation                      | **Catalyst** — cascade of consequences        |
+| Ghazi watches and admits to not helping Reid before | **Character Moment** — Ghazi is kinda a putz  |
+| Reid lies during interrogation                      | **Catalyst** — cascade of consequences        |
 | The presence of the necklace                        | **Foreshadowing** — the necklace would return |
 
-I'd built aampersand around the assumption that beats were the atomic unit of story telling. (There is an entire genre of craft books confirming this fact.) Every feature I had built was about beats: displaying them, tracking them, organizing them. Beats were king.
+I'd built aampersand around the assumption that beats were the atomic unit of storytelling. (There is an entire genre of craft books confirming this fact.) Every feature I had built was about beats: displaying them, tracking them, organizing them. Beats were king.
 
 Except they weren't. They were just one type of structural knowledge sitting alongside a half-dozen other types, and I had been trying to shove them all into a single box. Sitting with that realization felt like the ground was shifting under me.
 
@@ -170,7 +170,7 @@ It had become a ***query surface***.
 +-------------------------------------------------------------------------+`}
 </LayoutDiagram>
 
-That alone, made April sexy. However, this story is not finished yet. Because a *bug* allowed me to make yet another even bigger discovery.
+That alone made April sexy. However, this story is not finished yet. Because a *bug* allowed me to make yet another even bigger discovery.
 
 In the Spark creation modal, I had accidentally included the ability to tie a Spark to a wiki page. This was not designed. It was leftover UI from an earlier iteration where I was testing how Sparks and Etches might cross-reference.
 
@@ -180,7 +180,7 @@ Then I opened Azim's wiki page.
 
 Every Spark I'd linked to him was listed in chronological order. His appearances. His decisions. His reveals. His arc. The wiki page was just showing me every Spark that referenced Azim, sorted by manuscript position.
 
-<EmphasizedText>It was a POV timeline. One, I had not designed.</EmphasizedText>
+<EmphasizedText>It was a POV timeline. One I had not designed.</EmphasizedText>
 
 Sparks had types. Sparks knew who they were about. Sparks had manuscript positions. The wiki page was just a query: "Show me everything tagged to this character, in order." The timeline assembled itself.
 
@@ -218,7 +218,7 @@ I didn't build six features. I built one engine with multiple lenses.
 
 We read stories top to bottom. This happened, then this, Bob's your uncle. This leads us to imagining stories as a line. It's so fundamental we don't even think about it. Every tool we've ever built for writers assumes it. Spreadsheets have rows. Timelines have lines. Outlines have hierarchies.
 
-Because a story is a sequence....right?
+Because a story is a sequence...right?
 
 Look a bit closer at that ASCII clothesline.
 
@@ -252,7 +252,7 @@ Next month, aampersand leaves the workshop. Five authors. One cabin. Hands that 
 
 <DevlogCTA
   linkText="Read the marketing spin"
-  linkHref="www.aampersand.com/devlog/apr-2026"
+  linkHref="https://www.aampersand.com/devlog/apr-2026"
 >
 aampersand lets you wrestle with the shape of your story.
 </DevlogCTA>

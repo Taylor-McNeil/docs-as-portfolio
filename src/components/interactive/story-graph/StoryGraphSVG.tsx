@@ -7,6 +7,7 @@ import {
   SVG_HEIGHT,
   type NodePosition,
   type AnimationPhase,
+  type StoryEdge,
   isEdgeConnectedToNode,
   getConnectedNodeIds,
 } from "./data";
@@ -41,10 +42,8 @@ function getArrowOpacity(phase: AnimationPhase, mode: string): number {
 function getEdgeOpacity(
   phase: AnimationPhase,
   mode: string,
-  edgeIndex: number,
   selectedNodeId: number | null,
-  source: number,
-  target: number,
+  edge: Pick<StoryEdge, "source" | "target">,
 ): number {
   if (mode === "linear") return 0;
   if (phase === "graph-exit-edges" || phase === "graph-exit-sim") return 0;
@@ -57,22 +56,17 @@ function getEdgeOpacity(
   if (!visible) return 0;
 
   if (selectedNodeId !== null) {
-    return isEdgeConnectedToNode({ source, target } as any, selectedNodeId)
-      ? 1
-      : 0.06;
+    return isEdgeConnectedToNode(edge, selectedNodeId) ? 1 : 0.06;
   }
   return 1;
 }
 
 function getEdgeStrokeWidth(
   selectedNodeId: number | null,
-  source: number,
-  target: number,
+  edge: Pick<StoryEdge, "source" | "target">,
 ): number {
   if (selectedNodeId === null) return 2;
-  return isEdgeConnectedToNode({ source, target } as any, selectedNodeId)
-    ? 3
-    : 2;
+  return isEdgeConnectedToNode(edge, selectedNodeId) ? 3 : 2;
 }
 
 export const StoryGraphSVG = memo(function StoryGraphSVG({
@@ -163,12 +157,10 @@ export const StoryGraphSVG = memo(function StoryGraphSVG({
           const opacity = getEdgeOpacity(
             animPhase,
             mode,
-            i,
             selectedNodeId,
-            edge.source,
-            edge.target,
+            edge,
           );
-          const sw = getEdgeStrokeWidth(selectedNodeId, edge.source, edge.target);
+          const sw = getEdgeStrokeWidth(selectedNodeId, edge);
           const delay =
             animPhase === "graph-enter-edges" && !reducedMotion
               ? `${i * 50}ms`

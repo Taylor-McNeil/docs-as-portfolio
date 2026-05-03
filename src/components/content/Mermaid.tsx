@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import mermaid from "mermaid";
 
@@ -13,11 +13,11 @@ export function Mermaid({ chart }: MermaidProps) {
   const [svg, setSvg] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     if (!mounted) return;

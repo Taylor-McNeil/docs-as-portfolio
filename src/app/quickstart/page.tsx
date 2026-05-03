@@ -23,7 +23,7 @@ const configCode = `import { Candidate } from '@taylor-mcneil/core';
 export default new Candidate({
   role: 'Developer Experience Engineer',
   version: '4.0.0', // Deprecates "Road Warrior" module
-  location: 'Atlanta, GA (Remote)',
+  location: 'Remote',
   
   capabilities: {
     technical_writing: true,
@@ -49,7 +49,7 @@ export const metadata = {
   title: "TL;DR · Developer Experience Engineer",
   description: "The TL;DR on Taylor McNeil — skills, stack, and career stats, formatted as a developer config file.",
   alternates: {
-    canonical: '/quickstart',
+    canonical: 'https://www.taylormcneil.dev/quickstart',
   },
 };
 

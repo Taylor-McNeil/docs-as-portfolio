@@ -6,7 +6,7 @@ export const metadata = {
   title: "Developer Experience Engineer",
   description: "Taylor McNeil is a Developer Experience Engineer whose documentation and tutorials have helped 75,000+ developers across 6 continents get unstuck.",
   alternates: {
-    canonical: '/',
+    canonical: 'https://www.taylormcneil.dev',
   },
 };
 
@@ -16,20 +16,9 @@ export default function Home() {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Taylor McNeil',
-    jobTitle: 'Developer Experience Engineer',
-    url: 'https://taylormcneil.dev',
-    description:
-      'Developer Experience Engineer who has helped 75,000+ developers across 6 continents get unstuck.',
-    knowsAbout: [
-      'API Documentation',
-      'Developer Experience',
-      'Technical Writing',
-      'OpenAPI',
-    ],
-    sameAs: [
-      'https://github.com/Taylor-McNeil',
-      'https://linkedin.com/in/taylormcneil',
-    ],
+    url: 'https://www.taylormcneil.dev',
+    description: 'Developer, writer, and creator of aampersand.',
+    jobTitle: 'Software Developer',
   }
 
   return (
@@ -46,13 +35,12 @@ export default function Home() {
             roles: [
               "Developer Experience Engineer",
               "Technical Writer",
-              "Developer Advocate",
+              "Developer Advocate"
             ],
             location: "Remote",
-            email: "mcneiltaylor@live.com",
             github: "https://github.com/taylor-mcneil",
             linkedin: "https://linkedin.com/in/taylormcneil",
-            availability: "Open for opportunities",
+            availability: "Busy building"
           },
         }}
       />
@@ -113,6 +101,18 @@ export default function Home() {
               /quickstart
             </Link>
             <span className="text-foreground-muted"> — The TL;DR</span>
+          </li>
+          <li>
+            <Link
+              href="/aampersand"
+              className="text-accent hover:underline font-medium"
+            >
+              /aampersand
+            </Link>
+             <span className="text-foreground-muted">
+              {" "}
+              — A writing tool that unfolds your story
+            </span>
           </li>
           <li>
             <Link

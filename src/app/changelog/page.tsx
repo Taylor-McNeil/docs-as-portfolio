@@ -19,7 +19,7 @@ export const metadata = {
   title: "Career Timeline",
   description: "Career history as semantic versioning — from community building at Georgia State to API documentation at Stellar, Mastercard, and beyond.",
   alternates: {
-    canonical: '/changelog',
+    canonical: 'https://www.taylormcneil.dev/changelog',
   },
 };
 

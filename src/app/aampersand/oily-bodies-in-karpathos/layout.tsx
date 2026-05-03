@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Oily Bodies in Karpathos — Stories Are Graphs, Not Lines",
   description: "A tagging experiment reveals that stories aren't timelines — they're graphs. How a schema crisis and a lucky bug led to aampersand's annotation engine. aampersand devlog 4.",
   alternates: {
-    canonical: '/aampersand/oily-bodies-in-karpathos',
+    canonical: 'https://www.taylormcneil.dev/aampersand/oily-bodies-in-karpathos',
   },
   openGraph: {
     title: "Oily Bodies in Karpathos",

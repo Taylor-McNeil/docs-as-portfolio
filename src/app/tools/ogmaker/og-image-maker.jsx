@@ -736,7 +736,7 @@ export default function OgImageMaker() {
     }));
   };
 
-  const sitePresets = Object.entries(PRESETS).filter(([_, p]) => p.site === activeSite);
+  const sitePresets = Object.entries(PRESETS).filter(([, p]) => p.site === activeSite);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row text-gray-800" style={{ fontFamily: "'Inter', sans-serif" }}>

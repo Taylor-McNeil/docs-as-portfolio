@@ -39,7 +39,10 @@ export function useForceSimulation(
   const nodesRef = useRef<SimNode[]>([]);
 
   const onTickRef = useRef(onTick);
-  onTickRef.current = onTick;
+
+  useEffect(() => {
+    onTickRef.current = onTick;
+  }, [onTick]);
 
   const stopSim = useCallback(() => {
     if (simRef.current) {

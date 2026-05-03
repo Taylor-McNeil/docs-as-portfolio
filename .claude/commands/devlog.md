@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   title: "{Title} — {Short Subtitle From Description}",
   description: "{description}. aampersand devlog {N}.",
   alternates: {
-    canonical: '/aampersand/{slug}',
+    canonical: 'https://www.taylormcneil.dev/aampersand/{slug}',
   },
 };
 
@@ -40,6 +40,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 Determine the devlog number by counting existing directories under `src/app/aampersand/`.
 
+### Metadata for structured data
+
+Each devlog has two headlines: the **display title** (the literary title shown on the page, e.g. "A Siren's Song") and the **SEO headline** (used in the BlogPosting JSON-LD, optimized for search).
+
+**SEO headline**: Generate a descriptive, search-friendly headline that summarizes the devlog's technical content. Follow this pattern: `"{Technical Topic} — aampersand Technical Devlog #{N}"`. Examples from existing devlogs:
+- "Designing Visual Plotline Tracking — aampersand Technical Devlog #1"
+- "Database Migration for a Solo SaaS — aampersand Technical Devlog #2"
+- "Building a Writing Tool From Scratch — aampersand Technical Devlog #3"
+- "Annotation Architecture for Fiction Writing Software — aampersand Technical Devlog #4"
+
+**datePublished**: Use the first of the month the devlog covers (e.g. a March 2026 devlog uses `"2026-03-01"`). Determine the month from the user's input or from the devlog number sequence (devlog 1 = Jan 2026, each subsequent devlog is the next month).
+
 ### 2. `page.mdx`
 
 Follow this exact structure:
@@ -49,11 +61,11 @@ Follow this exact structure:
 
 <JsonLd data={{
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "{Title}",
-  "description": "{short description}",
-  "author": { "@type": "Person", "name": "Taylor McNeil", "url": "https://taylormcneil.dev" },
-  "url": "https://taylormcneil.dev/aampersand/{slug}"
+  "@type": "BlogPosting",
+  "headline": "{SEO Headline}",
+  "datePublished": "{YYYY-MM-DD}",
+  "author": { "@type": "Person", "name": "Taylor McNeil" },
+  "url": "https://www.taylormcneil.dev/aampersand/{slug}"
 }} />
 
 <GuideHeader
@@ -88,7 +100,7 @@ Import from `@/components/content/` unless noted otherwise:
 |-----------|--------|-------|
 | `GuideHeader` | `@/components/content/GuideHeader` | Always used. Props: `title`, `method`, `endpoint`, `mdxPath` |
 | `AnchorSidebar` | `@/components/layout/AnchorSidebar` | Always used. Props: `items` array of `{ id, label }` matching `##` headings |
-| `JsonLd` | `@/components/content/JsonLd` | Always used. Article structured data |
+| `JsonLd` | `@/components/content/JsonLd` | Always used. BlogPosting structured data |
 | `DevlogCTA` | `@/components/content/DevlogCTA` | Always used at bottom. Props: `linkText`, `linkHref`, children |
 | `Callout` | `@/components/content/Callout` | Types: `note`, `warning`, `tip`, `context`, `test`, `celebration` |
 | `HeroQuote` | `@/components/content/HeroQuote` | Opening quote for a section, rendered as styled blockquote |
@@ -141,7 +153,7 @@ After scaffolding the devlog files, check for OG images in the **project root** 
    export const metadata: Metadata = {
      title: "...",
      description: "...",
-     alternates: { canonical: '/aampersand/{slug}' },
+     alternates: { canonical: 'https://www.taylormcneil.dev/aampersand/{slug}' },
      openGraph: {
        title: "{Title}",
        description: "{description}",

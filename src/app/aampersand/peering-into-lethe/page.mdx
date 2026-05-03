@@ -14,11 +14,11 @@ import { JsonLd } from "@/components/content/JsonLd";
 
 <JsonLd data={{
   "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Peering into Lethe",
-  "description": "How aampersand's beat system tracks story claims independently from prose — so deleted text doesn't destroy your plot.",
-  "author": { "@type": "Person", "name": "Taylor McNeil", "url": "https://taylormcneil.dev" },
-  "url": "https://taylormcneil.dev/aampersand/peering-into-lethe"
+  "@type": "BlogPosting",
+  "headline": "Database Migration for a Solo SaaS — aampersand Technical Devlog #2",
+  "datePublished": "2026-02-01",
+  "author": { "@type": "Person", "name": "Taylor McNeil" },
+  "url": "https://www.taylormcneil.dev/aampersand/peering-into-lethe"
 }} />
 
 <GuideHeader
@@ -93,7 +93,7 @@ The core thesis of aampersand is: "The story is the truth. The document is just 
 
 Because of that, I couldn't build annotations. We had to build Beats.
 
-A Beat isn't a comment. It's a claim about your narrative. It is a database record that says: "Right here, the reader learns that Misses Puff could not be the killer," or "Right here, the love interest has dug himself into a hole that will be revealed in 3 chapters."
+A Beat isn't a comment. It's a claim about your narrative. It is a database record that says: "Right here, the reader learns that Mrs.Puff could not be the killer," or "Right here, the love interest has dug himself into a hole that will be revealed in 3 chapters."
 
 <AnatomyOfABeat
   title="The Anatomy of a Beat"
@@ -224,7 +224,7 @@ But the writer's undo stack in Chapter 3 still holds a snapshot from before any 
 
 Now there are two marks in two chapters for the same beat. The database says Chapter 5. The editor in Chapter 3 says otherwise.
 
-So every time a scene is saved, &mpersand runs a cleanup pass. It scans the saved HTML for beat marks that don't belong to that scene anymore — orphans washed back up by undo — and quietly strips them out. If duplicates surface within the same scene, it keeps the one that matches the database and removes the rest.
+So every time a scene is saved, aampersand runs a cleanup pass. It scans the saved HTML for beat marks that don't belong to that scene anymore — orphans washed back up by undo — and quietly strips them out. If duplicates surface within the same scene, it keeps the one that matches the database and removes the rest.
 
 You can't solve forgetting once. The river keeps washing things back. You have to keep refusing.
 

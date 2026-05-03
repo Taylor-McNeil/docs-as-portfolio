@@ -138,7 +138,7 @@ export function getConnectedNodeIds(nodeId: number): Set<number> {
 }
 
 export function isEdgeConnectedToNode(
-  edge: StoryEdge,
+  edge: Pick<StoryEdge, "source" | "target">,
   nodeId: number,
 ): boolean {
   return edge.source === nodeId || edge.target === nodeId;

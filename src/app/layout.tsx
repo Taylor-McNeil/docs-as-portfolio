@@ -31,15 +31,18 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   title: {
-    default: "Taylor McNeil · Developer Experience Engineer",
+    default: "Taylor McNeil — Developer, Writer, Builder",
     template: "%s · Taylor McNeil",
   },
-  description: "I design developer systems that reduce friction and scale adoption.",
-  metadataBase: new URL("https://taylormcneil.dev"),
+  description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a visual narrative management tool for fiction writers.",
+  metadataBase: new URL("https://www.taylormcneil.dev"),
+  alternates: {
+    canonical: 'https://www.taylormcneil.dev',
+  },
   openGraph: {
     title: "Taylor McNeil",
-    description: "I design developer systems that reduce friction and scale adoption.",
-    url: "https://taylormcneil.dev",
+    description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a visual narrative management tool for fiction writers.",
+    url: "https://www.taylormcneil.dev",
     siteName: "Taylor McNeil",
     locale: "en_US",
     type: "website",
@@ -47,7 +50,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Taylor McNeil",
-    description: "I design developer systems that reduce friction and scale adoption.",
+    description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a visual narrative management tool for fiction writers.",
   },
   robots: {
     index: true,
