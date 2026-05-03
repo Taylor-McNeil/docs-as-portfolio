@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/tools',
     },
-    sitemap: 'https://www.taylormcneil.dev/sitemap.xml',
-    host: 'https://www.taylormcneil.dev',
+    sitemap: 'https://taylormcneil.dev/sitemap.xml',
+    host: 'https://taylormcneil.dev',
   }
 }
