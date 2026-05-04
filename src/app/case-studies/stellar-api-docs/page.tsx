@@ -28,7 +28,7 @@ export const metadata = {
   title: "Stellar API Documentation Case Study",
   description: "How I derived OpenAPI specs from Stellar's codebase to create auto-generated API documentation that can't drift out of sync.",
   alternates: {
-    canonical: 'https://www.taylormcneil.dev/case-studies/stellar-api-docs',
+    canonical: 'https://taylormcneil.dev/case-studies/stellar-api-docs',
   },
 };
 
@@ -39,7 +39,7 @@ export default function StellarCaseStudy() {
     headline: 'Stellar API Documentation Case Study',
     datePublished: '2023-06-01',
     author: { '@type': 'Person', name: 'Taylor McNeil' },
-    url: 'https://www.taylormcneil.dev/case-studies/stellar-api-docs',
+    url: 'https://taylormcneil.dev/case-studies/stellar-api-docs',
   }
 
   return (

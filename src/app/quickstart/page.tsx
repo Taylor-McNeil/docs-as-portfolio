@@ -49,7 +49,7 @@ export const metadata = {
   title: "TL;DR · Developer Experience Engineer",
   description: "The TL;DR on Taylor McNeil — skills, stack, and career stats, formatted as a developer config file.",
   alternates: {
-    canonical: 'https://www.taylormcneil.dev/quickstart',
+    canonical: 'https://taylormcneil.dev/quickstart',
   },
 };
 

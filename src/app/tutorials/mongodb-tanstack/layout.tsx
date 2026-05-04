@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "MongoDB + TanStack Tutorial",
   description: "A full-stack integration guide connecting TanStack Start to MongoDB Atlas, written for MongoDB's official driver documentation.",
   alternates: {
-    canonical: 'https://www.taylormcneil.dev/tutorials/mongodb-tanstack',
+    canonical: 'https://taylormcneil.dev/tutorials/mongodb-tanstack',
   },
 };
 

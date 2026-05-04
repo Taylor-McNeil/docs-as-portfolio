@@ -6,7 +6,7 @@ export const metadata = {
   title: "Developer Experience Engineer",
   description: "Taylor McNeil is a Developer Experience Engineer whose documentation and tutorials have helped 75,000+ developers across 6 continents get unstuck.",
   alternates: {
-    canonical: 'https://www.taylormcneil.dev',
+    canonical: 'https://taylormcneil.dev',
   },
 };
 
@@ -16,7 +16,7 @@ export default function Home() {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Taylor McNeil',
-    url: 'https://www.taylormcneil.dev',
+    url: 'https://taylormcneil.dev',
     description: 'Developer, writer, and creator of aampersand.',
     jobTitle: 'Software Developer',
   }

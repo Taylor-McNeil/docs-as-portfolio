@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   title: "{Title} — {Short Subtitle From Description}",
   description: "{description}. aampersand devlog {N}.",
   alternates: {
-    canonical: 'https://www.taylormcneil.dev/aampersand/{slug}',
+    canonical: 'https://taylormcneil.dev/aampersand/{slug}',
   },
 };
 
@@ -65,7 +65,7 @@ Follow this exact structure:
   "headline": "{SEO Headline}",
   "datePublished": "{YYYY-MM-DD}",
   "author": { "@type": "Person", "name": "Taylor McNeil" },
-  "url": "https://www.taylormcneil.dev/aampersand/{slug}"
+  "url": "https://taylormcneil.dev/aampersand/{slug}"
 }} />
 
 <GuideHeader
@@ -153,7 +153,7 @@ After scaffolding the devlog files, check for OG images in the **project root** 
    export const metadata: Metadata = {
      title: "...",
      description: "...",
-     alternates: { canonical: 'https://www.taylormcneil.dev/aampersand/{slug}' },
+     alternates: { canonical: 'https://taylormcneil.dev/aampersand/{slug}' },
      openGraph: {
        title: "{Title}",
        description: "{description}",
