@@ -2,7 +2,8 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Tools",
-  alternates: { canonical: "https://www.taylormcneil.dev/tools" },
+  alternates: { canonical: "https://taylormcneil.dev/tools" },
+  robots: { index: false, follow: false },
 };
 
 export default function ToolsIndex() {

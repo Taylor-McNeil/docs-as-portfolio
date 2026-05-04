@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Java Game Development Tutorial",
   description: "A step-by-step Java tutorial for building Tic Tac Toe in the console. 75,000+ views. Kept intentionally beginner-friendly.",
   alternates: {
-    canonical: 'https://www.taylormcneil.dev/tutorials/java-game-dev',
+    canonical: 'https://taylormcneil.dev/tutorials/java-game-dev',
   },
 };
 

@@ -8,7 +8,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: baseUrl, lastModified, changeFrequency: 'weekly', priority: 1 },
     { url: `${baseUrl}/quickstart`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/changelog`, lastModified, changeFrequency: 'weekly', priority: 0.5 },
-    { url: `${baseUrl}/tools`, lastModified, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${baseUrl}/guides/hmac-authentication`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/tutorials/java-game-dev`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/tutorials/mongodb-tanstack`, lastModified, changeFrequency: 'monthly', priority: 0.7 },

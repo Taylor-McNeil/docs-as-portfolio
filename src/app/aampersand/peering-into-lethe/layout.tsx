@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Peering into Lethe — Visual Plotline Tracking for Fiction Writers",
   description: "How aampersand's beat system tracks story claims independently from prose — so deleted text doesn't destroy your plot. aampersand devlog 2.",
   alternates: {
-    canonical: 'https://www.taylormcneil.dev/aampersand/peering-into-lethe',
+    canonical: 'https://taylormcneil.dev/aampersand/peering-into-lethe',
   },
 };
 
