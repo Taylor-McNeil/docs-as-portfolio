@@ -25,6 +25,13 @@ export default function ToolsIndex() {
           <div className="font-semibold">Trope Cloud</div>
           <div className="text-sm text-foreground-muted mt-1">Visualize story tropes.</div>
         </Link>
+        <Link
+          href="/tools/ao3-preview"
+          className="block rounded border border-border bg-surface-card p-4 text-foreground hover:border-foreground-muted transition-colors"
+        >
+          <div className="font-semibold">AO3 Chapter Previewer</div>
+          <div className="text-sm text-foreground-muted mt-1">Convert markdown to AO3-ready HTML.</div>
+        </Link>
       </div>
     </div>
   );
