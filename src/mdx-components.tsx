@@ -21,6 +21,7 @@ import { FooterTeaser } from "@/components/content/FooterTeaser";
 import { HorizontalScroll } from "@/components/content/HorizontalScroll";
 import { ScrollImage } from "@/components/content/ScrollImage";
 import { StoryGraph } from "@/components/interactive/story-graph";
+import { SceneBreak } from "@/components/content/SceneBreak";
 
 
 
@@ -145,6 +146,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     HorizontalScroll,
     ScrollImage,
     StoryGraph,
+    SceneBreak,
 
     ...components,
   };

@@ -1,0 +1,275 @@
+import { GuideHeader } from "@/components/content/GuideHeader";
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { Callout } from "@/components/content/Callout";
+import { EmphasizedText } from "@/components/content/EmphasizedText";
+import { LayoutDiagram } from "@/components/content/LayoutDiagram";
+import { DevlogCTA } from "@/components/content/DevlogCTA";
+import { JsonLd } from "@/components/content/JsonLd";
+import { ExternalLink } from "lucide-react";
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "First User Testing a Fiction Writing Tool — aampersand Technical Devlog #5",
+  "datePublished": "2026-05-01",
+  "author": { "@type": "Person", "name": "Taylor McNeil" },
+  "url": "https://taylormcneil.dev/aampersand/a-sword-for-every-hand"
+}} />
+
+<GuideHeader
+    title="A Sword for Every Hand"
+    method="PUT"
+    endpoint="/aampersand/a-sword-for-every-hand"
+    mdxPath="src/app/aampersand/a-sword-for-every-hand/page.mdx"
+/>
+
+<AnchorSidebar
+    items={[
+        { id: "the-whiteboard", label: "The Whiteboard" },
+        { id: "what-the-forge-remembers", label: "What the Forge Remembers" },
+        { id: "tracing-the-edges", label: "Tracing the Edges" },
+        { id: "what-the-hands-reveal", label: "What the Hands Reveal" },
+        { id: "same-spark-different-light", label: "Same Spark, Different Light" },
+        { id: "the-forge-after", label: "The Forge, After" },
+    ]}
+/>
+
+<Callout type="context">
+This is the design companion to <a href="https://www.aampersand.com/devlog/may-2026" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">Five Faces in the Water<ExternalLink size={12} className="inline" /></a>.
+That piece is about what happens when someone else looks into your mirror. This one is about what their hands teach you.
+</Callout>
+
+
+## The Whiteboard
+
+Ten minutes before the demo, I noticed a whiteboard in the corner. Still in the packaging waiting to be unearthed.
+
+I wasn't supposed to demo until five. The original plan was a hands-on workshop: get everyone logged in, paste in their manuscripts, walk them through tagging and Sparks in real time. But I'd spent the day watching these writers work. Writing. Formatting. Interrogating their timelines. Examining beats. Helping them brainstorm propaganda for their dystopian worlds. They were tired. And honestly, the app still had bugs. Bugs I could deal with, but bugs I would rather not show a stranger. (I'm a recovering perfectionist.)
+
+I'd already decided to do a screencast. The laptop was plugged in, ready to go.
+
+But the whiteboard was sitting there beckoning to me: open me. use me.
+
+I had no plan for it. (Perhaps you are noticing a theme here in these devlogs.)
+
+I didn't know what I was going to draw. I just knew I wanted it.
+
+Five o'clock. Everyone gathered. Drinks in hand.
+
+I grabbed a marker and said:
+
+***"I want to propose a new way to look at stories.***
+
+***We think of stories as linear experiences, things we read top-down, left to right. A tidy sequence of events happening one right after another."***
+
+I drew chapters as neat little boxes with arrows in between.
+
+<LayoutDiagram title="Stories as Linear Sequences">
+{`┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐
+│ Chapter │───▶│ Chapter │───▶│ Chapter │───▶│ Chapter │───▶│ Chapter │
+│    1    │    │    2    │    │    3    │    │    4    │    │    5    │
+└─────────┘    └─────────┘    └─────────┘    └─────────┘    └─────────┘`}
+</LayoutDiagram>
+
+***"That's fun and that's correct, but we as writers know that. That is not the truth. Because inside of our prologue we might have seeded a clue for the murderer in chapter 18. Set up a devastating entrance for a long-lost sister. Revealed who the killer was. That's the magic of being an author. Everyone sees the neat little boxes with the arrows in between, but we actually know the truth: books are not flow charts; they're actually graphs."***
+
+I drew a graph. Nodes and edges.
+
+<LayoutDiagram title="Stories as Graphs">
+{`            ┌──────────┐
+       ┌─────▶│ Ch. 18   │◀────────────────┐
+       │      │ murderer │                 │
+       │      │ revealed │                 │
+       │      └──────────┘                 │
+       │                                   │
+  ┌────┴─────┐       ┌──────────┐    ┌─────┴────┐
+  │ Prologue │──────▶│  Ch. 1   │───▶│  Ch. 14  │
+  │ clue     │       │          │    │ sister   │
+  │ planted  │       └────┬─────┘    │ arrives  │
+  └────┬─────┘            │          └──────────┘
+       │                  │
+       │            ┌─────┴────┐
+       └───────────▶│  Ch. 3   │
+                    │foreshadow│
+                    └──────────┘`}
+</LayoutDiagram>
+
+It took maybe five minutes for the introduction. (Remember I was making this up as I went.)
+
+Up until this point it's important to remember that I had been designing this product alone with just my own thoughts. I was prepared to have to fight for this idea. I was prepared to do a bunch of "Just trust me bro. It's going to be great."
+
+Five published authors looked at that whiteboard and nodded and said, ***"Yeah, actually that makes a lot of sense."***
+
+It was a bit anticlimactic if I'm being honest. I expected to have to fight for my idea, right, because it's not one that I had really seen floating around. When everyone just agreed, it kinda stumped me. (LOL)
+
+
+## What the Forge Remembers
+
+I started building aampersand in November 2025. It was very different than where it is now. I was so sure that investigating the plot was the most important thing.
+I wrote spec sheets and learned TypeScript and threw myself off the deep end into Next.js.
+
+By January, I'd committed to monthly devlogs — partly for accountability, partly because I wanted a record. Something to show that time had passed and I had done something. Doing these and creating software in general, has been a deeply humbling experience. Every month since the inception, I have been wrong about something. The VS Code interface was wrong. The undo model was wrong. The design foundation was wrong. Beats as the atomic unit were wrong. Plotline investigation as the most important feature was wrong.
+
+Each mistake carved away something that wasn't the product. What survived every single cut were the connections. Stories are graphs, not lines.
+
+<SceneBreak />
+
+May was supposed to be the month the forge opened its door. To do that, aampersand had to stop living on my machine.
+
+The infrastructure list wasn't glamorous:
+
+| What                    | Why                                                                                                        |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Dexie → Neon            | Local database to cloud. Other people need to reach the data.                                              |
+| Clerk auth              | Other people need to exist in the system.                                                                  |
+| Multi-project support   | Their stories matter, not just mine.                                                                       |
+| Spark importers         | A way to test at scale without running seed scripts by hand.                                               |
+| Wiki power search       | The feature I wanted most for the demo — query your entire world.                                           |
+| Updated all the screens | Let's just say it was ugly, okay. Yes, the function-over-design people have a point. But it was ugly okay! |
+
+I was squashing bugs until 4:55 PM. Five minutes before the demo.
+
+The night before was worse. I had two monitors running. On one screen: regression fixes, UI polish, the actual demo. On the other screen: deep-dive research into the .docx file format, because someone at the retreat had mentioned in passing that sometimes their editors' changes got corrupted when converting to different formats. I didn't even know how to solve it yet. I didn't have time to solve it. But I just couldn't stop pulling at the thread.
+
+That's what it's like living in a forge. You don't stop hammering metal because it's late.
+
+
+## Tracing the Edges
+
+Back to the demo:
+
+I logged in and showed them the editor.
+
+***"Holy shit. You built this?"***
+
+***"Yeah. And honestly, this is the least interesting part."***
+
+From there, I didn't follow a script. I followed the graph.
+
+I showed them a highlighted line of text and explained what a Spark was: a claim about the narrative, anchored to the prose. They nodded. I showed them Sparks had types: beats, foreshadowing, revelations, and that you could create your own. They nodded harder. I showed them Sparks lived in plotlines, and plotlines could be filtered and tracked. Their eyes widened.
+
+Then I revealed the Clothesline.
+
+And they lost it.
+
+I could filter by plotline. I could filter by entity. I could isolate a single thread and see it stretched across the entire manuscript. I could drag pins. I could see gaps. They were asking questions faster than I could answer them. ***Does it do this? Can it do that? What if I—***
+
+I had fun hitting them with, ***"But wait, there's more."***
+
+Suddenly a wiki appeared, and then the power search. By the end, one of them looked physically stunned.
+
+I didn't plan the demo. I just talked about what was there and kept naturally leading to the next part and then the next part.
+
+You can't show the Clothesline without first explaining Sparks, because the Clothesline is Sparks arranged spatially. You can't show the wiki without first showing that Sparks connect to entities, because the wiki pages are populated by those connections. Each layer depends on the one before it.
+
+I was tracing the edges of a graph in real time, and the audience followed because the connections were real.
+
+
+## What the Hands Reveal
+
+***"Can I get notifications when I have ghost beats?"***
+
+I paused the demo.
+
+I had designed the ghost system to be subtle. I didn't want to be reminded that I had six draft beats sitting in a chapter. I figured writers would go find them when they were ready.
+
+They didn't want that. They wanted to be told. Reminded. Nagged, even.
+
+***"Can I see my draft beats as a to-do list inside the editor?"***
+
+Draft beats existed only on the Clothesline. They were planning artifacts, conceptual, something you'd promote to a real beat once you wrote the prose. But these writers wanted them in the chapter. A checklist. Six draft beats remaining. Write the scene, check them off.
+
+***"Can I do sprints? Set a timer?"***
+
+I don't write in sprints. I've never set a writing timer in my life. This literally never occurred to me.
+
+***"Can I see the changes my editor made to my manuscript? Side by side?"***
+
+I hadn't sent my manuscript to an editor yet; I'd never experienced that problem.
+
+Every single feature request had the same problem. It was something I would never have built because the mirror only reflected me. My style. My preferences. My blind spots.
+
+<EmphasizedText> The holes were the shape of my workflow. </EmphasizedText>
+
+I don't use timers. I don't want notifications. I don't receive editor markups. So none of those things existed. However, none of those are impossible.
+
+
+## Same Spark, Different Light
+
+Presenting with no plan is not something I would recommend. Not because it's super hard to do, but because you never know what might happen.
+
+When the suggestions started coming in, I expected to panic. To have to ponder in real time, but... almost every suggestion was viable.
+
+A Spark is a database record. It has an ID, a type, a status, a plotline, an anchor to prose, and a connection to an entity. That's it. One primitive.
+
+But watch what happens when you change the surface:
+
+<LayoutDiagram title="The Spark Prism">
+{`                   ┌──────────────┐
+                     │    SPARK     │
+                     │              │
+                     │  id: 8f92a   │
+                     │  type: beat  │
+                     │  status: ••  │
+                     │  plotline: ••│
+                     │  entity: ••  │
+                     └──────┬───────┘
+                            │
+     ┌──────────┬───────────┼───────────┬──────────┐
+     ▼          ▼           ▼           ▼          ▼
+┌─────────┐┌─────────┐┌─────────┐┌─────────┐┌─────────┐
+│ EDITOR  ││CLOTHES- ││ TO-DO   ││ NOTIF-  ││  WIKI   │
+│         ││  LINE   ││  LIST   ││ ICATION ││         │
+│ high-   ││         ││         ││         ││         │
+│ lighted ││  pin    ││ check-  ││ banner  ││citation │
+│  mark   ││         ││  box    ││         ││         │
+└─────────┘└─────────┘└─────────┘└─────────┘└─────────┘
+
+"something  "a moment   "a task    "hey, you  "a fact
+ happens     in the      to do"     forgot     about
+ here"       plotline"              this"      someone"`}
+</LayoutDiagram>
+
+The primitive never changes. The surface determines what it becomes.
+
+In the editor, a draft Spark is a colored underline — a marker that says something happened here. On the Clothesline, that same draft Spark is a pin — a structural placeholder you can see in the context of the whole arc. Render it as a checkbox, and it becomes a to-do item. Route it through a notification system, and it becomes a reminder.
+
+The writers weren't asking me to build new features. Not really. They were asking me to build new views. New surfaces. New ways of looking at data the system already holds.
+
+The to-do list isn't a new feature. It's draft Sparks rendered as checkboxes instead of Clothesline pins. Notifications aren't a new engine. They're ghost Sparks surfaced in a banner instead of buried in a tray.
+
+This is what a graph gives you. When everything is connected, new capabilities don't require new architecture. They require new lenses. And lenses are cheap to build once the data exists.
+
+The writers at the retreat didn't know any of this. They didn't know they were asking for views over a graph. They just knew what they wanted aampersand to do.
+
+
+## The Forge, After
+
+I flew home and my brain collapsed.
+
+I'm fine. Just tired. I drank caffeine and felt nothing. The things I normally do to push through a four-hour session didn't work. The deadline pressure that had been fuel for six months evaporated because the first finish line had been crossed.
+
+Two days of nothing. (That's a long time for Elmo.)
+
+Hephaestus was described as ugly and limping among beautiful gods. But he made the most beautiful objects in Olympus. There's a tension in that. The imperfect one building fantastical things.
+
+I feel a bit of that tension every time I open aampersand. I can see exactly where the design falls short. I don't have the vocabulary to fix it. I know what an accordion component is, but I couldn't have named it six months ago. The gap between taste and skill is real, and it's a particular kind of pain.
+
+But five people told me aampersand works. They didn't just say it was good. They asked for more. They tried to pay me to use it.
+
+Something shifted the night of the demo. The code was the same code I'd pushed at 4:55 PM. Nothing in the database changed. But the product stopped being something I was building in my room and became something I was building for other people.
+
+I think that's what Hephaestus understood. You can forge all day. You can heat and hammer and quench and fold. You can make something that gleams. But until hands can grip it and cut through bone, it's just some pointy metal.
+
+---
+
+In [A Siren's Song](/aampersand/a-sirens-song), I learned the interface was wrong. In [Peering into Lethe](/aampersand/peering-into-lethe), I built a database that refused to forget. In [A Broken Astrolabe](/aampersand/a-broken-astrolabe), I calibrated the instrument. In [Oily Bodies in Karpathos](/aampersand/oily-bodies-in-karpathos), I discovered what the instrument was measuring.
+
+<EmphasizedText>Next month, we search for pomegranates.</EmphasizedText>
+
+<DevlogCTA
+  linkText="Read: Five Faces in the Water"
+  linkHref="https://www.aampersand.com/devlog/may-2026"
+>
+aampersand lets you forge tools that fit any hand.
+</DevlogCTA>

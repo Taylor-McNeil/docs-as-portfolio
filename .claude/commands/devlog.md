@@ -1,6 +1,6 @@
 ---
 description: Scaffold a new monthly aampersand devlog from prose
-allowed-tools: [Read, Write, Glob, Grep, Bash(mkdir:*), Bash(mv:*), Bash(ls:*)]
+allowed-tools: [Read, Write, Glob, Grep, Bash(mkdir:*), Bash(mv:*), Bash(ls:*), Bash(move:*), Bash(Move-Item:*), Bash(dir:*), Bash(Get-ChildItem:*), Bash(New-Item:*)]
 argument-hint: <title> | <slug> | <method> <endpoint> | <description>
 ---
 
@@ -131,7 +131,13 @@ Use your best judgment. The brackets indicate intent, not exact syntax. Remove t
 
 ## OG image handling
 
-After scaffolding the devlog files, check for OG images in the **project root** (`e:/Programming/docs-as-portfolio/`) that need to be moved into the devlog's route directory.
+After scaffolding the devlog files, check for OG images in the **project root** that need to be moved into the devlog's route directory.
+
+The project root differs by machine:
+- **macOS:** `/Users/taylor/Documents/Programming Repos/taylor-mcneil-dev/`
+- **Windows:** `e:/Programming/docs-as-portfolio/`
+
+Detect the platform (or just resolve paths relative to the repo root) rather than assuming one. The repo root is the directory containing `package.json` — prefer resolving against that so the step works on either OS.
 
 ### Steps
 
@@ -140,12 +146,19 @@ After scaffolding the devlog files, check for OG images in the **project root** 
    - `twitter-image.png`, `twitter-image.jpg`, `twitter-image.jpeg`
    - Also check for any `og-*.png`, `og-*.jpg` variants
 
-   Use `ls` to list matching files in the project root.
+   List matching files in the project root:
+   - **macOS / Linux / Git Bash:** `ls`
+   - **Windows (PowerShell):** `Get-ChildItem`
+   - **Windows (cmd):** `dir`
 
 2. **Move** any found OG images into `src/app/aampersand/{slug}/`:
    - Rename to the Next.js convention: `opengraph-image.{ext}` and/or `twitter-image.{ext}`
    - If a file like `og-something.png` is found, rename it to `opengraph-image.png` when moving
    - Next.js App Router automatically generates `<meta property="og:image">` tags when these files exist in a route directory
+   - Move command by platform:
+     - **macOS / Linux / Git Bash:** `mv <src> <dest>`
+     - **Windows (PowerShell):** `Move-Item <src> <dest>`
+     - **Windows (cmd):** `move <src> <dest>`
 
 3. **Update `layout.tsx`** — if an OG image was moved, add `openGraph` metadata to the layout so it has explicit dimensions:
 

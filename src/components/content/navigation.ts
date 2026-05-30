@@ -29,6 +29,7 @@ export const navigation: NavSection[] = [
        { href: "/aampersand/peering-into-lethe", label: "Feb 2026", method: "PUT"},
        { href: "/aampersand/a-broken-astrolabe", label: "Mar 2026", method: "PUT"},
        { href: "/aampersand/oily-bodies-in-karpathos", label: "Apr 2026", method: "PUT"},
+       { href: "/aampersand/a-sword-for-every-hand", label: "May 2026", method: "PUT"},
      ],
  },
    {
