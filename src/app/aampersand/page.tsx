@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Zap } from "lucide-react";
 import { Callout } from "@/components/content/Callout";
 import { MethodBadge } from "@/components/navigation/MethodBadge";
 
@@ -18,7 +19,7 @@ type Devlog = {
   description: string;
   tag: string;
   tagClassName: string;
-  preview: "origin" | "thread" | "clothesline" | "graph";
+  preview: "origin" | "thread" | "clothesline" | "graph" | "spark";
 };
 
 const devlogs: Devlog[] = [
@@ -37,7 +38,7 @@ const devlogs: Devlog[] = [
     title: "Red Thread, Isle Eight",
     date: "Feb 2026",
     description:
-      'Tagging as structural thread. How highlighting a line and saying "this matters" turns prose into navigable architecture.',
+      'Tagging as structural concept. How annotations survive the edit and turning decorations into navigation.',
     tag: "tagging",
     tagClassName: "bg-method-get/10 text-method-get",
     preview: "thread",
@@ -47,7 +48,7 @@ const devlogs: Devlog[] = [
     title: "Stranded in Crete",
     date: "Mar 2026",
     description:
-      "The Clothesline ships. Plotlines visualized as colored threads across chapters. And the discovery that beats aren't all created equal.",
+      "The Clothesline emerges. Plotlines visualized as colored threads across chapters. And the discovery that beats aren't all created equal.",
     tag: "clothesline",
     tagClassName: "bg-method-put/10 text-method-put",
     preview: "clothesline",
@@ -57,10 +58,20 @@ const devlogs: Devlog[] = [
     title: "Oily Bodies In Karpathos",
     date: "Apr 2026",
     description:
-      "Sparks and Etches. The annotation graph. The discovery that a story was never a line: it's a graph, and every tool before this tried to hold it in the wrong container.",
+      "Sparks and Etches. The annotation graph. The discovery that stories aren't just linear. They are also graphs.",
     tag: "breakthrough",
     tagClassName: "bg-method-head/10 text-method-head",
     preview: "graph",
+  },
+  {
+    href: "/aampersand/a-sword-for-every-hand",
+    title: "A Sword for Every Hand",
+    date: "May 2026",
+    description:
+      "Validation of a product. One demo, five writers, unlimited requests.",
+    tag: "validation",
+    tagClassName: "bg-method-post/10 text-method-post",
+    preview: "spark",
   },
 ];
 
@@ -206,7 +217,42 @@ function Preview({ type }: { type: Devlog["preview"] }) {
       return <ClotheslinePreview />;
     case "graph":
       return <GraphPreview />;
+    case "spark":
+      return <SparkPreview />;
   }
+}
+
+function SparkPreview() {
+  const surfaces: { surface: string; color: "get" | "put" | "patch" | "head" }[] = [
+    { surface: "highlight", color: "patch" },
+    { surface: "pin", color: "put" },
+    { surface: "checkbox", color: "get" },
+    { surface: "notification", color: "head" },
+  ];
+
+  const colorClassName = {
+    get: "text-method-get",
+    put: "text-method-put",
+    patch: "text-method-patch",
+    head: "text-method-head",
+  } as const;
+
+  return (
+    <div className="flex h-full min-h-24 flex-col justify-center font-mono text-[10px] text-foreground-muted">
+      <div className="space-y-1.5">
+        {surfaces.map(({ surface, color }) => (
+          <div key={surface} className="flex items-center gap-2">
+            <Zap size={10} className="fill-method-put text-method-put" />
+            <span className="text-foreground-muted/50">&rarr;</span>
+            <span className={colorClassName[color]}>{surface}</span>
+          </div>
+        ))}
+      </div>
+      <p className="mt-3 italic text-foreground-muted/70">
+        same spark, different light
+      </p>
+    </div>
+  );
 }
 
 function OriginPreview() {

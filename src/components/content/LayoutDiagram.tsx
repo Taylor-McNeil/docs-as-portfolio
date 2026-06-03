@@ -7,12 +7,28 @@ interface LayoutDiagramProps {
   children: ReactNode;
 }
 
+function normalizeLayoutDiagram(source: string): string {
+  const lines = source.replace(/\r\n/g, "\n").split("\n");
+
+  if (lines[0]?.trim() === "") {
+    lines.shift();
+  }
+
+  if (lines[lines.length - 1]?.trim() === "") {
+    lines.pop();
+  }
+
+  return lines.join("\n");
+}
+
 export function LayoutDiagram({ title, children }: LayoutDiagramProps) {
   const preRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
+  const diagramText =
+    typeof children === "string" ? normalizeLayoutDiagram(children) : null;
 
   function handleCopy() {
-    const text = preRef.current?.textContent;
+    const text = diagramText ?? preRef.current?.textContent;
     if (!text) return;
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
@@ -37,15 +53,16 @@ export function LayoutDiagram({ title, children }: LayoutDiagramProps) {
 
       {/* Diagram content */}
       <div ref={preRef} className="bg-surface-terminal overflow-x-auto">
-        {typeof children === "string" ? (
+        {diagramText ? (
           <pre
             className="mx-auto w-max p-4 text-sm leading-none text-foreground-terminal"
             style={{
-              fontFamily: '"Menlo", "Cascadia Mono", "Consolas", monospace',
-              letterSpacing: "0em",
+              fontFamily: "var(--font-jetbrains), monospace",
+              letterSpacing: "0",
+              fontVariantLigatures: "none",
             }}
           >
-            {children.trim()}
+            {diagramText}
           </pre>
         ) : (
           <div className="p-4">{children}</div>

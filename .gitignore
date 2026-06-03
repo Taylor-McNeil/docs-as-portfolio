@@ -40,3 +40,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local-only tools (depend on a local CLI like yt-dlp; can't run in the deployed
+# serverless environment, so they're kept off GitHub and never ship. The page and
+# api dirs must stay under src/app for Next.js routing, so each path is ignored
+# individually rather than as one shared folder.)
+/src/app/tools/youtube-comments-analyzer/
+/src/app/api/tools/youtube-comments-analyzer/
+/src/lib/youtube-comments/

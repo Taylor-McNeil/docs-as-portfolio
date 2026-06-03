@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { toPng } from 'html-to-image';
 import { ArrowLeft, Download, RefreshCw, LayoutTemplate, Type, Palette, RotateCcw } from 'lucide-react';
 
@@ -173,6 +174,11 @@ const SITE_BASE_FONT = {
 };
 
 const HTTP_METHODS = ['GET', 'PUT', 'POST', 'PATCH', 'HEAD', 'DELETE'];
+const AAMPERSAND_LOGO_OPTIONS = [
+  { key: 'primary', label: 'Primary', src: '/brand/svg/ampersand-full-primary.svg' },
+  { key: 'dark', label: 'Dark', src: '/brand/svg/ampersand-full-dark.svg' },
+  { key: 'light', label: 'Light', src: '/brand/svg/ampersand-full-light.svg' },
+];
 
 // ─── FONTS ─────────────────────────────────────────────────────────────────────
 
@@ -242,7 +248,7 @@ function SliderWithInput({ label, value, defaultValue, min, max, step, onChange 
 
 // ─── PREVIEW RENDER FUNCTIONS ──────────────────────────────────────────────────
 
-function renderAampersandPreview(data) {
+function renderAampersandPreview(data, logoSrc) {
   const { colors } = data;
   return (
     <>
@@ -353,16 +359,21 @@ function renderAampersandPreview(data) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontFamily: "'Playfair Display', serif",
-          fontSize: '28px',
-          fontWeight: 700,
           zIndex: 10,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <span style={{ color: colors.accent, fontFamily: "'Fraunces', serif", fontStyle: 'normal', fontWeight: 400 }}>&amp;</span>
-          <span style={{ color: colors.textDark }}>ampersand</span>
-        </div>
+        <Image
+          src={logoSrc}
+          alt="aampersand logo"
+          width={168}
+          height={28}
+          unoptimized
+          style={{
+            width: '168px',
+            height: '28px',
+            objectFit: 'contain',
+          }}
+        />
       </div>
     </>
   );
@@ -644,6 +655,7 @@ export default function OgImageMaker() {
   const [activeSite, setActiveSite] = useState('aampersand');
   const [activePreset, setActivePreset] = useState('aampersand-homepage');
   const [data, setData] = useState(PRESETS['aampersand-homepage']);
+  const [aampersandLogoVariant, setAampersandLogoVariant] = useState('primary');
   const [isExporting, setIsExporting] = useState(false);
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [scale, setScale] = useState(1);
@@ -737,6 +749,7 @@ export default function OgImageMaker() {
   };
 
   const sitePresets = Object.entries(PRESETS).filter(([, p]) => p.site === activeSite);
+  const activeAampersandLogo = AAMPERSAND_LOGO_OPTIONS.find((option) => option.key === aampersandLogoVariant) || AAMPERSAND_LOGO_OPTIONS[0];
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row text-gray-800" style={{ fontFamily: "'Inter', sans-serif" }}>
@@ -1056,8 +1069,34 @@ export default function OgImageMaker() {
           </div>
         </div>
 
-        {/* Sticky Export Button */}
+        {/* Sticky Footer Controls */}
         <div className="sticky bottom-0 p-6 bg-white border-t border-gray-200">
+          {activeSite === 'aampersand' && (
+            <div className="mb-4">
+              <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Footer Logo</label>
+              <div className="grid grid-cols-3 gap-2">
+                {AAMPERSAND_LOGO_OPTIONS.map((option) => (
+                  <button
+                    key={option.key}
+                    onClick={() => setAampersandLogoVariant(option.key)}
+                    className={`flex flex-col items-center gap-2 rounded-md border px-2 py-2 transition-colors ${aampersandLogoVariant === option.key ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+                    title={option.label}
+                  >
+                    <Image
+                      src={option.src}
+                      alt=""
+                      width={84}
+                      height={14}
+                      unoptimized
+                      className="h-3.5 w-auto object-contain"
+                      aria-hidden="true"
+                    />
+                    <span className="text-xs font-medium">{option.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <button
             onClick={handleExport}
             disabled={isExporting}
@@ -1109,7 +1148,7 @@ export default function OgImageMaker() {
               transition: 'opacity 0.3s ease',
             }}
           >
-            {activeSite === 'aampersand' && renderAampersandPreview(data)}
+            {activeSite === 'aampersand' && renderAampersandPreview(data, activeAampersandLogo.src)}
             {activeSite === 'taylormcneil' && renderTaylormcneilPreview(data, activePreset)}
             {activeSite === 'arynwilder' && renderArynwilderPreview(data)}
           </div>

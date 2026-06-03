@@ -1,6 +1,6 @@
 ---
 description: Scaffold a new monthly aampersand devlog from prose
-allowed-tools: [Read, Write, Glob, Grep, Bash(mkdir:*), Bash(mv:*), Bash(ls:*)]
+allowed-tools: [Read, Write, Glob, Grep, Bash(mkdir:*), Bash(mv:*), Bash(ls:*), Bash(move:*), Bash(Move-Item:*), Bash(dir:*), Bash(Get-ChildItem:*), Bash(New-Item:*)]
 argument-hint: <title> | <slug> | <method> <endpoint> | <description>
 ---
 
@@ -131,7 +131,13 @@ Use your best judgment. The brackets indicate intent, not exact syntax. Remove t
 
 ## OG image handling
 
-After scaffolding the devlog files, check for OG images in the **project root** (`e:/Programming/docs-as-portfolio/`) that need to be moved into the devlog's route directory.
+After scaffolding the devlog files, check for OG images in the **project root** that need to be moved into the devlog's route directory.
+
+The project root differs by machine:
+- **macOS:** `/Users/taylor/Documents/Programming Repos/taylor-mcneil-dev/`
+- **Windows:** `e:/Programming/docs-as-portfolio/`
+
+Detect the platform (or just resolve paths relative to the repo root) rather than assuming one. The repo root is the directory containing `package.json` — prefer resolving against that so the step works on either OS.
 
 ### Steps
 
@@ -140,12 +146,19 @@ After scaffolding the devlog files, check for OG images in the **project root** 
    - `twitter-image.png`, `twitter-image.jpg`, `twitter-image.jpeg`
    - Also check for any `og-*.png`, `og-*.jpg` variants
 
-   Use `ls` to list matching files in the project root.
+   List matching files in the project root:
+   - **macOS / Linux / Git Bash:** `ls`
+   - **Windows (PowerShell):** `Get-ChildItem`
+   - **Windows (cmd):** `dir`
 
 2. **Move** any found OG images into `src/app/aampersand/{slug}/`:
    - Rename to the Next.js convention: `opengraph-image.{ext}` and/or `twitter-image.{ext}`
    - If a file like `og-something.png` is found, rename it to `opengraph-image.png` when moving
    - Next.js App Router automatically generates `<meta property="og:image">` tags when these files exist in a route directory
+   - Move command by platform:
+     - **macOS / Linux / Git Bash:** `mv <src> <dest>`
+     - **Windows (PowerShell):** `Move-Item <src> <dest>`
+     - **Windows (cmd):** `move <src> <dest>`
 
 3. **Update `layout.tsx`** — if an OG image was moved, add `openGraph` metadata to the layout so it has explicit dimensions:
 
@@ -181,6 +194,19 @@ After creating the devlog files, add the new entry to the sidebar navigation in 
    - The `label` is the abbreviated month + year of the devlog (e.g. "Apr 2026").
    - The `method` is always `"PUT"` for aampersand devlogs.
    - Keep the existing entries — only append.
+
+## llms.txt index
+
+After updating the sidebar, add the new devlog to the LLM index at `public/llms.txt` so AI crawlers discover it.
+
+1. Open `public/llms.txt` and find the `## aampersand (Building in Public)` section.
+2. Append a new entry to the end of that section's list, after the most recent devlog:
+   ```
+   - [{Title} ({Mon} {Year})](https://taylormcneil.dev/aampersand/{slug}): {one-line description}
+   ```
+   - The link text is the **display title** followed by the abbreviated month + year (e.g. "A Sword for Every Hand (May 2026)") — matching the `{Mon} {Year}` used for the sidebar label.
+   - The `{one-line description}` is a short, plain-language summary of the devlog's technical content — derive it from the **SEO headline** with the "— aampersand Technical Devlog #N" suffix removed (e.g. headline "First User Testing a Fiction Writing Tool — aampersand Technical Devlog #5" → description "First user testing a fiction writing tool").
+   - Keep existing entries in chronological order — only append.
 
 ## Style notes
 
