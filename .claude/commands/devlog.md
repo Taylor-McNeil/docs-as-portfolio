@@ -195,6 +195,19 @@ After creating the devlog files, add the new entry to the sidebar navigation in 
    - The `method` is always `"PUT"` for aampersand devlogs.
    - Keep the existing entries — only append.
 
+## llms.txt index
+
+After updating the sidebar, add the new devlog to the LLM index at `public/llms.txt` so AI crawlers discover it.
+
+1. Open `public/llms.txt` and find the `## aampersand (Building in Public)` section.
+2. Append a new entry to the end of that section's list, after the most recent devlog:
+   ```
+   - [{Title} ({Mon} {Year})](https://taylormcneil.dev/aampersand/{slug}): {one-line description}
+   ```
+   - The link text is the **display title** followed by the abbreviated month + year (e.g. "A Sword for Every Hand (May 2026)") — matching the `{Mon} {Year}` used for the sidebar label.
+   - The `{one-line description}` is a short, plain-language summary of the devlog's technical content — derive it from the **SEO headline** with the "— aampersand Technical Devlog #N" suffix removed (e.g. headline "First User Testing a Fiction Writing Tool — aampersand Technical Devlog #5" → description "First user testing a fiction writing tool").
+   - Keep existing entries in chronological order — only append.
+
 ## Style notes
 
 - The devlogs are narrative essays with a literary voice — preserve the user's prose exactly

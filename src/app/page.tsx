@@ -1,5 +1,6 @@
 import { ResponsePanel } from "@/components/layout/ResponsePanel";
 import { PageHeader } from "@/components/content/PageHeader";
+import { JsonLd } from "@/components/content/JsonLd";
 import Link from "next/link";
 
 export const metadata = {
@@ -14,19 +15,63 @@ export default function Home() {
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Taylor McNeil',
-    url: 'https://taylormcneil.dev',
-    description: 'Developer, writer, and creator of aampersand.',
-    jobTitle: 'Software Developer',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': 'https://taylormcneil.dev/#website',
+        name: 'Taylor McNeil',
+        url: 'https://taylormcneil.dev/',
+        description: 'Developer Experience Engineer. Creator of aampersand.',
+        publisher: {
+          '@id': 'https://taylormcneil.dev/#person',
+        },
+      },
+      {
+        '@type': 'Person',
+        '@id': 'https://taylormcneil.dev/#person',
+        name: 'Taylor McNeil',
+        alternateName: 'Aryn Wilder',
+        url: 'https://taylormcneil.dev/',
+        description:
+          'Developer Experience Engineer and Technical Writer. Creator of aampersand, a visual narrative management tool for fiction writers. Writes dark fantasy romance under the pen name Aryn Wilder.',
+        jobTitle: ['Developer Experience Engineer', 'Technical Writer', 'Founder'],
+        knowsAbout: [
+          'Developer Experience',
+          'Technical Writing',
+          'Documentation',
+          'Software Development',
+          'Fiction Writing',
+          'Dark Fantasy Romance',
+          'Worldbuilding',
+        ],
+        sameAs: [
+          'https://www.arynwilder.com/',
+          'https://www.aampersand.com/',
+          'https://github.com/Taylor-McNeil',
+          'https://www.linkedin.com/in/taylormcneil/',
+          'https://archiveofourown.org/users/ArynWilder',
+          'https://www.threads.net/@author.aryn.wilder',
+        ],
+        brand: {
+          '@type': 'SoftwareApplication',
+          '@id': 'https://www.aampersand.com/#application',
+          name: 'aampersand',
+          url: 'https://www.aampersand.com/',
+          applicationCategory: 'Writing Tool',
+          description:
+            'A visual narrative management tool for fiction writers. Track plotlines, map your world, and see the shape of your story.',
+          operatingSystem: 'Web',
+          creator: {
+            '@id': 'https://taylormcneil.dev/#person',
+          },
+        },
+      },
+    ],
   }
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
     <div className="space-y-8">
       <ResponsePanel
         data={{

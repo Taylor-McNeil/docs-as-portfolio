@@ -19,12 +19,30 @@ export default function ToolsIndex() {
           <div className="text-sm text-foreground-muted mt-1">Generate 1200×630 OG images.</div>
         </Link>
         <Link
+          href="/tools/ao3formatter"
+          className="block rounded border border-border bg-surface-card p-4 text-foreground hover:border-foreground-muted transition-colors"
+        >
+          <div className="font-semibold">AO3 Formatter</div>
+          <div className="text-sm text-foreground-muted mt-1">Tag mixed-format chapter prose and export AO3-ready HTML.</div>
+        </Link>
+        <Link
           href="/tools/tropecloud"
           className="block rounded border border-border bg-surface-card p-4 text-foreground hover:border-foreground-muted transition-colors"
         >
           <div className="font-semibold">Trope Cloud</div>
           <div className="text-sm text-foreground-muted mt-1">Visualize story tropes.</div>
         </Link>
+        {/* Local-only tool — its files are gitignored and not deployed, so this
+            card only renders during `next dev` to avoid a dead link in production. */}
+        {process.env.NODE_ENV === "development" && (
+          <Link
+            href="/tools/youtube-comments-analyzer"
+            className="block rounded border border-border bg-surface-card p-4 text-foreground hover:border-foreground-muted transition-colors"
+          >
+            <div className="font-semibold">YouTube Comments Analyzer</div>
+            <div className="text-sm text-foreground-muted mt-1">Pull YouTube comments locally and explore them with filters, summaries, and exports.</div>
+          </Link>
+        )}
       </div>
     </div>
   );

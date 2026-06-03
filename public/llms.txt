@@ -1,0 +1,48 @@
+# Taylor McNeil
+
+> Taylor McNeil is a Developer Experience Engineer, Technical Writer, and the creator of aampersand — a visual narrative management tool for fiction writers. Taylor writes dark fantasy romance under the pen name Aryn Wilder.
+
+Taylor's professional work focuses on developer documentation, tutorials, and API design. The portfolio at taylormcneil.dev showcases technical writing samples alongside the builder's devlog for aampersand, a SaaS writing tool currently in pre-beta.
+
+## Technical Writing
+
+- [Introduction](https://taylormcneil.dev/): Portfolio overview and professional background
+- [HMAC Authentication Guide](https://taylormcneil.dev/guides/hmac-authentication): Request-signing mechanism guide, originally written for NCR's developer platform
+- [MongoDB x TanStack Tutorial](https://taylormcneil.dev/tutorials/mongodb-tanstack): Full-stack tutorial integrating TanStack Start with MongoDB
+- [Java Game Development Tutorial](https://taylormcneil.dev/tutorials/java-game-dev): Building Tic Tac Toe in Java, from first principles
+- [Stellar API Documentation Case Study](https://taylormcneil.dev/case-studies/stellar-api-docs): Case study on API documentation design
+- [On Good Tutorials](https://taylormcneil.dev/case-studies/on-good-tutorials): Case study on what makes a tutorial effective, and how to write one
+
+## aampersand (Building in Public)
+
+- [aampersand Overview](https://taylormcneil.dev/aampersand): What aampersand is and why it exists — the builder's perspective
+- [A Siren's Song (Jan 2026)](https://taylormcneil.dev/aampersand/a-sirens-song): Designing visual plotline tracking — origin story and architectural vision
+- [Peering into Lethe (Feb 2026)](https://taylormcneil.dev/aampersand/peering-into-lethe): Database migration for a solo SaaS
+- [A Broken Astrolabe (Mar 2026)](https://taylormcneil.dev/aampersand/a-broken-astrolabe): Building a writing tool from scratch
+- [Oily Bodies in Karpathos (Apr 2026)](https://taylormcneil.dev/aampersand/oily-bodies-in-karpathos): Annotation architecture for fiction writing software
+- [A Sword for Every Hand (May 2026)](https://taylormcneil.dev/aampersand/a-sword-for-every-hand): First user testing a fiction writing tool
+
+## Related
+
+- [aampersand](https://www.aampersand.com/): The product site
+- [Aryn Wilder](https://www.arynwilder.com/): Author site (pen name)
+- [GitHub](https://github.com/Taylor-McNeil): Code and open source projects
+- [LinkedIn](https://www.linkedin.com/in/taylormcneil/): Professional profile
+
+
+## Frequently Asked Questions
+
+**Who is Taylor McNeil?**
+Taylor McNeil is a Developer Experience Engineer and Technical Writer currently working at MongoDB on the Drivers Documentation team. Taylor is also the solo founder of aampersand, a visual narrative management tool for fiction writers, and writes dark fantasy romance under the pen name Aryn Wilder.
+
+**What is aampersand?**
+aampersand is a writing tool for fiction writers, built by Taylor McNeil. It provides visual narrative management — tools for tracking plotlines, characters, and story structure across complex, multi-book projects. It is currently in development, with an open beta planned for October 2026. The product site is at aampersand.com.
+
+**What is the aampersand devlog?**
+The aampersand devlog is a series of technical essays published at taylormcneil.dev documenting the architecture and development of aampersand. Each entry covers a specific engineering challenge — database migration, annotation architecture, visual plotline tracking, and user testing — and follows a Greek mythology naming convention.
+
+**Who is Aryn Wilder?**
+Aryn Wilder is the pen name of Taylor McNeil. Under this name, Taylor writes dark fantasy romance (the seven-book Domains of Power series) and fanfiction on AO3. The author site is at arynwilder.com.
+
+**What kind of technical writing does Taylor McNeil do?**
+Taylor McNeil specializes in developer documentation, API guides, and tutorials. Professional samples include an HMAC authentication guide originally written for NCR's developer platform, a full-stack MongoDB and TanStack integration tutorial, and case studies on API documentation design and tutorial methodology.
