@@ -21,7 +21,7 @@ export default function Home() {
         '@id': 'https://taylormcneil.dev/#website',
         name: 'Taylor McNeil',
         url: 'https://taylormcneil.dev/',
-        description: 'Developer Experience Engineer. Creator of aampersand.',
+        description: 'Developer Experience Engineer. Creator of aampersand, a creative writing tool for fiction writers.',
         publisher: {
           '@id': 'https://taylormcneil.dev/#person',
         },
@@ -33,7 +33,7 @@ export default function Home() {
         alternateName: 'Aryn Wilder',
         url: 'https://taylormcneil.dev/',
         description:
-          'Developer Experience Engineer and Technical Writer. Creator of aampersand, a visual narrative management tool for fiction writers. Writes dark fantasy romance under the pen name Aryn Wilder.',
+          'Developer Experience Engineer and Technical Writer. Creator of aampersand, a creative writing tool for fiction writers. Writes dark fantasy romance under the pen name Aryn Wilder.',
         jobTitle: ['Developer Experience Engineer', 'Technical Writer', 'Founder'],
         knowsAbout: [
           'Developer Experience',
@@ -59,7 +59,7 @@ export default function Home() {
           url: 'https://www.aampersand.com/',
           applicationCategory: 'Writing Tool',
           description:
-            'A visual narrative management tool for fiction writers. Track plotlines, map your world, and see the shape of your story.',
+            'A creative writing tool for fiction writers. Write your prose, tag what matters, and see your characters, plotlines, and world — all connected.',
           operatingSystem: 'Web',
           creator: {
             '@id': 'https://taylormcneil.dev/#person',
@@ -156,7 +156,7 @@ export default function Home() {
             </Link>
              <span className="text-foreground-muted">
               {" "}
-              — A writing tool that unfolds your story
+              — A creative writing tool for fiction writers
             </span>
           </li>
           <li>

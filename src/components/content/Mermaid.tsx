@@ -6,18 +6,27 @@ import mermaid from "mermaid";
 
 interface MermaidProps {
   chart: string;
+  className?: string;
+  size?: "fit" | "natural";
 }
 
-export function Mermaid({ chart }: MermaidProps) {
+export function Mermaid({
+  chart,
+  className = "",
+  size = "fit",
+}: MermaidProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [intrinsicWidth, setIntrinsicWidth] = useState<number | null>(null);
+  const [renderSignature, setRenderSignature] = useState<string>("");
   const { resolvedTheme } = useTheme();
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
     () => false,
   );
+  const currentSignature = `${resolvedTheme ?? "unknown"}::${chart}`;
+  const isLoading = renderSignature !== currentSignature;
 
   useEffect(() => {
     if (!mounted) return;
@@ -49,7 +58,7 @@ export function Mermaid({ chart }: MermaidProps) {
             secondaryColor: "#e2e8f0",
             tertiaryColor: "#f1f5f9",
             titleColor: "#0f172a",
-            nodeTextColor: "#f8fafc",
+            nodeTextColor: "#334155",
             edgeLabelBackground: "#1e293b",
           },
     });
@@ -60,19 +69,34 @@ export function Mermaid({ chart }: MermaidProps) {
         try {
           const { svg } = await mermaid.render(id, chart);
           setSvg(svg);
+          const svgDocument = new DOMParser().parseFromString(svg, "image/svg+xml");
+          const svgElement = svgDocument.documentElement;
+          const viewBox = svgElement.getAttribute("viewBox");
+          const viewBoxValues = viewBox?.trim().split(/[\s,]+/).map(Number);
+          const parsedWidth =
+            viewBoxValues && viewBoxValues.length === 4 && Number.isFinite(viewBoxValues[2])
+              ? Math.ceil(viewBoxValues[2])
+              : null;
+          setIntrinsicWidth(parsedWidth);
+          setRenderSignature(currentSignature);
         } catch (error) {
           console.error("Mermaid rendering error:", error);
-        } finally {
-          setIsLoading(false);
+          setSvg("");
+          setIntrinsicWidth(null);
+          setRenderSignature(currentSignature);
         }
       }
     };
 
     renderChart();
-  }, [chart, resolvedTheme, mounted]);
+  }, [chart, currentSignature, mounted, resolvedTheme]);
 
   return (
-    <div ref={containerRef} className="my-6 overflow-x-auto">
+    <div
+      ref={containerRef}
+      className={`mermaid-diagram my-6 w-full ${size === "natural" ? "overflow-x-auto" : ""} ${className}`.trim()}
+      data-size={size}
+    >
       {isLoading ? (
         <div className="flex items-center justify-center h-32 bg-surface-card border border-border rounded-lg">
           <div className="flex items-center gap-2 text-foreground-muted text-sm">
@@ -100,7 +124,17 @@ export function Mermaid({ chart }: MermaidProps) {
           </div>
         </div>
       ) : (
-        <div dangerouslySetInnerHTML={{ __html: svg }} />
+        <div
+          className={`mx-auto ${size === "fit" ? "w-full" : ""}`.trim()}
+          style={
+            intrinsicWidth
+              ? size === "natural"
+                ? { width: `${intrinsicWidth}px`, minWidth: `${intrinsicWidth}px` }
+                : { maxWidth: `${intrinsicWidth}px` }
+              : undefined
+          }
+          dangerouslySetInnerHTML={{ __html: svg }}
+        />
       )}
     </div>
   );

@@ -1,0 +1,291 @@
+import { GuideHeader } from "@/components/content/GuideHeader";
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { Callout } from "@/components/content/Callout";
+import { HeroQuote } from "@/components/content/HeroQuote";
+import { EmphasizedText } from "@/components/content/EmphasizedText";
+import { Mermaid } from "@/components/content/Mermaid";
+import { DiagramFigure } from "@/components/content/DiagramFigure";
+import { WriterRestoreDemo } from "@/components/content/WriterRestoreDemo";
+import { DevlogCTA } from "@/components/content/DevlogCTA";
+import { JsonLd } from "@/components/content/JsonLd";
+import { ExternalLink } from "lucide-react";
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Designing Offline Resilience for a Fiction Writing Tool — aampersand Technical Devlog #6",
+  "datePublished": "2026-06-01",
+  "author": { "@type": "Person", "name": "Taylor McNeil" },
+  "url": "https://taylormcneil.dev/aampersand/a-seed-of-intention"
+}} />
+
+<GuideHeader
+    title="A Seed of Intention"
+    method="PUT"
+    endpoint="/aampersand/a-seed-of-intention"
+    mdxPath="src/app/aampersand/a-seed-of-intention/page.mdx"
+/>
+
+<AnchorSidebar
+    items={[
+        { id: "a-dark-room", label: "A Dark Room" },
+        { id: "running-to-tainaron", label: "Running to Tainaron" },
+        { id: "documents-vs-graphs", label: "Documents vs Graphs" },
+        { id: "a-single-headed-dog", label: "A Single-Headed Dog" },
+        { id: "pomegranate-seeds", label: "Pomegranate Seeds" },
+        { id: "lost-in-the-underworld", label: "Lost in the Underworld" },
+        { id: "between-two-worlds", label: "Between Two Worlds" },
+        { id: "farewell-to-charon", label: "Farewell to Charon" },
+    ]}
+/>
+
+<Callout type="context">
+This is the design companion to <a href="https://www.aampersand.com/devlog/jun-2026" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">The Shape of a Hero<ExternalLink size={12} className="inline" /></a>.
+That piece is about how to teach heroes. This one is about what the underworld actually looks like when you get there.
+</Callout>
+
+
+## A Dark Room
+
+<HeroQuote>
+Offline mode can go to hell.
+</HeroQuote>
+
+It's the bane of my existence, and until this month I thought it was completely unnecessary. I will start there, so you can see the ridiculous headspace I was in before I started this challenge and why I set myself up for failure.
+
+Allow me to explain.
+
+Many writing apps don't have online access: MS Word circa 2007, Scrivener, Notepad, Google Docs (we don't talk about that cursed offline mode). aampersand is a web-based tool; offline mode was a nice-to-have. No one expects Netflix or TikTok to work offline.
+
+Comparing one's app to Netflix is arrogant, but we all have moments of delusion. But I think the real reasons came down to a few things:
+
+1. I don't work offline.
+
+    In fact, I do my best to never go places where the internet is spotty. I enjoy the internet. *In hindsight, I think this was the smoking gun. Offline mode is not a trivial feature, and this would be the first feature I built that was not for me; I did not intimately understand the problem. That's my belief as to why this turned into such a time sink.*
+
+2. Offline mode is boring. 
+
+    I wanna build sexy graphs, visualizations, amazing wikis, etc. I want to give the people what they want. I don't care about the stinky offline mode.
+
+3. Offline mode is hard. 
+
+    This is another major reason I think is important to not discount. This is not a simple CRUD feature or frontend component. Building this feature would ultimately take me to areas of software engineering I'd never seen, and of course, being a newbie… I would blow things up.
+
+Despite my ego, delusion, and lies… offline mode is valid, and it's something I have a little experience using. I know what it feels like to be writing at a coffee shop with spotty signal and watch the save indicator spin, wondering if my chapter got ate. That feeling… the uncertainty, the anxiety is poison for a creative tool.
+
+So the question wasn't "Does my app need offline mode?" The question was "Can writers trust this tool when the network isn't perfect?" And the honest answer was: not yet.
+
+
+## Running to Tainaron
+
+My first instinct was to reach for existing solutions. There are sync engines designed for exactly this problem: you point them at your database, they replicate rows to the client, and when the client goes offline, it works against the local copy. Reconnect, reconcile, done.
+
+I spent weeks exploring this path. Not building, but researching, reading documentation, trying to understand whether the tool could handle what I needed. The answer kept being almost. Almost, except I have a decent amount of tables. Almost, except for the junction tables and foreign key enforcement. Almost, except for the row-level security that scopes everything to the authenticated user. Almost, except for a schema that was still actively evolving.
+
+I shopped some thoughts around with people who'd built offline systems at scale. The answer came back unanimous, and it was blunt: don't use a sync engine. Not any of them. Sync engines solve multi-writer conflicts at the database level, and that is not the problem you have.
+
+Which forced me to actually look at the problem I did have.
+
+
+## Documents vs Graphs
+
+There was a moment, somewhere in the middle of all this research, when I realized I'd been thinking about my own product incorrectly.
+
+I thought aampersand was closer to Google Docs: a thin client where the server does the real work and the browser just renders the result. Under that model, offline means caching a document and hoping reconciliation works when you come back. It's the server's problem.
+
+But aampersand isn't a document. It's an annotation graph. Tables of relational data: chapters containing scenes, scenes anchoring Sparks, Sparks joining plotlines through junction tables, etchings connecting to entities through citations. Every relationship is a foreign key. Every surface in the app, the Editor, the Wiki, the Lab—is a different projection over that same graph.
+
+<DiagramFigure caption={<>The project read model is a connected graph: books contain chapters and scenes, scenes anchor Sparks, and those Sparks connect outward through plot, facet, etching, entity, and citation relationships.</>}>
+<Mermaid
+size="natural"
+chart={`
+graph LR
+   Chapter --> Scene
+   Scene --> Spark
+   Plotline --> Spark
+   Spark --> Prose
+`} />
+</DiagramFigure>
+
+That's not Google Docs. That's Obsidian. A tool where the data structure needs to be locally present to render anything useful. You can't stream an annotation graph on demand; there's too much of it, and the relationships are too interconnected. If you want the Clothesline to work, you need the Sparks, the plotlines, the junctions, the chapter positions, the scene anchors. All of it. Locally.
+
+Understanding that distinction changed everything about how I approached the problem.
+
+
+## A Single-Headed Dog
+
+Before I describe what I built, we need to discuss the decision that made the solution even possible.
+
+Only one person can mutate the graph.
+
+I point this out because, this is a product decision, not an engineering shortcut, and it mirrors how creative work actually functions. 
+
+Co-writers can draft and edit prose. Beta readers can view. But Sparks, Etches, plotlines, wiki structure, chapter and scene organization—all of that belongs to one person.
+
+<Callout type="context">
+    Structural interpretation of what a moment means in the arc has to be owned by one brain. Because if one writer thinks that a spark is foreshadowing and the other thinks it's just dialog, that's a problem the software cannot solve. (*Yes I know it could technically be both, 
+    however that defeats the point of aampersand being able to show your interpretation of the story. You would get into a really weird state of... "Do I care about my co-writer's opinion here?" and then we would have to introduce an insane amount of filtering and nonsense for words and ideas tbh you probably don't even care about.)*
+
+
+</Callout>
+
+Anyway back to multiple writers and mutations, it had an architectural consequence that I didn't fully appreciate until I was deep into the offline work:
+
+
+<DiagramFigure caption={<>These two diagrams contrast the product constraint that makes offline replay tractable: one graph authority means intents replay back into a frozen server state, while multiple simultaneous graph authors would require conflict resolution and merge semantics.</>}>
+<div className="grid grid-cols-1 gap-6">
+<Mermaid
+chart={`
+graph TD
+   subgraph single["Single authority — one writer, one truth"]
+       S1[Ch. 3 created] -->|owner goes offline| S2["Renames to 'Dusk'"]
+       S2 -->|reconnect| S3[Replay: rename → done ✅]
+       S4["Server is frozen — nobody else can change it"]
+   end
+`} />
+
+<Mermaid
+chart={`
+graph TD
+   subgraph multi["Multi-writer — two writers, two truths"]
+       M1[Ch. 3 created] -->|A goes offline| M2["A renames 'Dusk'"]
+       M1 -->|B still online| M3["B renames 'Dawn'"]
+       M2 -->|A reconnects| M4["❌ Conflict: 'Dusk' or 'Dawn'?"]
+       M3 --> M4
+       M4 --> M5[Needs CRDT / OT / manual merge]
+   end
+`} />
+</div>
+</DiagramFigure>
+
+By enforcing that graph mutations only ever originate from one person, offline replay is always sequential against that person's own prior state. There's nothing to conflict with on the way back. The server freezes exactly where you left it.
+
+This is why the sync engine advice was "don't." Sync engines earn their complexity by solving concurrent writes from multiple users to the same data. That problem structurally cannot happen in this app.
+
+
+## Pomegranate Seeds
+
+The core idea came to me while I was explaining the problem to a non-technical person. I was trying to articulate why this was hard, and in the act of simplifying it, stripping away the distributed systems vocabulary, I found the actual shape.
+
+It's a log. Things happen in order. Keep the log. Replay it later.
+
+When the network drops, every change the writer makes is intercepted and written to a storage box in the browser's IndexedDB. When the network returns, those changes are replayed through the same repository functions the app uses online. The server doesn't know the difference. It receives the same API calls it always would. (*jk, I had to rewrite tons of functions to make this work offline* 👹.)
+
+<DiagramFigure caption={<>These paired diagrams show the same chapter, prose, and spark actions in two network states: online edits go straight to the server, while offline edits are captured into IndexedDB outboxes and replayed later in dependency order.</>}>
+<div className="grid grid-cols-1 gap-6 items-start">
+<Mermaid chart={`
+graph TD
+   subgraph online["Writer is online"]
+       O1[Create chapter] --> SERVER1[(Server — cloud authority)]
+       O2[Write prose] --> SERVER1
+       O3[Tag a spark] --> SERVER1
+   end
+`} />
+
+<Mermaid chart={`
+graph TD
+   subgraph offline["Writer goes offline"]
+       F1[Create chapter] --> OUT
+       F2[Write prose] --> OUT
+       F3[Tag a spark] --> OUT
+       OUT[("IndexedDB outboxes
+       chapter · scene · spark · prose")] -->|"reconnect: ch → scene → spark → prose"| SERVER2[(Server — cloud authority)]
+   end
+`} />
+</div>
+</DiagramFigure>
+
+Multiple outboxes, not one, because concept (spark, prose, etch, etc.) has a different shape and different failure patterns. A chapter create is not the same kind of operation as a prose save. The replay has to be done in a strict order: chapter → scene → Spark → prose. The foreign key graph demands it. A scene can't be created on the server before its parent chapter exists. A Spark can't be anchored before its scene exists. Parent before child.
+
+On book entry, the app also caches a project snapshot, the full read model of the annotation graph into IndexedDB. This provides read truth while offline. When the writer opens the Clothesline without the internet, the data is there. Not because it's being synced, but because it was cached in full the last time they were online.
+
+I call this system B+. Because… it's not perfect. It's a stopgap, honestly. It's not a real offline mode. It's a resilience layer for unreliable networks. If your Wi-Fi drops for ten minutes while you're writing, your work survives. All your changes wait patiently in the outboxes and replay when the connection returns.
+
+What it cannot do is survive the browser clearing its storage. IndexedDB is borrowed space and in some ways hostile. The browser can reclaim it. Clearing cookies destroys it. `navigator.storage.persist()` reduces eviction risk, but it is not a guarantee. Your seeds survive there momentarily, but it's not a long term home for them.
+
+
+## Lost in the Underworld
+
+I celebrated too early this month. The replay queue worked. Mutations survived the network dropping. The author's changes would reach the server. The job was done.
+
+Or was it?
+
+During reconnection, the UI lied sometimes.
+
+Chapters would appear, then vanish. Scenes would flicker. The page would show some intermediate state—not quite the offline version, not quite the server version—that made it look like work was lost. Every time, a full-page reload proved the data was there. However, the user wasn't going to refresh the page every time they lost connection to the internet. Still it made me feel like I couldn't trust what I was seeing in my own app, and if I couldn't trust it, no writer would either.
+
+The problem was one of those things that seems obvious in hindsight and was invisible while I was building it. When you create a chapter offline, it needs an ID immediately. The UI has to render it; the scene has to reference it; the outbox has to track it. But the server hasn't seen it yet. Normally, the server creates entity IDs.
+
+So the original system used temporary IDs. Placeholder names. `temp-chapter-1`. `temp-scene-4a`. On replay, the server would create real IDs, and the client would rewrite every reference: the query cache, the state store, the editor focus, the outbox entries, navigation, mounted components. Everything that said `temp-chapter-1` had to learn the new name.
+
+This was roughly a third of the entire system's complexity. If the rewrite missed even one reference, if a single component was still asking for `temp-chapter-1` while the rest of the app had moved on to the real ID, successfully saved work could disappear or become corrupted. It was still there(*usually*), hidden until a page refreshed, but it made me paranoid. 
+
+What was the truth?
+
+I didn't realize this was the core problem until I was done. I thought the system was finished. I was writing closeout documentation. I had made all these workarounds and done extensive testing, and it hit me: "What if the client just generated the permanent ID from the start?"
+
+The fix was embarrassing. Instead of a temporary name that gets rewritten, the client generates a UUIDv7 before the mutation ever runs. That ID is the permanent database identity. The server accepts it, stores it, done. No rewriting. No remap maps. No reference rewrites. No cache identity rewrites. A third of the system's machinery, was deleted in one architectural decision.
+
+<EmphasizedText color="orange">Don't design systems at 3 a.m.</EmphasizedText>
+
+
+## Between Two Worlds
+
+The remaining problem was the transition window itself. Even with permanent IDs, reconnecting takes time. The outboxes have to drain. Caches invalidate. The server state changes underneath the UI.
+
+Most apps handle this optimistically. They show the user what they think the state will be and correct it silently if you're wrong. I tried that. I watched my own chapters seem to disappear during the correction. I knew they were there, but watching them flicker in and out was terrible UI.
+
+So I made a different choice. When outboxes are non-empty on reconnect, a blocking overlay appears. It tells the writer exactly what's happening: "Restoring your offline work — 1 chapter · 2 scenes · 3 saves." The editor unmounts entirely during this window. No hot-patching.
+
+<DiagramFigure caption={<>The left diagram is the system view of reconnect and canonical refresh; the right diagram is the writer-facing view, where the blocking overlay hides churn until the rebuilt state is trustworthy again.</>}>
+<div className="grid grid-cols-1 gap-6 items-start md:grid-cols-2">
+<Mermaid chart={`
+flowchart TB
+   subgraph data["What the data does"]
+       direction TB
+       D1["Outboxes detected
+       1 ch · 2 scenes · 3 saves"] --> D2["Replay in FK order
+       ch → scene → spark
+       → prose"] --> D3["Server receives
+       all changes"]
+       D3 --> D4["Canonical refresh
+       snapshot rebuilt"]
+       D4 --> D5[Outboxes empty]
+   end
+`} />
+
+<WriterRestoreDemo />
+</div>
+</DiagramFigure>
+
+<EmphasizedText>It is better to show nothing for two seconds than to show a lie for half a second.</EmphasizedText>
+
+Other apps let you start interacting while sync is still running, and you watch data fill in or change underneath you. That might be faster for interactivity, but it introduces a window where the writer doesn't know if what they're seeing is real.
+
+
+## Farewell to Charon
+
+B+ works. It is honest about what it is and what it isn't. It stabilizes the writing experience against unreliable networks. It carries changes safely through the underworld and delivers them to the server when the surface is reachable again.
+
+But it is not the destination.
+
+The real answer to offline is a desktop app. An app on the writer's computer with a database on their hard drive. The outboxes move from IndexedDB to a filesystem. The snapshot becomes a local database. The intent-replay architecture carries forward.
+
+The pomegranate seeds become permanent.
+
+Building the replay system first wasn't an accident or a compromise. It was the right decision. The hard parts of offline: mutation ordering, conflict detection, identity management, and reconciliation UX, are the same hard parts whether the storage layer is IndexedDB or SQLite. B+ solved those problems. The desktop app inherits those solutions.
+
+Persephone ate pomegranate seeds in the underworld. Each one is a binding commitment that she will return. The intents in IndexedDB are those seeds. Small and durable, carrying the writer's words between worlds. The underworld is not the final stop. We must keep venturing forward.
+
+---
+
+This month we proved we could be more trustworthy. In July, we learn to talk to more people.
+
+<EmphasizedText>Next month: If we want writers to use aampersand, we have to teach them how to speak its language.</EmphasizedText>
+
+<DevlogCTA
+  linkText="Read: The Shape of a Hero"
+  linkHref="https://www.aampersand.com/devlog/jun-2026"
+>
+aampersand keeps your words safe, even when the connection isn't.
+</DevlogCTA>

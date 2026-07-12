@@ -34,7 +34,7 @@ export function ShellInner({ sidebar, children }: ShellProps) {
       <header className="md:hidden flex items-center justify-between p-4 border-b border-border bg-surface-sidebar">
         <div>
           <h1 className="text-foreground-heading font-bold text-sm">Taylor McNeil</h1>
-          <p className="text-foreground-muted font-mono text-[10px]">docs-as-portfolio v1.8</p>
+          <p className="text-foreground-muted font-mono text-[10px]">docs-as-portfolio v1.9</p>
         </div>
         <div className="flex items-center gap-4">
           <ThemeToggle />
@@ -73,7 +73,7 @@ export function ShellInner({ sidebar, children }: ShellProps) {
             </div>
             {!isToolRoute && (
               <footer className="mt-8 pt-4 border-t border-border text-xs text-foreground-muted text-center">
-                <p>Taylor McNeil is a developer and the creator of aampersand.</p>
+                <p>Taylor McNeil is a developer and the creator of aampersand, a creative writing tool for fiction writers.</p>
               </footer>
             )}
           </div>

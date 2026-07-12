@@ -3,9 +3,10 @@ export type BadgeType =
   | "built" | "building"
   | "led" | "leading"
   | "improved" | "improving"
-  | "writing"
-  | "consulting"
-  | "iterating";
+  | "wrote"
+  | "consulted"
+  | "iterated"
+  | "contributed";
 export type VersionColor = "green" | "blue" | "purple" | "orange" | "yellow" | "gray" | "pink";
 
 export interface ChangelogEntry {
@@ -26,20 +27,41 @@ export interface ChangelogVersion {
 
 export const changelogData: ChangelogVersion[] = [
   {
-   version: "4.0.0",
-   title: "Current",
-   dateRange: "Sep 2025 - Present",
-   summary: "Building tools that help people see complexity—whether that's a seven-book fantasy series or three competing LLM outputs. Shipping solo projects, consulting on AI evaluation, and writing docs that help developers ship faster.",
+   version: "4.1.0",
+   title: "aampersand",
+   dateRange: "Nov 2025 - Present",
+   summary: "Solo-designing and engineering a creative writing tool built on a relational annotation graph — every product surface (editor, wiki, clothesline, investigation boards) is a query projection over the same underlying data.",
    isCurrent: true,
    color: "green",
    entries: [
-    { type: "building", text: "&mpersand — creative workspace for fiction writers with Investigation Boards and modular wiki systems" },
-    { type: "shipping", text: "DevRel Playground — multi-model comparison tool for evaluating AI-generated content" },
-    { type: "writing", text: "Developer documentation and API guides" },
-    { type: "consulting", text: "LLM evaluation rubrics and gold-standard training data" },
-    { type: "iterating", text: "taylormcneil.dev — docs-as-portfolio" },
+    { type: "building", text: "Scene-based ProseMirror editor: each scene is its own TipTap instance, constant typing performance regardless of manuscript length" },
+    { type: "building", text: "Annotation graph system: sparks (narrative beats) and etches (world facts) live as decorations, never persisting in stored HTML" },
+    { type: "building", text: "Offline resilience: IndexedDB-backed mutation replay outboxes for prose, scenes, and chapters" },
+    { type: "building", text: "Clothesline planning surface: chapters hang as pins from a horizontal wire; sparks appear as clips beneath them; plotline threads render as colored SVG bezier curves weaving across the book's reading order, making narrative gaps and convergences immediately visible"},
+    { type: "built", text: "Multi-theme design system with Zustand two-layer store (persisted wardrobe + transient studio state) and full-screen Theme Editor" },
+    { type: "built", text: "In-browser spell checker via hunspell-wasm in a Web Worker with wiki entity dictionary injection" },
+    { type: "built", text: "Dictionary and thesaurus panel (Datamuse + Free Dictionary API integration)" },
+    { type: "built", text: "Modular wiki system: Wikipedia-style base pages with Notion-style block canvas and inline citation via drag-to-sentence" },
+    { type: "consulted", text: "AI evaluation rubrics and gold-standard training data for external clients" },
+    { type: "iterated", text: "taylormcneil.dev: docs-as-portfolio site" },
+    
   ],
-  stack: ["Next.js", "TypeScript", "Python", "PostgreSQL", "MongoDB", "LLM APIs", "Docs-as-Code"],
+  stack: ["Next.js", "React 19", "TypeScript", "TipTap/ProseMirror", "Neon PostgreSQL", "Clerk", "Zustand", "TanStack Query", "Vercel"],
+  },
+  {
+   version: "4.0.0",
+   title: "MongoDB",
+   dateRange: "Sep 2025 - Present",
+   summary: "Working as a documentation engineer—building sample applications, writing fullstack tutorials, maintaining a full programming language doc set, and contributing to open source.",
+   color: "blue",
+   entries: [
+    { type: "built", text: "Sample applications with a unified frontend and 3 separate backend implementations" },
+    { type: "built", text: "Testing suites for sample applications and select high traffic pages" },
+    { type: "wrote", text: "Fullstack tutorials for implementing MongoDB with TanStack, Vue, and Actix" },
+    { type: "improved", text: "Full programming language documentation set — comprehensive update and modernization" },
+    { type: "contributed", text: "Open source contributions across MongoDB integrations and ecosystem" },
+  ],
+  stack: ["MongoDB", "TanStack", "Vue", "Actix"],
   },
   {
     version: "3.2.0",

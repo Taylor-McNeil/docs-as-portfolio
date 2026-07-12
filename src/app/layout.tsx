@@ -35,14 +35,14 @@ export const metadata: Metadata = {
     default: "Taylor McNeil — Developer, Writer, Builder",
     template: "%s · Taylor McNeil",
   },
-  description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a visual narrative management tool for fiction writers.",
+  description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a creative writing tool that connects your characters, plotlines, and world.",
   metadataBase: new URL("https://taylormcneil.dev"),
   alternates: {
     canonical: 'https://taylormcneil.dev',
   },
   openGraph: {
     title: "Taylor McNeil",
-    description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a visual narrative management tool for fiction writers.",
+    description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a creative writing tool that connects your characters, plotlines, and world.",
     url: "https://taylormcneil.dev",
     siteName: "Taylor McNeil",
     locale: "en_US",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Taylor McNeil",
-    description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a visual narrative management tool for fiction writers.",
+    description: "Technical writing, dev tutorials, case studies, and the development blog for aampersand — a creative writing tool that connects your characters, plotlines, and world.",
   },
   robots: {
     index: true,

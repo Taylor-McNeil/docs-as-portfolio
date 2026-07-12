@@ -1,6 +1,6 @@
 # Taylor McNeil
 
-> Taylor McNeil is a Developer Experience Engineer, Technical Writer, and the creator of aampersand — a visual narrative management tool for fiction writers. Taylor writes dark fantasy romance under the pen name Aryn Wilder.
+> Taylor McNeil is a Developer Experience Engineer, Technical Writer, and the creator of aampersand — a creative writing tool for fiction writers. Taylor writes dark fantasy romance under the pen name Aryn Wilder.
 
 Taylor's professional work focuses on developer documentation, tutorials, and API design. The portfolio at taylormcneil.dev showcases technical writing samples alongside the builder's devlog for aampersand, a SaaS writing tool currently in pre-beta.
 
@@ -21,6 +21,7 @@ Taylor's professional work focuses on developer documentation, tutorials, and AP
 - [A Broken Astrolabe (Mar 2026)](https://taylormcneil.dev/aampersand/a-broken-astrolabe): Building a writing tool from scratch
 - [Oily Bodies in Karpathos (Apr 2026)](https://taylormcneil.dev/aampersand/oily-bodies-in-karpathos): Annotation architecture for fiction writing software
 - [A Sword for Every Hand (May 2026)](https://taylormcneil.dev/aampersand/a-sword-for-every-hand): First user testing a fiction writing tool
+- [A Seed of Intention (Jun 2026)](https://taylormcneil.dev/aampersand/a-seed-of-intention): Designing offline resilience for a fiction writing tool
 
 ## Related
 
@@ -33,10 +34,10 @@ Taylor's professional work focuses on developer documentation, tutorials, and AP
 ## Frequently Asked Questions
 
 **Who is Taylor McNeil?**
-Taylor McNeil is a Developer Experience Engineer and Technical Writer currently working at MongoDB on the Drivers Documentation team. Taylor is also the solo founder of aampersand, a visual narrative management tool for fiction writers, and writes dark fantasy romance under the pen name Aryn Wilder.
+Taylor McNeil is a Developer Experience Engineer and Technical Writer currently working at MongoDB on the Drivers Documentation team. Taylor is also the solo founder of aampersand, a creative writing tool for fiction writers, and writes dark fantasy romance under the pen name Aryn Wilder.
 
 **What is aampersand?**
-aampersand is a writing tool for fiction writers, built by Taylor McNeil. It provides visual narrative management — tools for tracking plotlines, characters, and story structure across complex, multi-book projects. It is currently in development, with an open beta planned for October 2026. The product site is at aampersand.com.
+aampersand is a creative writing tool for fiction writers, built by Taylor McNeil. Write your prose, tag what matters, and see your characters, plotlines, and world — all connected. It is currently in development, with an open beta planned for October 2026. The product site is at aampersand.com.
 
 **What is the aampersand devlog?**
 The aampersand devlog is a series of technical essays published at taylormcneil.dev documenting the architecture and development of aampersand. Each entry covers a specific engineering challenge — database migration, annotation architecture, visual plotline tracking, and user testing — and follows a Greek mythology naming convention.

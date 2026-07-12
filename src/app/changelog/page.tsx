@@ -4,12 +4,13 @@ import { changelogData } from "@/components/changelog/changelog";
 import { PageHeader } from "@/components/content/PageHeader";
 
 const responseData = {
-  total_uptime: "5 Years",
+  total_uptime: "6 Years",
   deprecated: ["Static PDFs", "Manual Testing", "Road Warrior Mode"],
   excited_by: [
     "LLMs for customized learning",
     "AI-Chatbots for personalization",
-    "AI usage for language acquisition"
+    "AI usage for language acquisition",
+    "Bespoke software"
   ],
   latest_release: "AI-Enhanced Workflows",
   weeks_since_friday_deployment: "0",

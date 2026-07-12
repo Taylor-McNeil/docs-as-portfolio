@@ -18,11 +18,13 @@ const badgeStyles: Record<BadgeType, string> = {
   improved: "bg-method-put/10 text-method-put border-method-put/30",
   improving: "bg-method-put/10 text-method-put border-method-put/30",
   // writing - pink
-  writing: "bg-pink-500/10 text-pink-400 border-pink-500/30",
+  wrote: "bg-pink-500/10 text-pink-400 border-pink-500/30",
   // consulting - yellow
-  consulting: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
+  consulted: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
   // iterating - cyan
-  iterating: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+  iterated: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30",
+  // contributing - indigo
+  contributed: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30",
 };
 
 const badgeLabels: Record<BadgeType, string> = {
@@ -34,9 +36,10 @@ const badgeLabels: Record<BadgeType, string> = {
   leading: "LEADING",
   improved: "IMPROVED",
   improving: "IMPROVING",
-  writing: "WRITING",
-  consulting: "CONSULTING",
-  iterating: "ITERATING",
+  wrote: "WROTE",
+  consulted: "CONSULTED",
+  iterated: "ITERATED",
+  contributed: "CONTRIBUTED",
 };
 
 export function ChangelogBadge({ type }: ChangelogBadgeProps) {
