@@ -55,9 +55,9 @@ It's the bane of my existence, and until this month I thought it was completely 
 
 Allow me to explain.
 
-Many writing apps don't have online access: MS Word circa 2007, Scrivener, Notepad, Google Docs (we don't talk about that cursed offline mode). aampersand is a web-based tool; offline mode was a nice to have. No one expects Netflix or TikTok to work offline.
+Many writing apps don't have online access: MS Word circa 2007, Scrivener, Notepad, Google Docs (we don't talk about that cursed offline mode). aampersand is a web-based tool; offline mode was a nice-to-have. No one expects Netflix or TikTok to work offline.
 
-Comparing ones app to Netflix is arrogant, but we all have moments of delusion. But I think the real reasons came down to a few things:
+Comparing one's app to Netflix is arrogant, but we all have moments of delusion. But I think the real reasons came down to a few things:
 
 1. I don't work offline.
 
@@ -71,7 +71,7 @@ Comparing ones app to Netflix is arrogant, but we all have moments of delusion. 
 
     This is another major reason I think is important to not discount. This is not a simple CRUD feature or frontend component. Building this feature would ultimately take me to areas of software engineering I'd never seen, and of course, being a newbie… I would blow things up.
 
-Despite my ego, delusion and lies… offline mode is valid, and it's something I have a little experience using. I know what it feels like to be writing at a coffee shop with spotty signal and watch the save indicator spin, wondering if my chapter got ate. That feeling… the uncertainty, the anxiety is poison for a creative tool.
+Despite my ego, delusion, and lies… offline mode is valid, and it's something I have a little experience using. I know what it feels like to be writing at a coffee shop with spotty signal and watch the save indicator spin, wondering if my chapter got ate. That feeling… the uncertainty, the anxiety is poison for a creative tool.
 
 So the question wasn't "Does my app need offline mode?" The question was "Can writers trust this tool when the network isn't perfect?" And the honest answer was: not yet.
 
@@ -93,7 +93,7 @@ There was a moment, somewhere in the middle of all this research, when I realize
 
 I thought aampersand was closer to Google Docs: a thin client where the server does the real work and the browser just renders the result. Under that model, offline means caching a document and hoping reconciliation works when you come back. It's the server's problem.
 
-But aampersand isn't a document. It's an annotation graph. Tables of relational data: chapters containing scenes, scenes anchoring Sparks, Sparks joining plotlines through junction tables, etchings connecting to entities through citations. Every relationship is a foreign key. Every surface in the app: the Editor, the Wiki, the Lab—is a different projection over that same graph.
+But aampersand isn't a document. It's an annotation graph. Tables of relational data: chapters containing scenes, scenes anchoring Sparks, Sparks joining plotlines through junction tables, etchings connecting to entities through citations. Every relationship is a foreign key. Every surface in the app, the Editor, the Wiki, the Lab—is a different projection over that same graph.
 
 <DiagramFigure caption={<>The project read model is a connected graph: books contain chapters and scenes, scenes anchor Sparks, and those Sparks connect outward through plot, facet, etching, entity, and citation relationships.</>}>
 <Mermaid
@@ -123,8 +123,8 @@ I point this out because, this is a product decision, not an engineering shortcu
 Co-writers can draft and edit prose. Beta readers can view. But Sparks, Etches, plotlines, wiki structure, chapter and scene organization—all of that belongs to one person.
 
 <Callout type="context">
-    Structural interpretation of what a moment means in the arc has to be owned by one brain. Because if one writer thinks that spark is foreshadowing and the other thinks its just dialog, thats a problem the software cannot solve. (*Yes I know it could technically be both, 
-    however that defeats the point of aampersand being able to show you, your interpretation of the story. You would get into a really weird state of... "Do I care about my co-writers opinion here?" and then we would have to introduce an insane amount of filtering and nonsense for words and ideas tbh you probably don't even care about.)*
+    Structural interpretation of what a moment means in the arc has to be owned by one brain. Because if one writer thinks that a spark is foreshadowing and the other thinks it's just dialog, that's a problem the software cannot solve. (*Yes I know it could technically be both, 
+    however that defeats the point of aampersand being able to show your interpretation of the story. You would get into a really weird state of... "Do I care about my co-writer's opinion here?" and then we would have to introduce an insane amount of filtering and nonsense for words and ideas tbh you probably don't even care about.)*
 
 
 </Callout>
@@ -195,13 +195,13 @@ graph TD
 </div>
 </DiagramFigure>
 
-Multiple outboxes, not one, because concept (spark,prose,etch, etc) has a different shape and different failure patterns. A chapter create is not the same kind of operation as a prose save. They replay has to be done in a strict order: chapter → scene → Spark → prose. The foreign key graph demands it. A scene can't be created on the server before its parent chapter exists. A Spark can't be anchored before its scene exists. Parent before child.
+Multiple outboxes, not one, because concept (spark, prose, etch, etc.) has a different shape and different failure patterns. A chapter create is not the same kind of operation as a prose save. The replay has to be done in a strict order: chapter → scene → Spark → prose. The foreign key graph demands it. A scene can't be created on the server before its parent chapter exists. A Spark can't be anchored before its scene exists. Parent before child.
 
 On book entry, the app also caches a project snapshot, the full read model of the annotation graph into IndexedDB. This provides read truth while offline. When the writer opens the Clothesline without the internet, the data is there. Not because it's being synced, but because it was cached in full the last time they were online.
 
 I call this system B+. Because… it's not perfect. It's a stopgap, honestly. It's not a real offline mode. It's a resilience layer for unreliable networks. If your Wi-Fi drops for ten minutes while you're writing, your work survives. All your changes wait patiently in the outboxes and replay when the connection returns.
 
-What it cannot do is survive the browser clearing its storage. IndexedDB is borrowed space and in some ways hostile. The browser can reclaim it. Clearing cookies destroys it. `navigator.storage.persist()` reduces eviction risk, but it is not a guarantee. Your can seeds survive in their momentarily, but it's not a long term home for them.
+What it cannot do is survive the browser clearing its storage. IndexedDB is borrowed space and in some ways hostile. The browser can reclaim it. Clearing cookies destroys it. `navigator.storage.persist()` reduces eviction risk, but it is not a guarantee. Your seeds survive there momentarily, but it's not a long term home for them.
 
 
 ## Lost in the Underworld
@@ -212,7 +212,7 @@ Or was it?
 
 During reconnection, the UI lied sometimes.
 
-Chapters would appear, then vanish. Scenes would flicker. The page would show some intermediate state—not quite the offline version, not quite the server version—that made it look like work was lost. Every time, a full-page reload proved the data was there. However, a user wasn't going to refresh the page every time they lost connection to the internet. Still it made me feel like I couldn't trust what I was seeing in my own app, and if I couldn't trust it, no writer would either.
+Chapters would appear, then vanish. Scenes would flicker. The page would show some intermediate state—not quite the offline version, not quite the server version—that made it look like work was lost. Every time, a full-page reload proved the data was there. However, the user wasn't going to refresh the page every time they lost connection to the internet. Still it made me feel like I couldn't trust what I was seeing in my own app, and if I couldn't trust it, no writer would either.
 
 The problem was one of those things that seems obvious in hindsight and was invisible while I was building it. When you create a chapter offline, it needs an ID immediately. The UI has to render it; the scene has to reference it; the outbox has to track it. But the server hasn't seen it yet. Normally, the server creates entity IDs.
 
@@ -222,9 +222,9 @@ This was roughly a third of the entire system's complexity. If the rewrite misse
 
 What was the truth?
 
-I didn't realize this was the core problem until I was done. I thought the system was finished. I was writing closeout documentation. I had made all these workarounds and done extensive testing, and it hit me: What if the client just generated the permanent ID from the start?
+I didn't realize this was the core problem until I was done. I thought the system was finished. I was writing closeout documentation. I had made all these workarounds and done extensive testing, and it hit me: "What if the client just generated the permanent ID from the start?"
 
-The fix was embarrassing. Instead of a temporary name that gets rewritten, the client generates a UUIDv7 before the mutation ever runs. That ID is the permanent database identity. The server accepts it, stores it, done. No rewriting. No remap maps. No reference rewrites. No cache identity rewrites. A third of the system's machinery, deleted in one architectural decision.
+The fix was embarrassing. Instead of a temporary name that gets rewritten, the client generates a UUIDv7 before the mutation ever runs. That ID is the permanent database identity. The server accepts it, stores it, done. No rewriting. No remap maps. No reference rewrites. No cache identity rewrites. A third of the system's machinery, was deleted in one architectural decision.
 
 <EmphasizedText color="orange">Don't design systems at 3 a.m.</EmphasizedText>
 
@@ -275,7 +275,7 @@ The pomegranate seeds become permanent.
 
 Building the replay system first wasn't an accident or a compromise. It was the right decision. The hard parts of offline: mutation ordering, conflict detection, identity management, and reconciliation UX, are the same hard parts whether the storage layer is IndexedDB or SQLite. B+ solved those problems. The desktop app inherits those solutions.
 
-Persephone ate pomegranate seeds in the underworld. Each one is a binding commitment that she will return. The intents in IndexedDB are those seeds. Small and durable, carrying the writer's words between worlds. The underworld is not the final stop, we must keep venturing to new places.
+Persephone ate pomegranate seeds in the underworld. Each one is a binding commitment that she will return. The intents in IndexedDB are those seeds. Small and durable, carrying the writer's words between worlds. The underworld is not the final stop. We must keep venturing forward.
 
 ---
 
