@@ -182,6 +182,44 @@ body {
 }
 
 /* Mermaid diagram dark mode overrides */
+.mermaid-diagram svg[id^="mermaid"] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid-diagram[data-size="natural"] svg[id^="mermaid"] {
+  width: auto;
+  max-width: none;
+}
+
+/* Mermaid diagram light mode overrides */
+svg[id^="mermaid"] .node rect,
+svg[id^="mermaid"] .node path,
+svg[id^="mermaid"] .node polygon,
+svg[id^="mermaid"] .node circle,
+svg[id^="mermaid"] .node ellipse,
+svg[id^="mermaid"] .basic.label-container {
+  fill: #fff1df !important;
+  stroke: #c2410c !important;
+}
+
+svg[id^="mermaid"] .cluster rect {
+  fill: #fff7ed !important;
+  stroke: #fdba74 !important;
+}
+
+svg[id^="mermaid"] .edgePath path {
+  stroke: #9a3412 !important;
+}
+
+svg[id^="mermaid"] .arrowMarkerPath,
+svg[id^="mermaid"] marker path {
+  fill: #9a3412 !important;
+  stroke: #9a3412 !important;
+}
+
 .dark svg[id^="mermaid"] {
   background: transparent !important;
 }

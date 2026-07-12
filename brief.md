@@ -142,7 +142,7 @@ type CalloutType = "note" | "warning" | "tip" | "context" | "test" | "celebratio
 ## Changelog Badge Types
 
 ```tsx
-type BadgeType = "shipped" | "built" | "led" | "improved";
+type BadgeType = "shipped" | "built" | "led" | "improved"|"wrote"|"contributed";
 ```
 
 | Type | Color | Use For |

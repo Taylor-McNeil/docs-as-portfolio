@@ -36,10 +36,15 @@ const TEXT_SPEAKERS = [
   { name: "Fire Him", direction: "received" },
   { name: "The Beast", direction: "received" },
   { name: "The Dictator", direction: "received" },
+  { name: "Number One Baddie", direction: "received" },
+  { name: "Gumi Bear", direction: "received" },
   { name: "The Roomate??", direction: "received" },
   { name: "Unknown Number", direction: "received" },
   { name: "Yuuji", direction: "sent" },
+  { name: "Number One Baddie", direction: "sent" },
+  { name: "Gumi Bear", direction: "sent" },
   { name: "Sukuna", direction: "sent" },
+  { name: "Turkey Boy", direction:"received"},
 ];
 
 const SLACK_COLORS = {
@@ -105,6 +110,9 @@ const AO3_SKIN_CSS = `
   #workskin .email-subject strong { font-weight: bold; }
   #workskin .email-body { font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 14px; line-height: 1.6; color: #444; margin-bottom: 0.8em; }
   #workskin .email-body:last-child { margin-bottom: 0; }
+  #workskin .math-exp { white-space: nowrap; }
+  #workskin .math-caret { display: none; }
+  #workskin .math-power { font-size: 0.72em; vertical-align: super; line-height: 0; }
   #workskin ul { list-style-type: disc; margin-top: 0.8em; margin-bottom: 1em; margin-left: 1.3em; padding-left: 1.1em; }
   #workskin ol { list-style-type: decimal; margin-top: 0.8em; margin-bottom: 1em; margin-left: 1.3em; padding-left: 1.2em; }
   #workskin li { margin-bottom: 0.45em; }
@@ -178,11 +186,20 @@ function escapeHtml(value) {
 }
 
 function formatBracketedFallbackText(value) {
-  const text = escapeHtml(value);
+  const text = formatInlineMarkup(value);
   const match = text.match(/^\[(.*)\]$/s);
   if (!match) return text;
 
   return `<span class="fallback-bracket">[</span>${match[1]}<span class="fallback-bracket">]</span>`;
+}
+
+function formatInlineMarkup(value) {
+  return escapeHtml(value)
+    .replace(/&lt;(\/?)(sup|sub)&gt;/gi, "<$1$2>")
+    .replace(/\^(\{[^}]+\}|\([^)]+\)|[A-Za-z0-9+\-]+)/g, (_, exponent) => {
+      const normalized = exponent.replace(/^[({]/, "").replace(/[)}]$/, "");
+      return `<span class="math-exp"><span class="math-caret">^</span><span class="math-power">${normalized}</span></span>`;
+    });
 }
 
 function cleanLine(line) {
@@ -206,6 +223,29 @@ function stripHtmlTags(value) {
     .replace(/<[^>]+>/g, "")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function extractInlineMarkup(node) {
+  if (!node) return "";
+
+  if (node.nodeType === Node.TEXT_NODE) {
+    return node.textContent ?? "";
+  }
+
+  if (node.nodeType !== Node.ELEMENT_NODE) return "";
+
+  if (node.nodeName === "BR") {
+    return "\n";
+  }
+
+  const tagName = node.nodeName.toLowerCase();
+  const children = Array.from(node.childNodes).map(extractInlineMarkup).join("");
+
+  if (tagName === "sup" || tagName === "sub") {
+    return `<${tagName}>${children}</${tagName}>`;
+  }
+
+  return children;
 }
 
 function stripWrappingAsterisks(value) {
@@ -395,10 +435,12 @@ export default function AO3Formatter() {
   const [editingValue, setEditingValue] = useState("");
   const [lastDeletedRows, setLastDeletedRows] = useState(null);
   const [hasRestoredDraft, setHasRestoredDraft] = useState(false);
+  const [stickyHeaderHeight, setStickyHeaderHeight] = useState(70);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
   const previewPaneRef = useRef(null);
   const editInputRef = useRef(null);
+  const stickyHeaderRef = useRef(null);
   const selectedRows = useMemo(
     () => paragraphs.filter((paragraph) => selected.has(paragraph.id)),
     [paragraphs, selected]
@@ -581,6 +623,7 @@ export default function AO3Formatter() {
     };
 
     const getText = (node) => node?.textContent?.replace(/\u00a0/g, " ").trim() ?? "";
+    const getMarkupText = (node) => extractInlineMarkup(node).replace(/\u00a0/g, " ").trim();
 
     const parseTextThread = (threadNode) => {
       threadNode.querySelectorAll(":scope > blockquote.text-msg").forEach((bubble) => {
@@ -607,7 +650,7 @@ export default function AO3Formatter() {
         bubble.querySelectorAll(":scope > p:not(.msg-label)").forEach((messageNode) => {
           pushParagraph({
             raw: messageNode.outerHTML,
-            text: getText(messageNode),
+            text: getMarkupText(messageNode),
             type,
             speaker: "",
             wasBlockquoted: true,
@@ -660,7 +703,7 @@ export default function AO3Formatter() {
           const slackSpeaker = currentSpeaker ?? null;
           pushParagraph({
             raw: node.outerHTML,
-            text: getText(node),
+            text: getMarkupText(node),
             type: "slack-message",
             slackSpeaker,
             timestamp: currentTimestamp,
@@ -684,7 +727,7 @@ export default function AO3Formatter() {
         const hasEmphasis = Boolean(itemNode.querySelector("em"));
         pushParagraph({
           raw: itemNode.outerHTML,
-          text: getText(itemNode),
+          text: getMarkupText(itemNode),
           type: hasEmphasis ? "thought" : "prose",
           listKind,
         });
@@ -695,14 +738,14 @@ export default function AO3Formatter() {
       emailNode.querySelectorAll(":scope > p").forEach((lineNode) => {
         pushParagraph({
           raw: lineNode.outerHTML,
-          text: getText(lineNode),
+          text: getMarkupText(lineNode),
           type: "email",
         });
       });
     };
 
     const parseParagraphNode = (node) => {
-      const text = getText(node);
+      const text = getMarkupText(node);
       if (!text) return;
 
       if (node.querySelector(".phone-badge")) {
@@ -775,27 +818,27 @@ export default function AO3Formatter() {
       }
 
       if (node.matches(".sticky-note")) {
-        pushParagraph({ raw: node.outerHTML, text: getText(node), type: "sticky-note" });
+        pushParagraph({ raw: node.outerHTML, text: getMarkupText(node), type: "sticky-note" });
         return;
       }
 
       if (node.matches(".handwritten-note")) {
-        pushParagraph({ raw: node.outerHTML, text: getText(node), type: "handwritten-note" });
+        pushParagraph({ raw: node.outerHTML, text: getMarkupText(node), type: "handwritten-note" });
         return;
       }
 
       if (node.matches(".red-ink")) {
-        pushParagraph({ raw: node.outerHTML, text: getText(node), type: "red-ink" });
+        pushParagraph({ raw: node.outerHTML, text: getMarkupText(node), type: "red-ink" });
         return;
       }
 
       if (node.matches(".grade-mark")) {
-        pushParagraph({ raw: node.outerHTML, text: getText(node), type: "grade-mark" });
+        pushParagraph({ raw: node.outerHTML, text: getMarkupText(node), type: "grade-mark" });
         return;
       }
 
       if (node.matches(".grade-comment")) {
-        pushParagraph({ raw: node.outerHTML, text: getText(node), type: "grade-comment" });
+        pushParagraph({ raw: node.outerHTML, text: getMarkupText(node), type: "grade-comment" });
         return;
       }
 
@@ -1075,6 +1118,27 @@ export default function AO3Formatter() {
     cancelEditingParagraph();
   }, [cancelEditingParagraph, editingId, editingValue]);
 
+  const applyExponentFormat = useCallback(() => {
+    if (editingId == null || !editInputRef.current) return;
+
+    const textarea = editInputRef.current;
+    const start = textarea.selectionStart ?? 0;
+    const end = textarea.selectionEnd ?? start;
+    const selectedText = editingValue.slice(start, end);
+    const nextValue = selectedText
+      ? `${editingValue.slice(0, start)}${selectedText.startsWith("^") ? selectedText : `^${selectedText}`}${editingValue.slice(end)}`
+      : `${editingValue.slice(0, start)}^${editingValue.slice(end)}`;
+
+    setEditingValue(nextValue);
+
+    requestAnimationFrame(() => {
+      if (!editInputRef.current) return;
+      editInputRef.current.focus();
+      const nextCaret = start + (selectedText ? (selectedText.startsWith("^") ? selectedText.length : selectedText.length + 1) : 1);
+      editInputRef.current.setSelectionRange(nextCaret, nextCaret);
+    });
+  }, [editingId, editingValue]);
+
   const addRowAfterSelection = useCallback(() => {
     const selectedIds = [...selected];
     const anchorId = selectedIds[selectedIds.length - 1] ?? paragraphs[paragraphs.length - 1]?.id ?? null;
@@ -1284,7 +1348,7 @@ export default function AO3Formatter() {
     const activeParagraphs = paragraphs.filter((paragraph) => paragraph.type !== "skip");
 
     activeParagraphs.forEach((paragraph) => {
-      const text = escapeHtml(paragraph.text);
+      const text = formatInlineMarkup(paragraph.text);
       const isListRow = Boolean(paragraph.listKind) && (paragraph.type === "prose" || paragraph.type === "thought");
       const listData = isListRow ? null : parseBasicList(paragraph.raw || paragraph.text);
       const isText = paragraph.type === "text-received" || paragraph.type === "text-sent";
@@ -1598,6 +1662,32 @@ export default function AO3Formatter() {
   }, [draftStatus]);
 
   useEffect(() => {
+    const headerEl = stickyHeaderRef.current;
+    if (!headerEl) return;
+
+    const updateHeaderHeight = () => {
+      const nextHeight = Math.ceil(headerEl.getBoundingClientRect().height);
+      setStickyHeaderHeight((currentHeight) => (currentHeight === nextHeight ? currentHeight : nextHeight));
+    };
+
+    updateHeaderHeight();
+
+    if (typeof ResizeObserver === "undefined") {
+      window.addEventListener("resize", updateHeaderHeight);
+      return () => window.removeEventListener("resize", updateHeaderHeight);
+    }
+
+    const observer = new ResizeObserver(() => updateHeaderHeight());
+    observer.observe(headerEl);
+    window.addEventListener("resize", updateHeaderHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateHeaderHeight);
+    };
+  }, [hasSlack, hasText, showPreview]);
+
+  useEffect(() => {
     if (editingId == null || !editInputRef.current) return;
     editInputRef.current.focus();
     editInputRef.current.select();
@@ -1703,9 +1793,11 @@ export default function AO3Formatter() {
     );
   }
 
+  const paneMaxHeight = `calc(100vh - ${stickyHeaderHeight}px)`;
+
   return (
     <div style={{ fontFamily: "Georgia, serif", background: "#f4f1ec", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <div style={{ position: "sticky", top: 0, zIndex: 100, display: "flex", flexDirection: "column" }}>
+      <div ref={stickyHeaderRef} style={{ position: "sticky", top: 0, zIndex: 100, display: "flex", flexDirection: "column" }}>
       <div style={{ background: "#1a1a1a", padding: "7px 10px", display: "flex", flexWrap: "wrap", alignItems: "center", borderBottom: "1px solid #333", gap: 2 }}>
         <span style={{ fontFamily: "'Courier New', monospace", fontSize: 10, color: "#8f8f8f", marginRight: 6, textTransform: "uppercase", letterSpacing: 1 }}>Type:</span>
         {Object.entries(BLOCK_TYPES).map(([key, blockType]) => (
@@ -1835,7 +1927,7 @@ export default function AO3Formatter() {
         </div>
       </div>
 
-      {(hasSlack || hasText) && (
+      {(hasSlack || hasText || editingParagraph) && (
         <div style={{ background: "#222", padding: "5px 10px", display: "flex", flexWrap: "wrap", alignItems: "center", borderBottom: "1px solid #333" }}>
           {hasSlack && (
             <>
@@ -1867,7 +1959,7 @@ export default function AO3Formatter() {
               <span style={{ fontFamily: "'Courier New', monospace", fontSize: 10, color: "#8f8f8f", marginRight: 6, textTransform: "uppercase", marginLeft: hasSlack ? 12 : 0 }}>Text:</span>
               {TEXT_SPEAKERS.map((speaker) => (
                 <button
-                  key={speaker.name}
+                  key={`${speaker.name}-${speaker.direction}`}
                   onClick={() => applyTextSpeaker(speaker.name, speaker.direction)}
                   style={{ padding: "2px 7px", margin: "1px 2px", background: speaker.direction === "sent" ? "#3a7bd5" : "#e5e5ea", color: speaker.direction === "sent" ? "#fff" : "#1a1a1a", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 3, fontFamily: "'Courier New', monospace", fontSize: 10, cursor: "pointer", lineHeight: 1.2 }}
                 >
@@ -1876,12 +1968,24 @@ export default function AO3Formatter() {
               ))}
             </>
           )}
+          {editingParagraph && (
+            <>
+              <span style={{ fontFamily: "'Courier New', monospace", fontSize: 10, color: "#8f8f8f", marginRight: 6, textTransform: "uppercase", marginLeft: hasSlack || hasText ? 12 : 0 }}>Format:</span>
+              <button
+                onClick={applyExponentFormat}
+                disabled={editingId == null}
+                style={{ padding: "2px 7px", margin: "1px 2px", background: "#2f2f2f", color: "#f0f0f0", border: "1px solid #4d4d4d", borderRadius: 3, fontFamily: "'Courier New', monospace", fontSize: 10, cursor: editingId == null ? "not-allowed" : "pointer", opacity: editingId == null ? 0.4 : 1, lineHeight: 1.2 }}
+              >
+                x^n
+              </button>
+            </>
+          )}
         </div>
       )}
       </div>
 
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-        <div style={{ flex: showPreview ? "0 0 50%" : "1", overflowY: "auto", padding: "6px 10px", maxHeight: "calc(100vh - 70px)" }}>
+        <div style={{ flex: showPreview ? "0 0 50%" : "1", overflowY: "auto", padding: "6px 10px", maxHeight: paneMaxHeight }}>
           <div style={{ fontFamily: "'Courier New', monospace", fontSize: 10, color: "#8e8e8e", marginBottom: 6, display: "flex", alignItems: "center", position: "sticky", top: 0, zIndex: 5, background: "#f4f1ec", padding: "4px 0 6px" }}>
             <span>{paragraphs.length} ¶ · {selected.size} sel</span>
             {selected.size > 0 && (
@@ -1992,7 +2096,7 @@ export default function AO3Formatter() {
         </div>
 
         {showPreview && (
-          <div ref={previewPaneRef} style={{ flex: "0 0 50%", borderLeft: "1px solid #ddd", overflowY: "auto", maxHeight: "calc(100vh - 70px)", background: previewMode === "skin-off" ? "#e8e5e0" : "#fff", position: "relative" }}>
+          <div ref={previewPaneRef} style={{ flex: "0 0 50%", borderLeft: "1px solid #ddd", overflowY: "auto", maxHeight: paneMaxHeight, background: previewMode === "skin-off" ? "#e8e5e0" : "#fff", position: "relative" }}>
             <div style={{ display: "flex", borderBottom: "1px solid #ddd", position: "sticky", top: 0, background: "#fff", zIndex: 20, boxShadow: "0 1px 0 rgba(0,0,0,0.08)" }}>
               {["skin-on", "skin-off", "html"].map((mode) => (
                 <button

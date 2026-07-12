@@ -19,7 +19,7 @@ type Devlog = {
   description: string;
   tag: string;
   tagClassName: string;
-  preview: "origin" | "thread" | "clothesline" | "graph" | "spark";
+  preview: "origin" | "thread" | "clothesline" | "graph" | "spark" | "queue";
 };
 
 const devlogs: Devlog[] = [
@@ -72,6 +72,17 @@ const devlogs: Devlog[] = [
     tag: "validation",
     tagClassName: "bg-method-post/10 text-method-post",
     preview: "spark",
+  },
+  {
+    href: "/aampersand/a-seed-of-intention",
+    title: "A Seed of Intention",
+    date: "Jun 2026",
+    description:
+      "The offline problem I didn't want to solve. A replay queue born on a refrigerator, temporary IDs that haunted the UI, and the architectural decision that deleted a third of the system.",
+    tag: "resilience",
+    tagClassName:
+      "bg-[color:var(--color-callout-warn-bg)] text-[color:var(--color-callout-warn)]",
+    preview: "queue",
   },
 ];
 
@@ -219,7 +230,77 @@ function Preview({ type }: { type: Devlog["preview"] }) {
       return <GraphPreview />;
     case "spark":
       return <SparkPreview />;
+    case "queue":
+      return <QueuePreview />;
   }
+}
+
+function QueuePreview() {
+  const rows = [
+    {
+      label: "chapter",
+      fill: "w-5",
+      tail: "░░",
+      tone: "text-method-put",
+      bar: "bg-method-put/70",
+      rail: "bg-method-put/10 border-method-put/30",
+      rule: "border-method-put/20",
+    },
+    {
+      label: "scene",
+      fill: "w-3",
+      tail: "░░░",
+      tone: "text-method-get",
+      bar: "bg-method-get/70",
+      rail: "bg-method-get/10 border-method-get/30",
+      rule: "border-method-get/20",
+    },
+    {
+      label: "spark",
+      fill: "w-3",
+      tail: "░░░",
+      tone: "text-method-head",
+      bar: "bg-method-head/70",
+      rail: "bg-method-head/10 border-method-head/30",
+      rule: "border-method-head/20",
+    },
+    {
+      label: "prose",
+      fill: "w-7",
+      tail: "░",
+      tone: "text-accent-success",
+      bar: "bg-accent-success/75",
+      rail: "bg-accent-success/10 border-accent-success/30",
+      rule: "border-accent-success/20",
+    },
+  ];
+
+  return (
+    <div className="flex h-full min-h-24 flex-col justify-center font-mono text-[10px] text-foreground-muted">
+      <div className="mx-auto w-full max-w-[164px] border border-[color:var(--color-callout-warn)]/25 bg-surface-terminal px-2 py-2">
+        {rows.map((row, index) => (
+          <div
+            key={row.label}
+            className={`flex items-center gap-2 ${index > 0 ? `border-t ${row.rule} pt-1` : ""} ${index < rows.length - 1 ? "pb-1" : ""}`}
+          >
+            <span className={`w-12 ${row.tone}`}>{row.label}</span>
+            <span className={`flex h-2 w-8 overflow-hidden border ${row.rail}`}>
+              <span className={`${row.bar} ${row.fill}`} />
+            </span>
+            <span className={`tracking-[-0.08em] ${row.tone} opacity-65`}>{row.tail}</span>
+          </div>
+        ))}
+        <div className="mt-2 flex items-center justify-end gap-2">
+          <span className="text-foreground-muted/55">replay</span>
+          <span className="text-accent">&rarr;</span>
+          <span className="text-accent font-semibold">server</span>
+        </div>
+      </div>
+      <p className="mt-3 italic text-center text-foreground-muted/70">
+        seeds in, truth out
+      </p>
+    </div>
+  );
 }
 
 function SparkPreview() {
