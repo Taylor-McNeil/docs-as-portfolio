@@ -10,7 +10,6 @@ export const metadata: Metadata = {
     title: "A Seed of Intention",
     description: "Why offline mode for a solo SaaS annotation graph meant an intent-replay queue instead of a sync engine, and what it took to make reconnection honest.",
     type: "article",
-    images: [{ width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
