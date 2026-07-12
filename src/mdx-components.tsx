@@ -62,10 +62,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <p className="text-foreground-muted leading-relaxed mb-4">{children}</p>
     ),
     ul: ({ children }) => (
-      <ul className="list-disc list-inside text-foreground-muted mb-4 space-y-1">{children}</ul>
+      <ul className="list-disc list-outside pl-5 text-foreground-muted mb-4 space-y-1">{children}</ul>
     ),
     ol: ({ children }) => (
-      <ol className="list-decimal list-inside text-foreground-muted mb-4 space-y-1">{children}</ol>
+      <ol className="list-decimal list-outside pl-5 text-foreground-muted mb-4 space-y-4">{children}</ol>
+    ),
+    li: ({ children }) => (
+      <li className="pl-1 [&>p]:mb-2 [&>p+p]:mt-2 last:[&>p:last-child]:mb-0">{children}</li>
     ),
     strong: ({ children }) => (
       <strong className="font-semibold text-foreground">{children}</strong>
