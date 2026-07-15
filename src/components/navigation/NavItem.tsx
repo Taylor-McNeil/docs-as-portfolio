@@ -18,6 +18,7 @@ const activeStyles: Record<Method, string> = {
   PUT: "bg-method-put-bg text-method-put",
   PATCH: "bg-method-patch-bg text-method-patch",
   HEAD: "bg-method-head-bg text-method-head",
+  OPTIONS: "bg-method-options-bg text-method-options",
 };
 
 export function NavItem({ href, label, method }: NavItemProps) {

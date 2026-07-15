@@ -5,6 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
+      disallow: '/tools',
     },
     sitemap: 'https://taylormcneil.dev/sitemap.xml',
     host: 'https://taylormcneil.dev',

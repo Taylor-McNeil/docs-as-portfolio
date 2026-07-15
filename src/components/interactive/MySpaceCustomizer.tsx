@@ -15,13 +15,32 @@ interface FallingElement {
   size: number;
 }
 
+interface MySpaceCustomizerProps {
+  scope?: "page" | "container";
+}
+
+interface BackgroundPreset {
+  label: string;
+  value: string;
+  text: string;
+  heading: string;
+}
+
 // ─── Presets ─────────────────────────────────────────────────────
-const BG_PRESETS = [
+const BG_PRESETS: BackgroundPreset[] = [
   { label: "Hot Pink", value: "#FF69B4", text: "#000000", heading: "#2b0014" },
   { label: "Lime", value: "#32CD32", text: "#000000", heading: "#003300" },
   { label: "Void", value: "#000000", text: "#00ff00", heading: "#00ff00" },
   { label: "Ocean", value: "#000080", text: "#ffffff", heading: "#87CEEB" },
   { label: "Peach", value: "#FFDAB9", text: "#333333", heading: "#8B4513" },
+];
+
+const CONTAINER_BG_PRESETS: BackgroundPreset[] = [
+  { label: "Midnight", value: "#111827", text: "#f9fafb", heading: "#ffffff" },
+  { label: "Aubergine", value: "#2e1065", text: "#f5f3ff", heading: "#ffffff" },
+  { label: "Deep Sea", value: "#083344", text: "#ecfeff", heading: "#ffffff" },
+  { label: "Pine", value: "#052e16", text: "#f0fdf4", heading: "#ffffff" },
+  { label: "Ember", value: "#431407", text: "#fff7ed", heading: "#ffffff" },
 ];
 
 const ACCENT_PRESETS = [
@@ -71,11 +90,19 @@ const KEYFRAMES = `
   0%, 100% { opacity: 0.3; transform: scale(0.8); }
   50% { opacity: 1; transform: scale(1.3); }
 }
+@media (prefers-reduced-motion: reduce) {
+  .myspace-customizer * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 `;
 
 // ─── Component ───────────────────────────────────────────────────
-export function MySpaceCustomizer() {
+export function MySpaceCustomizer({ scope = "page" }: MySpaceCustomizerProps) {
   const [skin, setSkin] = useState<"maximalist" | "minimal">("maximalist");
+  const containerRef = useRef<HTMLDivElement>(null);
   const originals = useRef<OriginalStyles | null>(null);
   const [activeFont, setActiveFont] = useState<string | null>(null);
   const [activeBg, setActiveBg] = useState<string | null>(null);
@@ -86,10 +113,18 @@ export function MySpaceCustomizer() {
   const fallingInterval = useRef<ReturnType<typeof setInterval> | null>(null);
   const idCounter = useRef(0);
   const styleTag = useRef<HTMLStyleElement | null>(null);
+  const backgroundPresets = scope === "container" ? CONTAINER_BG_PRESETS : BG_PRESETS;
+  const accentVariable = scope === "container" ? "--color-border" : "--color-accent";
+
+  const getStyleTarget = useCallback(
+    () => (scope === "container" ? containerRef.current : document.documentElement),
+    [scope]
+  );
 
   // Capture originals on mount
   useEffect(() => {
-    const root = document.documentElement;
+    const root = getStyleTarget();
+    if (!root) return;
     const computed = getComputedStyle(root);
     const orig: OriginalStyles = {};
     CSS_VARS.forEach((v) => {
@@ -105,20 +140,20 @@ export function MySpaceCustomizer() {
     return () => {
       if (styleTag.current) document.head.removeChild(styleTag.current);
       if (fallingInterval.current) clearInterval(fallingInterval.current);
-      // Remove inline overrides on unmount so the CSS cascade (dark/light class) works
+      // Remove inline overrides so inherited theme values take over again.
       CSS_VARS.forEach((v) => {
-        document.documentElement.style.removeProperty(v);
+        root.style.removeProperty(v);
       });
     };
-  }, []);
+  }, [getStyleTarget]);
 
   const setVar = useCallback((prop: string, value: string) => {
-    document.documentElement.style.setProperty(prop, value);
+    getStyleTarget()?.style.setProperty(prop, value);
     setIsModified(true);
-  }, []);
+  }, [getStyleTarget]);
 
   const applyBg = useCallback(
-    (preset: (typeof BG_PRESETS)[number]) => {
+    (preset: BackgroundPreset) => {
       if (activeBg === preset.value) {
         if (originals.current) {
           setVar("--color-surface-bg", originals.current["--color-surface-bg"]);
@@ -139,14 +174,14 @@ export function MySpaceCustomizer() {
   const applyAccent = useCallback(
     (preset: (typeof ACCENT_PRESETS)[number]) => {
       if (activeAccent === preset.value) {
-        if (originals.current) setVar("--color-accent", originals.current["--color-accent"]);
+        if (originals.current) setVar(accentVariable, originals.current[accentVariable]);
         setActiveAccent(null);
       } else {
-        setVar("--color-accent", preset.value);
+        setVar(accentVariable, preset.value);
         setActiveAccent(preset.value);
       }
     },
-    [activeAccent, setVar]
+    [accentVariable, activeAccent, setVar]
   );
 
   const applyFont = useCallback(
@@ -194,25 +229,26 @@ export function MySpaceCustomizer() {
   );
 
   const chaos = useCallback(() => {
-    const bg = BG_PRESETS[Math.floor(Math.random() * BG_PRESETS.length)];
+    const bg = backgroundPresets[Math.floor(Math.random() * backgroundPresets.length)];
     const accent = ACCENT_PRESETS[Math.floor(Math.random() * ACCENT_PRESETS.length)];
     const font = FONT_PRESETS[Math.floor(Math.random() * FONT_PRESETS.length)];
     const fall = Math.floor(Math.random() * FALLING_TYPES.length);
     setVar("--color-surface-bg", bg.value);
     setVar("--color-foreground", bg.text);
     setVar("--color-foreground-heading", bg.heading);
-    setVar("--color-accent", accent.value);
+    setVar(accentVariable, accent.value);
     setVar("--font-sans", font.value);
     setActiveBg(bg.value);
     setActiveAccent(accent.value);
     setActiveFont(font.value);
     startFalling(fall);
-  }, [setVar, startFalling]);
+  }, [accentVariable, backgroundPresets, setVar, startFalling]);
 
   const reset = useCallback(() => {
     if (!originals.current) return;
+    const target = getStyleTarget();
     CSS_VARS.forEach((v) => {
-      document.documentElement.style.removeProperty(v);
+      target?.style.removeProperty(v);
     });
     if (fallingInterval.current) clearInterval(fallingInterval.current);
     fallingInterval.current = null;
@@ -222,15 +258,22 @@ export function MySpaceCustomizer() {
     setActiveFont(null);
     setFallingType(null);
     setIsModified(false);
-  }, []);
+  }, [getStyleTarget]);
 
   return (
-    <>
-      {/* Falling elements — portal-style fixed overlay */}
+    <div
+      ref={containerRef}
+      className={
+        scope === "container"
+          ? "myspace-customizer relative isolate overflow-hidden rounded-lg font-sans text-foreground"
+          : "myspace-customizer"
+      }
+    >
+      {/* Falling elements fill either the page or the contained preview. */}
       {fallingElements.length > 0 && (
         <div
           style={{
-            position: "fixed",
+            position: scope === "container" ? "absolute" : "fixed",
             inset: 0,
             pointerEvents: "none",
             zIndex: 9999,
@@ -261,10 +304,18 @@ export function MySpaceCustomizer() {
         <div
           style={{
             margin: "2rem 0",
-            background: "#000000",
-            border: "2px solid transparent",
-            borderImage:
-              "linear-gradient(135deg, #ff00ff, #00ffff, #ff00ff, #ffff00, #ff00ff) 1",
+            background: scope === "container" && activeBg ? activeBg : "#000000",
+            borderWidth: 2,
+            borderStyle: "solid",
+            borderColor:
+              scope === "container" && activeAccent
+                ? activeAccent
+                : "transparent",
+            borderImageSource:
+              scope === "container" && activeAccent
+                ? "none"
+                : "linear-gradient(135deg, #ff00ff, #00ffff, #ff00ff, #ffff00, #ff00ff)",
+            borderImageSlice: 1,
             overflow: "hidden",
             position: "relative",
           }}
@@ -318,7 +369,9 @@ export function MySpaceCustomizer() {
               flexDirection: "column",
               gap: 12,
               background:
-                "repeating-linear-gradient(0deg, #0a0a0a 0px, #0a0a0a 2px, #0d0d0d 2px, #0d0d0d 4px)",
+                scope === "container" && activeBg
+                  ? activeBg
+                  : "repeating-linear-gradient(0deg, #0a0a0a 0px, #0a0a0a 2px, #0d0d0d 2px, #0d0d0d 4px)",
             }}
           >
             {/* Background */}
@@ -327,7 +380,7 @@ export function MySpaceCustomizer() {
                 ·˚✧ background ✧˚·
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                {BG_PRESETS.map((p, i) => (
+                {backgroundPresets.map((p, i) => (
                   <button
                     key={i}
                     onClick={() => applyBg(p)}
@@ -349,7 +402,7 @@ export function MySpaceCustomizer() {
             {/* Accent */}
             <div>
               <div style={{ fontSize: 10, fontWeight: "bold", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 8, color: "#00ffff", textShadow: "0 0 8px #00ffff66" }}>
-                ·˚✧ link color ✧˚·
+                ·˚✧ {scope === "container" ? "accent color" : "link color"} ✧˚·
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {ACCENT_PRESETS.map((p, i) => (
@@ -469,7 +522,7 @@ export function MySpaceCustomizer() {
             </div>
 
             <div style={{ fontSize: 8, color: "#ffffff44", textAlign: "center", marginTop: 2, letterSpacing: "0.05em" }}>
-              every element on this page is listening to the same CSS variables ♥
+              every element in this {scope === "container" ? "preview" : "page"} is listening to the same CSS variables ♥
             </div>
           </div>
         </div>
@@ -480,8 +533,10 @@ export function MySpaceCustomizer() {
         <div
           style={{
             margin: "2rem 0",
-            background: "#18181b",
-            border: "1px solid #27272a",
+            background: scope === "container" && activeBg ? activeBg : "#18181b",
+            border: `1px solid ${
+              scope === "container" && activeAccent ? activeAccent : "#27272a"
+            }`,
             borderRadius: 12,
             overflow: "hidden",
           }}
@@ -518,7 +573,7 @@ export function MySpaceCustomizer() {
             <div>
               <div style={{ fontSize: 11, fontWeight: 600, color: "#a1a1aa", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>Background</div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                {BG_PRESETS.map((p, i) => (
+                {backgroundPresets.map((p, i) => (
                   <button key={i} onClick={() => applyBg(p)} title={p.label} style={{
                     width: 36, height: 36, background: p.value, cursor: "pointer", borderRadius: 8,
                     border: `2px solid ${activeBg === p.value ? "#fff" : "#333"}`,
@@ -624,6 +679,6 @@ export function MySpaceCustomizer() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

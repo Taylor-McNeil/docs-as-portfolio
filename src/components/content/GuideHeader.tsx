@@ -4,7 +4,7 @@ import { CopyMarkdownButton } from "./CopyMarkdownButton";
 import { LiveDocButton } from "./LiveDocButton";
 import { MethodBadge } from "../navigation/MethodBadge";
 
-type Method = "GET" | "POST" | "PUT" | "PATCH";
+type Method = "GET" | "POST" | "PUT" | "PATCH" | "HEAD" | "OPTIONS";
 
 interface GuideHeaderProps {
   title: string;

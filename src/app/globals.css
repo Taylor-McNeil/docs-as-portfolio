@@ -41,6 +41,8 @@
   --color-method-patch-bg: #ede9fe;
   --color-method-head: #db2777;
   --color-method-head-bg: #fce7f3;
+  --color-method-options: #4f46e5;
+  --color-method-options-bg: #e0e7ff;
 
   /* Active nav in light mode */
   --color-nav-active-bg: #fed7aa;
@@ -100,6 +102,8 @@
   --color-method-patch-bg: rgba(168, 85, 247, 0.1);
   --color-method-head: #ec4899;
   --color-method-head-bg: rgba(236, 72, 153, 0.1);
+  --color-method-options: #818cf8;
+  --color-method-options-bg: rgba(129, 140, 248, 0.1);
 
   /* Active nav in dark mode */
   --color-nav-active-bg: rgba(59, 130, 246, 0.1);
@@ -122,6 +126,57 @@
   --color-timeline-orange: #fb923c;
   --color-timeline-yellow: #facc15;
   --color-timeline-pink: #ec4899;
+}
+
+/* Explicit light scope for previews nested inside a dark site shell. */
+.entry-preview-light {
+  color-scheme: light;
+  --color-surface-bg: #fffbf0;
+  --color-surface-sidebar: #fff8e7;
+  --color-surface-card: #ffffff;
+  --color-surface-terminal: #fafafa;
+  --color-border: #fdba74;
+  --color-border-card: #fed7aa;
+  --color-foreground: #1e293b;
+  --color-foreground-heading: #0f172a;
+  --color-foreground-muted: #475569;
+  --color-foreground-terminal: #4338ca;
+  --color-accent: #ea580c;
+  --color-accent-success: #0d9488;
+  --color-callout-warn: #c2410c;
+  --color-callout-warn-bg: #fff7ed;
+  --color-callout-ok: #0d9488;
+  --color-callout-ok-bg: #f0fdfa;
+  --color-method-get: #0d9488;
+  --color-method-get-bg: #ccfbf1;
+  --color-method-post: #ea580c;
+  --color-method-post-bg: #ffedd5;
+  --color-method-put: #ca8a04;
+  --color-method-put-bg: #fef9c3;
+  --color-method-patch: #7c3aed;
+  --color-method-patch-bg: #ede9fe;
+  --color-method-head: #db2777;
+  --color-method-head-bg: #fce7f3;
+  --color-method-options: #4f46e5;
+  --color-method-options-bg: #e0e7ff;
+  --color-nav-active-bg: #fed7aa;
+  --color-nav-active-text: #c2410c;
+  --color-node-stroke: #94a3b8;
+  --color-node-fill: #ffffff;
+}
+
+/* Keep active source selections readable regardless of browser or CM theme. */
+.entry-source-editor .cm-content::selection,
+.entry-source-editor .cm-content *::selection {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.entry-source-editor .cm-content::-moz-selection,
+.entry-source-editor .cm-content *::-moz-selection {
+  background: #2563eb !important;
+  color: #ffffff !important;
 }
 
 body {
