@@ -12,6 +12,7 @@ const methodStyles: Record<Method, string> = {
   PUT: "bg-method-put-bg text-method-put border-method-put/30",
   PATCH: "bg-method-patch-bg text-method-patch border-method-patch/30",
   HEAD:  "bg-method-head-bg text-method-head border-method-head/30",
+  OPTIONS: "bg-method-options-bg text-method-options border-method-options/30",
 };
 
 const inactiveStyle = "border-border text-foreground-muted bg-transparent";

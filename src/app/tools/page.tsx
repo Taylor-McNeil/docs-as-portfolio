@@ -32,16 +32,25 @@ export default function ToolsIndex() {
           <div className="font-semibold">Trope Cloud</div>
           <div className="text-sm text-foreground-muted mt-1">Visualize story tropes.</div>
         </Link>
-        {/* Local-only tool — its files are gitignored and not deployed, so this
-            card only renders during `next dev` to avoid a dead link in production. */}
+        {/* Local-only tools are hidden here in production. Individual routes
+            also guard themselves when they cannot run safely when deployed. */}
         {process.env.NODE_ENV === "development" && (
-          <Link
-            href="/tools/youtube-comments-analyzer"
-            className="block rounded border border-border bg-surface-card p-4 text-foreground hover:border-foreground-muted transition-colors"
-          >
-            <div className="font-semibold">YouTube Comments Analyzer</div>
-            <div className="text-sm text-foreground-muted mt-1">Pull YouTube comments locally and explore them with filters, summaries, and exports.</div>
-          </Link>
+          <>
+            <Link
+              href="/tools/entry-editor"
+              className="block rounded border border-border bg-surface-card p-4 text-foreground hover:border-foreground-muted transition-colors"
+            >
+              <div className="font-semibold">Entry Editor</div>
+              <div className="text-sm text-foreground-muted mt-1">Paste, compose, and preview component-rich MDX entries locally.</div>
+            </Link>
+            <Link
+              href="/tools/youtube-comments-analyzer"
+              className="block rounded border border-border bg-surface-card p-4 text-foreground hover:border-foreground-muted transition-colors"
+            >
+              <div className="font-semibold">YouTube Comments Analyzer</div>
+              <div className="text-sm text-foreground-muted mt-1">Pull YouTube comments locally and explore them with filters, summaries, and exports.</div>
+            </Link>
+          </>
         )}
       </div>
     </div>

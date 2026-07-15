@@ -13,6 +13,10 @@ Taylor's professional work focuses on developer documentation, tutorials, and AP
 - [Stellar API Documentation Case Study](https://taylormcneil.dev/case-studies/stellar-api-docs): Case study on API documentation design
 - [On Good Tutorials](https://taylormcneil.dev/case-studies/on-good-tutorials): Case study on what makes a tutorial effective, and how to write one
 
+## Field Notes
+
+- [Building Docs From Scratch](https://taylormcneil.dev/field-notes/on-building-a-doc-system): Reflections on building a bespoke, file-based documentation system on Next.js and MDX instead of adopting Docusaurus, Mintlify, or ReadMe
+
 ## aampersand (Building in Public)
 
 - [aampersand Overview](https://taylormcneil.dev/aampersand): What aampersand is and why it exists — the builder's perspective

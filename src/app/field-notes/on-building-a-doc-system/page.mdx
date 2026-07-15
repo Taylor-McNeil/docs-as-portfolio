@@ -1,0 +1,150 @@
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { GuideHeader } from "@/components/content/GuideHeader";
+import { JsonLd } from "@/components/content/JsonLd";
+import { LiveComponentRegistry } from "@/components/interactive/LiveComponentRegistry";
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Building Docs From Scratch",
+  "datePublished": "2026-07-15",
+  "author": { "@type": "Person", "name": "Taylor McNeil" },
+  "url": "https://taylormcneil.dev/field-notes/on-building-a-doc-system"
+}} />
+
+<AnchorSidebar
+  items={[
+    { id: "the-challenge", label: "The Challenge", level: 2 },
+    { id: "what-i-actually-built", label: "What I Actually Built", level: 2 },
+    { id: "where-bespoke-shines", label: "Where Bespoke Shines", level: 2 },
+    { id: "where-bespoke-hurts", label: "Where Bespoke Hurts", level: 2 },
+    { id: "should-you-build-a-bespoke-docs-system", label: "Should You Build a Bespoke Docs System?", level: 2 },
+    { id: "what-comes-next", label: "What Comes Next", level: 2 },
+  ]}
+/>
+
+<GuideHeader
+  title="Building Docs From Scratch"
+  description="V1 of Docs as Infrastructure"
+  method="OPTIONS"
+  endpoint="/field-notes/on-building-a-doc-system"
+  mdxPath="src/app/field-notes/on-building-a-doc-system/page.mdx"
+/>
+
+<Callout type="context">
+This write-up covers what this site actually is: a bespoke, file-based documentation system, and why I built it instead of reaching for Docusaurus, Mintlify, or ReadMe. The lessons here pushed me toward a larger, more custom documentation system for aampersand, one that has to do far more than serve a single docs site.
+</Callout>
+
+## The Challenge
+
+I didn't set out to build a documentation system. I set out to build a portfolio.
+
+The first iteration of this site was a basic portfolio: projects, a bio, and a few links. But I look at doc sites constantly. I interact with them every day, whether they're the traditional CMS and help desk variety or the API-forward reference docs with the dark sidebars and syntax-highlighted code blocks. And I realized I'd spent years using documentation systems without ever really questioning how they worked under the hood.
+
+At most of the companies I've worked at, I contributed to the documentation. I wasn't responsible for the infrastructure underneath it. Even when I worked closer to the infrastructure, my decisions were mostly about translating complex systems, not deciding what the documentation system itself should be.
+
+So this was a learning exercise that took on a life of its own. I wanted to build the most bare-bones system possible. I didn't want to install Docusaurus and assemble a site from its components, because I already understood how to do that. I wanted to understand how Docusaurus thought and why it was built the way it was. More importantly, would I eventually rebuild the same system anyway?
+
+It was fun... for a while. Then it became interesting.
+
+## What I Actually Built
+
+The website that you're currently on is a file-based static site generator built on regular shmegular Next.js with MDX. That's it. There's no database, no CMS, no content layer library. The filesystem is the database.
+
+I'll give you a peek at the filesystem.
+
+```
+src/app/aampersand/
+├── page.tsx                      ← the index/listing page
+├── a-sirens-song/
+│   ├── layout.tsx                ← page metadata (title, description, OG tags)
+│   ├── opengraph-image.png       ← Next.js auto-detects this for social previews
+│   └── page.mdx                  ← the actual content
+├── peering-into-lethe/
+├── a-broken-astrolabe/
+└── ...
+```
+
+There's no YAML frontmatter at the top of the files. Most documentation frameworks provide this for free. Instead, metadata is scattered across three places that all have to stay in sync by hand (Boo!):
+
+| What | Where | Purpose |
+|------|-------|---------|
+| Page metadata | `layout.tsx` next to each `page.mdx` | Title, description, Open Graph data |
+| SEO structured data | `<JsonLd>` component inside the MDX | Structured `BlogPosting` data for search engines |
+| Listing entry | Hardcoded array in `page.tsx` | Card on the index page |
+
+Automatic navigation, frontmatter parsing, heading anchors, and sidebar generation: I had to build each one myself or live without it.
+
+Because there is no content layer, every page is technically just a small React app. The MDX compiler turns each file into a React component at build time. There's no dynamic data fetching, no `revalidate`, no per-request logic.
+
+## Where Bespoke Shines
+
+Because every MDX page compiles into React, I am not limited to templates. I can have anything on any page. An interactive tic-tac-toe game. A Mermaid diagram showing the annotation graph architecture. A story graph visualization.
+
+The page becomes whatever I need it to be.
+
+This is the part that a framework can't easily give you. With Docusaurus or Starlight, you get a component library (callouts, tabs, code blocks). For ninety percent of the work you encounter, that is enough. It is the remaining ten percent that becomes painful. Here, there's nothing to fight. The page is React. Do whatever you want.
+
+The freedom was not only aesthetic. It changed what I could explain. Some ideas were easier to understand as diagrams, interactive models, or visual sequences than as another thousand words of prose. The system let me choose the form that matched the concept.
+
+I did steal from the documentation frameworks, though. I rolled my own component library. I created a single file, `mdx-components.tsx`, that registers the components for every MDX page.
+
+Here are a few. Click through them to see what each component does, where it appears, and how it is built.
+
+<LiveComponentRegistry />
+
+At the companies I've worked at, adding a visualization to a docs page meant asking whether the system could support it. Here, you just build it. The component is the documentation.
+
+## Where Bespoke Hurts
+
+The cost of all that freedom is real.
+
+Adding a new page means touching four separate locations: the route folder with its layout and MDX, the listing array on the index page, the navigation array in the sidebar, and `llms.txt`. Forget any one of them and something breaks: the page exists but is missing from navigation, appears in the sidebar without Open Graph metadata, or is live on the site but effectively invisible to AI crawlers.
+
+At one of my previous jobs, we had a traditional docs-as-code setup: RST files in a repository, and seeing whether a typo fix looked right required redeploying the entire site. Then, after the deployment finished, we might discover that the link was broken. That same kind of friction exists here. Reloading is easier, but remembering where everything goes is not.
+
+There's no content management. I write the devlogs in Google Docs (I know!!) and then convert them to MDX. If we're being honest, writing in VS Code is not that fun.
+
+I solved the scaffolding problem by building a Claude Code skill, `/devlog`, that automates the plumbing. I provide the prose and metadata, and it computes the devlog number, builds the JSON-LD, converts authoring hints into JSX components, wires up the OG image, and appends the new entry to the nav array and `llms.txt`. All I have to do is write.
+
+<Callout type="context" label="Aside">
+`llms.txt` is a file written for AI crawlers. I publish one across all three of my web properties. People increasingly find documentation by asking an AI assistant, not by browsing a sidebar, and a docs system that only renders HTML is in for trouble.
+</Callout>
+
+That skill is itself a kind of admission: the system has enough friction that I needed to build tooling to manage the tooling. But it's also a one-time investment. Build it once, use it forever. And importantly, it's my tooling, shaped to my workflow, solving my specific problems. The skill turns this into a pipeline: write prose → edit → invoke `/devlog` with context → push to GitHub.
+
+So, did I converge on Docusaurus or ReadMe?
+
+On some things, yes. I rediscovered why centralized metadata and a component registry exist.
+
+But overall, no. I don't need someone to roll the site for me. I don't want to pay for a service. I don't need to auto-generate my API specs… yet.
+
+## Should You Build a Bespoke Docs System?
+
+It depends.
+
+Technical writers operate at different layers. For some, the primary job is translating complex topics into clear, approachable explanations. For them, the joy is having a WYSIWYG editor where they can write without thinking about infrastructure. That's why many of them don't love docs-as-code. Freedom isn't the goal. Clarity and speed are, and the system should get out of the way.
+
+Mintlify, GitBook, and ReadMe are built for them. They abstract away deployment, hosting, the build pipeline, and Git workflows. A writer opens a browser, edits a page, and clicks publish. That's genuinely valuable when your team includes non-technical contributors who need to update docs without opening a terminal.
+
+But if you are responsible for the documentation system itself, those abstractions should be choices rather than invisible defaults.
+
+Sometimes the framework is exactly the right tool. Sometimes the content model or extension points become the constraint. You can make that distinction much more confidently after building beneath the abstraction at least once.
+
+I would not recommend rebuilding your company's production stack merely to prove that you can. But I do recommend building a small one from scratch at least once.
+
+You'll learn what you actually need.
+
+## What Comes Next
+
+A docs editor for this site, so I can stop writing in Google Docs.
+
+But in all seriousness, there is something more interesting here. Building this site taught me what documentation looks like as a publishing problem: you have text, you need it on a website, the file becomes the page.
+
+The documentation system I need for aampersand, the writing software I am building, doesn't just serve a website. It also serves the product itself. It has to support tooltips, in-app panels, a full encyclopedia, an internal wiki, and an external docs site, all reading from the same database the application already uses.
+
+That is a completely different class of problem.
+
+What I need doesn't exist as an off-the-shelf product.
+
+But that's a different field note.

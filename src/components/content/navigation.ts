@@ -1,4 +1,4 @@
-export type Method = "GET" | "POST" | "PUT" | "PATCH" | "HEAD";
+export type Method = "GET" | "POST" | "PUT" | "PATCH" | "HEAD" | "OPTIONS";
 
 export interface NavItem {
   href: string;
@@ -33,6 +33,12 @@ export const navigation: NavSection[] = [
        { href: "/aampersand/a-seed-of-intention", label: "Jun 2026", method: "PUT"},
      ],
  },
+  {
+    title: "Field Notes",
+    items: [
+      { href: "/field-notes/on-building-a-doc-system", label: "Building Docs From Scratch", method: "OPTIONS" },
+    ],
+  },
    {
      title: "Side Projects",
      items: [

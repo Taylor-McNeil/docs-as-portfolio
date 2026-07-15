@@ -2,6 +2,7 @@ import { ResponsePanel } from "@/components/layout/ResponsePanel";
 import { PageHeader } from "@/components/content/PageHeader";
 import { JsonLd } from "@/components/content/JsonLd";
 import Link from "next/link";
+import { FileText } from "lucide-react";
 
 export const metadata = {
   title: "Developer Experience Engineer",
@@ -127,6 +128,15 @@ export default function Home() {
           Also, I thought it would be funny. <br/> It was. <br/> For about 40 hours of Next.js debugging.
         </p>
 
+        <p className="text-lg">
+          <Link
+            href="/field-notes/on-building-a-doc-system"
+            className="inline-flex items-center gap-2 text-accent hover:underline font-medium"
+          >
+            <FileText size={18} aria-hidden="true" />
+            Building Docs from Scratch
+          </Link>
+        </p>
 
       </section>
 
@@ -156,7 +166,7 @@ export default function Home() {
             </Link>
              <span className="text-foreground-muted">
               {" "}
-              — A creative writing tool for fiction writers
+              — The journey about building a creative writing tool for fiction writers
             </span>
           </li>
           <li>
@@ -173,26 +183,28 @@ export default function Home() {
           </li>
           <li>
             <Link
-              href="/case-studies/stellar-api-docs"
-              className="text-accent hover:underline font-medium"
+              href="/case-studies/on-good-tutorials"
+              className="inline-flex items-center gap-2 text-accent hover:underline font-medium"
             >
-              /case-studies
+              <FileText size={18} aria-hidden="true" />
+              On Writing Good Tutorials
             </Link>
             <span className="text-foreground-muted">
               {" "}
-              — How I approach documentation
+              — My learnings and thoughts on tutorials
             </span>
           </li>
           <li>
             <Link
               href="/tutorials/mongodb-tanstack"
-              className="text-accent hover:underline font-medium"
+              className="inline-flex items-center gap-2 text-accent hover:underline font-medium"
             >
-              /tutorials
+              <FileText size={18} aria-hidden="true" />
+              MongoDB x TanStack
             </Link>
             <span className="text-foreground-muted">
               {" "}
-              — How I approach teaching
+              — A recent tutorial I wrote
             </span>
           </li>
         </ul>

@@ -5,6 +5,19 @@ import remarkGfm from "remark-gfm";
 const nextConfig: NextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   allowedDevOrigins: ["192.168.*.*"],
+  async headers() {
+    return [
+      {
+        source: "/tools/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, noarchive, nosnippet, noimageindex",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX({
