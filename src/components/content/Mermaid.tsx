@@ -80,6 +80,8 @@ export function Mermaid({
           setIntrinsicWidth(parsedWidth);
           setRenderSignature(currentSignature);
         } catch (error) {
+          document.getElementById(`d${id}`)?.remove();
+          document.getElementById(id)?.remove();
           console.error("Mermaid rendering error:", error);
           setSvg("");
           setIntrinsicWidth(null);

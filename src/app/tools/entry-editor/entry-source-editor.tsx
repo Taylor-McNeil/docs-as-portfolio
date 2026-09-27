@@ -8,6 +8,7 @@ import {
   useRef,
 } from "react";
 import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
+import { search, searchKeymap } from "@codemirror/search";
 import { Compartment, EditorSelection, EditorState, type Extension } from "@codemirror/state";
 import {
   Decoration,
@@ -32,6 +33,7 @@ interface EntrySourceEditorProps {
   value: string;
   ariaLabel: string;
   showFormattingMarks: boolean;
+  readOnly?: boolean;
   onChange: (value: string) => void;
   onPasteNotice: (message: string) => void;
 }
@@ -117,7 +119,7 @@ const editorTheme = EditorView.theme({
   },
   ".cm-content": {
     minHeight: "100%",
-    padding: "20px",
+    padding: "20px 20px 80px",
     caretColor: "var(--color-foreground)",
   },
   ".cm-line": {
@@ -151,7 +153,7 @@ const editorTheme = EditorView.theme({
 });
 
 export const EntrySourceEditor = forwardRef<EntrySourceEditorHandle, EntrySourceEditorProps>(function EntrySourceEditor(
-  { value, ariaLabel, showFormattingMarks, onChange, onPasteNotice },
+  { value, ariaLabel, showFormattingMarks, readOnly = false, onChange, onPasteNotice },
   ref,
 ) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -160,6 +162,8 @@ export const EntrySourceEditor = forwardRef<EntrySourceEditorHandle, EntrySource
   const onPasteNoticeRef = useRef(onPasteNotice);
   const formattingCompartmentRef = useRef(new Compartment());
   const attributesCompartmentRef = useRef(new Compartment());
+  const editableCompartmentRef = useRef(new Compartment());
+  const applyingExternalValueRef = useRef(false);
 
   onChangeRef.current = onChange;
   onPasteNoticeRef.current = onPasteNotice;
@@ -172,7 +176,7 @@ export const EntrySourceEditor = forwardRef<EntrySourceEditorHandle, EntrySource
     },
     replaceRange: (from, to, text, selectionStart = from + text.length, selectionEnd = selectionStart) => {
       const view = viewRef.current;
-      if (!view) return;
+      if (!view || readOnly) return;
       view.dispatch({
         changes: { from, to, insert: text },
         selection: EditorSelection.range(selectionStart, selectionEnd),
@@ -180,12 +184,13 @@ export const EntrySourceEditor = forwardRef<EntrySourceEditorHandle, EntrySource
       });
       view.focus();
     },
-  }), [value.length]);
+  }), [readOnly, value.length]);
 
   useLayoutEffect(() => {
     if (!hostRef.current) return;
     const formattingCompartment = formattingCompartmentRef.current;
     const attributesCompartment = attributesCompartmentRef.current;
+    const editableCompartment = editableCompartmentRef.current;
 
     const view = new EditorView({
       parent: hostRef.current,
@@ -193,6 +198,7 @@ export const EntrySourceEditor = forwardRef<EntrySourceEditorHandle, EntrySource
         doc: value,
         extensions: [
           history(),
+          search(),
           EditorView.lineWrapping,
           editorTheme,
           keymap.of([
@@ -209,15 +215,20 @@ export const EntrySourceEditor = forwardRef<EntrySourceEditorHandle, EntrySource
             },
             ...defaultKeymap,
             ...historyKeymap,
+            ...searchKeymap,
           ]),
           formattingCompartment.of(showFormattingMarks ? formattingMarks : []),
+          editableCompartment.of(EditorView.editable.of(!readOnly)),
           attributesCompartment.of(EditorView.contentAttributes.of({
             "aria-label": ariaLabel,
+            "aria-readonly": String(readOnly),
             spellcheck: "true",
             autocorrect: "on",
           })),
           EditorView.updateListener.of((update) => {
-            if (update.docChanged) onChangeRef.current(update.state.doc.toString());
+            if (update.docChanged && !applyingExternalValueRef.current) {
+              onChangeRef.current(update.state.doc.toString());
+            }
           }),
           EditorView.domEventHandlers({
             paste: (event, editor) => {
@@ -265,10 +276,12 @@ export const EntrySourceEditor = forwardRef<EntrySourceEditorHandle, EntrySource
     const current = view.state.doc.toString();
     if (current === value) return;
     const head = Math.min(view.state.selection.main.head, value.length);
+    applyingExternalValueRef.current = true;
     view.dispatch({
       changes: { from: 0, to: current.length, insert: value },
       selection: EditorSelection.cursor(head),
     });
+    applyingExternalValueRef.current = false;
   }, [value]);
 
   useEffect(() => {
@@ -279,13 +292,20 @@ export const EntrySourceEditor = forwardRef<EntrySourceEditorHandle, EntrySource
 
   useEffect(() => {
     viewRef.current?.dispatch({
+      effects: editableCompartmentRef.current.reconfigure(EditorView.editable.of(!readOnly)),
+    });
+  }, [readOnly]);
+
+  useEffect(() => {
+    viewRef.current?.dispatch({
       effects: attributesCompartmentRef.current.reconfigure(EditorView.contentAttributes.of({
         "aria-label": ariaLabel,
+        "aria-readonly": String(readOnly),
         spellcheck: "true",
         autocorrect: "on",
       })),
     });
-  }, [ariaLabel]);
+  }, [ariaLabel, readOnly]);
 
   return <div ref={hostRef} className="entry-source-editor h-full min-h-0" />;
 });

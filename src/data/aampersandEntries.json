@@ -1,0 +1,74 @@
+[
+  {
+    "number": 1,
+    "slug": "a-sirens-song",
+    "title": "A Siren's Song",
+    "cardTitle": "What if Icarus Had Sunscreen?",
+    "coverage": { "start": "2026-01", "end": "2026-01" },
+    "description": "The origin. A seven-book series, a missing character, and the question that started everything: why can't I see my own story?",
+    "tag": "origin",
+    "tagTone": "purple",
+    "preview": "origin",
+    "llmsDescription": "Designing visual plotline tracking — origin story and architectural vision"
+  },
+  {
+    "number": 2,
+    "slug": "peering-into-lethe",
+    "title": "Peering into Lethe",
+    "cardTitle": "Red Thread, Isle Eight",
+    "coverage": { "start": "2026-02", "end": "2026-02" },
+    "description": "Tagging as structural concept. How annotations survive the edit and turning decorations into navigation.",
+    "tag": "tagging",
+    "tagTone": "blue",
+    "preview": "thread",
+    "llmsDescription": "Database migration for a solo SaaS"
+  },
+  {
+    "number": 3,
+    "slug": "a-broken-astrolabe",
+    "title": "A Broken Astrolabe",
+    "cardTitle": "Stranded in Crete",
+    "coverage": { "start": "2026-03", "end": "2026-03" },
+    "description": "The Clothesline emerges. Plotlines visualized as colored threads across chapters. And the discovery that beats aren't all created equal.",
+    "tag": "clothesline",
+    "tagTone": "yellow",
+    "preview": "clothesline",
+    "llmsDescription": "Building a writing tool from scratch"
+  },
+  {
+    "number": 4,
+    "slug": "oily-bodies-in-karpathos",
+    "title": "Oily Bodies in Karpathos",
+    "cardTitle": "Oily Bodies In Karpathos",
+    "coverage": { "start": "2026-04", "end": "2026-04" },
+    "description": "Sparks and Etches. The annotation graph. The discovery that stories aren't just linear. They are also graphs.",
+    "tag": "breakthrough",
+    "tagTone": "pink",
+    "preview": "graph",
+    "llmsDescription": "Annotation architecture for fiction writing software"
+  },
+  {
+    "number": 5,
+    "slug": "a-sword-for-every-hand",
+    "title": "A Sword for Every Hand",
+    "cardTitle": "A Sword for Every Hand",
+    "coverage": { "start": "2026-05", "end": "2026-05" },
+    "description": "Validation of a product. One demo, five writers, unlimited requests.",
+    "tag": "validation",
+    "tagTone": "green",
+    "preview": "spark",
+    "llmsDescription": "First user testing a fiction writing tool"
+  },
+  {
+    "number": 6,
+    "slug": "a-seed-of-intention",
+    "title": "A Seed of Intention",
+    "cardTitle": "A Seed of Intention",
+    "coverage": { "start": "2026-06", "end": "2026-06" },
+    "description": "The offline problem I didn't want to solve. A replay queue born on a refrigerator, temporary IDs that haunted the UI, and the architectural decision that deleted a third of the system.",
+    "tag": "resilience",
+    "tagTone": "warning",
+    "preview": "queue",
+    "llmsDescription": "Designing offline resilience for a fiction writing tool"
+  }
+]

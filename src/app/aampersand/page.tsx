@@ -2,6 +2,13 @@ import Link from "next/link";
 import { Zap } from "lucide-react";
 import { Callout } from "@/components/content/Callout";
 import { MethodBadge } from "@/components/navigation/MethodBadge";
+import {
+  aampersandEntries,
+  aampersandEntryHref,
+  coverageLabel,
+  type AampersandEntry,
+  type AampersandTagTone,
+} from "@/data/aampersandEntries";
 
 export const metadata = {
   title: "aampersand",
@@ -12,79 +19,14 @@ export const metadata = {
   },
 };
 
-type Devlog = {
-  href: string;
-  title: string;
-  date: string;
-  description: string;
-  tag: string;
-  tagClassName: string;
-  preview: "origin" | "thread" | "clothesline" | "graph" | "spark" | "queue";
+const tagToneClasses: Record<AampersandTagTone, string> = {
+  purple: "bg-method-patch/10 text-method-patch",
+  blue: "bg-method-get/10 text-method-get",
+  yellow: "bg-method-put/10 text-method-put",
+  pink: "bg-method-head/10 text-method-head",
+  green: "bg-method-post/10 text-method-post",
+  warning: "bg-[color:var(--color-callout-warn-bg)] text-[color:var(--color-callout-warn)]",
 };
-
-const devlogs: Devlog[] = [
-  {
-    href: "/aampersand/a-sirens-song",
-    title: "What if Icarus Had Sunscreen?",
-    date: "Jan 2026",
-    description:
-      "The origin. A seven-book series, a missing character, and the question that started everything: why can't I see my own story?",
-    tag: "origin",
-    tagClassName: "bg-method-patch/10 text-method-patch",
-    preview: "origin",
-  },
-  {
-    href: "/aampersand/peering-into-lethe",
-    title: "Red Thread, Isle Eight",
-    date: "Feb 2026",
-    description:
-      'Tagging as structural concept. How annotations survive the edit and turning decorations into navigation.',
-    tag: "tagging",
-    tagClassName: "bg-method-get/10 text-method-get",
-    preview: "thread",
-  },
-  {
-    href: "/aampersand/a-broken-astrolabe",
-    title: "Stranded in Crete",
-    date: "Mar 2026",
-    description:
-      "The Clothesline emerges. Plotlines visualized as colored threads across chapters. And the discovery that beats aren't all created equal.",
-    tag: "clothesline",
-    tagClassName: "bg-method-put/10 text-method-put",
-    preview: "clothesline",
-  },
-  {
-    href: "/aampersand/oily-bodies-in-karpathos",
-    title: "Oily Bodies In Karpathos",
-    date: "Apr 2026",
-    description:
-      "Sparks and Etches. The annotation graph. The discovery that stories aren't just linear. They are also graphs.",
-    tag: "breakthrough",
-    tagClassName: "bg-method-head/10 text-method-head",
-    preview: "graph",
-  },
-  {
-    href: "/aampersand/a-sword-for-every-hand",
-    title: "A Sword for Every Hand",
-    date: "May 2026",
-    description:
-      "Validation of a product. One demo, five writers, unlimited requests.",
-    tag: "validation",
-    tagClassName: "bg-method-post/10 text-method-post",
-    preview: "spark",
-  },
-  {
-    href: "/aampersand/a-seed-of-intention",
-    title: "A Seed of Intention",
-    date: "Jun 2026",
-    description:
-      "The offline problem I didn't want to solve. A replay queue born on a refrigerator, temporary IDs that haunted the UI, and the architectural decision that deleted a third of the system.",
-    tag: "resilience",
-    tagClassName:
-      "bg-[color:var(--color-callout-warn-bg)] text-[color:var(--color-callout-warn)]",
-    preview: "queue",
-  },
-];
 
 export default function AampersandPage() {
   return (
@@ -162,8 +104,8 @@ export default function AampersandPage() {
       <section className="space-y-4 border-t border-border pt-6">
         <h2 className="text-xl font-bold text-foreground-heading">Devlog</h2>
         <div className="space-y-4">
-          {devlogs.map((devlog) => (
-            <DevlogCard key={devlog.href} devlog={devlog} />
+          {aampersandEntries.map((devlog) => (
+            <DevlogCard key={devlog.slug} devlog={devlog} />
           ))}
         </div>
       </section>
@@ -187,26 +129,26 @@ export default function AampersandPage() {
   );
 }
 
-function DevlogCard({ devlog }: { devlog: Devlog }) {
+function DevlogCard({ devlog }: { devlog: AampersandEntry }) {
   return (
     <Link
-      href={devlog.href}
+      href={aampersandEntryHref(devlog)}
       className="aampersand-devlog-card group grid overflow-hidden border border-border-card bg-surface-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:grid-cols-[1fr_220px]"
     >
       <div className="p-5">
         <div className="flex items-start justify-between gap-4">
           <h3 className="text-base font-bold text-foreground-heading">
-            {devlog.title}
+            {devlog.cardTitle}
           </h3>
           <span className="shrink-0 font-mono text-[10px] text-foreground-muted">
-            {devlog.date}
+            {coverageLabel(devlog.coverage)}
           </span>
         </div>
         <p className="mt-2 text-sm leading-6 text-foreground-muted">
           {devlog.description}
         </p>
         <span
-          className={`mt-4 inline-flex rounded px-2 py-1 font-mono text-[10px] font-semibold ${devlog.tagClassName}`}
+          className={`mt-4 inline-flex rounded px-2 py-1 font-mono text-[10px] font-semibold ${tagToneClasses[devlog.tagTone]}`}
         >
           {devlog.tag}
         </span>
@@ -218,8 +160,10 @@ function DevlogCard({ devlog }: { devlog: Devlog }) {
   );
 }
 
-function Preview({ type }: { type: Devlog["preview"] }) {
+function Preview({ type }: { type: AampersandEntry["preview"] }) {
   switch (type) {
+    case "default":
+      return <DefaultPreview />;
     case "origin":
       return <OriginPreview />;
     case "thread":
@@ -233,6 +177,19 @@ function Preview({ type }: { type: Devlog["preview"] }) {
     case "queue":
       return <QueuePreview />;
   }
+}
+
+function DefaultPreview() {
+  return (
+    <div className="flex h-full items-center justify-center" aria-label="Devlog entry preview">
+      <div className="grid w-full max-w-36 gap-2 font-mono text-[9px] text-foreground-muted">
+        <span className="h-1.5 w-3/4 rounded bg-accent/60" />
+        <span className="h-px w-full bg-border" />
+        <span className="h-px w-5/6 bg-border" />
+        <span className="h-px w-2/3 bg-border" />
+      </div>
+    </div>
+  );
 }
 
 function QueuePreview() {
