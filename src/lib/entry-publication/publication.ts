@@ -1,5 +1,7 @@
 import "server-only";
 
+import { extractToc } from "@/lib/entry-headings";
+
 import { compile } from "@mdx-js/mdx";
 import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
@@ -25,7 +27,7 @@ const LLMS_FILE = "public/llms.txt";
 const GENERATED_MARKER = "entry-editor:generated";
 
 const PREVIEWS = new Set<AampersandPreview>([
-  "default", "origin", "thread", "clothesline", "graph", "spark", "queue",
+  "default", "origin", "thread", "clothesline", "graph", "spark", "queue", "translation",
 ]);
 const TAG_TONES = new Set<AampersandTagTone>(["purple", "blue", "yellow", "pink", "green", "warning"]);
 
@@ -98,33 +100,6 @@ function routeFiles(slug: string) {
   };
 }
 
-function slugifyHeading(value: string): string {
-  return value
-    .toLowerCase()
-    .replace(/<[^>]*>/g, "")
-    .replace(/[`*_~]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
-
-function headings(source: string): Array<{ id: string; label: string }> {
-  const items: Array<{ id: string; label: string }> = [];
-  let inFence = false;
-  for (const line of source.replace(/\r\n/g, "\n").split("\n")) {
-    if (/^\s*```/.test(line)) {
-      inFence = !inFence;
-      continue;
-    }
-    if (inFence) continue;
-    const match = /^##\s+(.+?)\s*$/.exec(line);
-    if (!match) continue;
-    const label = match[1].replace(/\s+#+\s*$/, "").replace(/[`*_~]/g, "").trim();
-    const id = slugifyHeading(label);
-    if (id) items.push({ id, label });
-  }
-  return items;
-}
-
 function usedComponents(source: string): string[] {
   return [...new Set([...source.matchAll(/<\/?([A-Z][A-Za-z0-9]*)\b/g)].map((match) => match[1]))];
 }
@@ -175,7 +150,7 @@ function renderPage(draft: DevlogPublicationDraft): string {
   mdxPath={${JSON.stringify(`${ROUTE_ROOT}/${publication.slug}/page.mdx`)}}
 />
 
-<AnchorSidebar items={${JSON.stringify(headings(draft.source), null, 2)}} />
+<AnchorSidebar items={${JSON.stringify(extractToc(draft.source).map(({ id, label, level }) => ({ id, label, level })), null, 2)}} />
 
 ${draft.source.trim()}
 `;
@@ -311,7 +286,7 @@ function validateDraft(draft: DevlogPublicationDraft, entries: AampersandEntry[]
     issues.push({ severity: "error", code: "duplicate-number", field: "number", message: `Devlog #${publication.number} already belongs to /aampersand/${numberConflict.slug}.` });
   }
   const seen = new Set<string>();
-  for (const item of headings(draft.source)) {
+  for (const item of extractToc(draft.source)) {
     if (seen.has(item.id)) issues.push({ severity: "error", code: "duplicate-heading", field: "source", message: `Duplicate heading ID “${item.id}”.` });
     seen.add(item.id);
   }

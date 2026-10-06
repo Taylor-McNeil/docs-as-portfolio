@@ -3,8 +3,11 @@
     "number": 1,
     "slug": "a-sirens-song",
     "title": "A Siren's Song",
-    "cardTitle": "What if Icarus Had Sunscreen?",
-    "coverage": { "start": "2026-01", "end": "2026-01" },
+    "cardTitle": "A Siren's Song",
+    "coverage": {
+      "start": "2026-01",
+      "end": "2026-01"
+    },
     "description": "The origin. A seven-book series, a missing character, and the question that started everything: why can't I see my own story?",
     "tag": "origin",
     "tagTone": "purple",
@@ -15,8 +18,11 @@
     "number": 2,
     "slug": "peering-into-lethe",
     "title": "Peering into Lethe",
-    "cardTitle": "Red Thread, Isle Eight",
-    "coverage": { "start": "2026-02", "end": "2026-02" },
+    "cardTitle": "Peering into Lethe",
+    "coverage": {
+      "start": "2026-02",
+      "end": "2026-02"
+    },
     "description": "Tagging as structural concept. How annotations survive the edit and turning decorations into navigation.",
     "tag": "tagging",
     "tagTone": "blue",
@@ -27,8 +33,11 @@
     "number": 3,
     "slug": "a-broken-astrolabe",
     "title": "A Broken Astrolabe",
-    "cardTitle": "Stranded in Crete",
-    "coverage": { "start": "2026-03", "end": "2026-03" },
+    "cardTitle": "A Broken Astrolabe",
+    "coverage": {
+      "start": "2026-03",
+      "end": "2026-03"
+    },
     "description": "The Clothesline emerges. Plotlines visualized as colored threads across chapters. And the discovery that beats aren't all created equal.",
     "tag": "clothesline",
     "tagTone": "yellow",
@@ -40,7 +49,10 @@
     "slug": "oily-bodies-in-karpathos",
     "title": "Oily Bodies in Karpathos",
     "cardTitle": "Oily Bodies In Karpathos",
-    "coverage": { "start": "2026-04", "end": "2026-04" },
+    "coverage": {
+      "start": "2026-04",
+      "end": "2026-04"
+    },
     "description": "Sparks and Etches. The annotation graph. The discovery that stories aren't just linear. They are also graphs.",
     "tag": "breakthrough",
     "tagTone": "pink",
@@ -52,7 +64,10 @@
     "slug": "a-sword-for-every-hand",
     "title": "A Sword for Every Hand",
     "cardTitle": "A Sword for Every Hand",
-    "coverage": { "start": "2026-05", "end": "2026-05" },
+    "coverage": {
+      "start": "2026-05",
+      "end": "2026-05"
+    },
     "description": "Validation of a product. One demo, five writers, unlimited requests.",
     "tag": "validation",
     "tagTone": "green",
@@ -64,11 +79,29 @@
     "slug": "a-seed-of-intention",
     "title": "A Seed of Intention",
     "cardTitle": "A Seed of Intention",
-    "coverage": { "start": "2026-06", "end": "2026-06" },
+    "coverage": {
+      "start": "2026-06",
+      "end": "2026-06"
+    },
     "description": "The offline problem I didn't want to solve. A replay queue born on a refrigerator, temporary IDs that haunted the UI, and the architectural decision that deleted a third of the system.",
     "tag": "resilience",
     "tagTone": "warning",
     "preview": "queue",
     "llmsDescription": "Designing offline resilience for a fiction writing tool"
+  },
+  {
+    "number": 7,
+    "slug": "an-alphabet-too-short",
+    "title": "An Alphabet Too Short",
+    "cardTitle": "An Alphabet Too Short",
+    "coverage": {
+      "start": "2026-07",
+      "end": "2026-08"
+    },
+    "description": "The importer I didn't have 63 days before launch. Three file formats with three ideas of what a chapter is, a review screen that asks before it assumes, and the 300 hours I decided not to spend.",
+    "tag": "translation",
+    "tagTone": "blue",
+    "preview": "translation",
+    "llmsDescription": "Technical devlog on aampersand's manuscript import pipeline. Covers format-specific adapters for Scrivener (zipped .scriv projects, binder XML, RTF prose), Word (.docx XML and heading-style inference), and Markdown (heading and scene-break inference); how all three produce a shared proposed project tree of parts, chapters, and scenes; a writer-facing review step before any database writes; batched writes from world to scene; routing tables and research material to the Vault; a comparison of import support across writing tools; and the decision to stop chasing edge cases instead of promising perfect fidelity."
   }
 ]

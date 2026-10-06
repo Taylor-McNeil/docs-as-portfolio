@@ -1,10 +1,11 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { NavSection } from "../navigation/NavSection";
 import { NavItem } from "../navigation/NavItem";
 import { navigation } from "@/components/content/navigation";
 
-export function Sidebar() {
+export function Sidebar({ themeControl }: { themeControl?: ReactNode } = {}) {
   return (
     <>
       {/* Header */}
@@ -13,7 +14,7 @@ export function Sidebar() {
           <Link href="/"><h1 className="text-foreground-heading font-bold text-sm">Taylor McNeil</h1></Link>
           <p className="text-foreground-muted font-mono text-[10px] mt-0.5">docs-as-portfolio v1.9</p>
         </div>
-        <ThemeToggle />
+        {themeControl ?? <ThemeToggle />}
       </div>
 
       {/* Navigation */}

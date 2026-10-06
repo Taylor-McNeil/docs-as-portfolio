@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Component,
   useCallback,
   useEffect,
   useMemo,
@@ -9,9 +8,7 @@ import {
   useState,
   type CSSProperties,
   type ComponentType,
-  type ErrorInfo,
   type FormEvent,
-  type ReactElement,
   type ReactNode,
 } from "react";
 import { evaluate } from "@mdx-js/mdx";
@@ -32,10 +29,8 @@ import {
   Columns2,
   Copy,
   Eye,
-  ExternalLink,
   FileImage,
   FilePlus2,
-  Ghost,
   Heading2,
   Heading3,
   Highlighter,
@@ -58,36 +53,10 @@ import {
   Sun,
   Trash2,
   X,
-  Zap,
 } from "lucide-react";
-import { Callout } from "@/components/content/Callout";
-import { AnatomyOfABeat } from "@/components/content/AnatomyOfABeat";
-import {
-  AnnotatedMermaid,
-  type AnnotatedMermaidProps,
-} from "@/components/content/AnnotatedMermaid";
-import { BreadcrumbPill } from "@/components/content/BreadcrumbPill";
-import { Card, CardGroup } from "@/components/content/Card";
-import { CodeBlock } from "@/components/content/CodeBlock";
-import { ContrastCallout } from "@/components/content/ContrastCallout";
-import { DevlogCallout } from "@/components/content/DevlogCallout";
-import { DevlogCTA } from "@/components/content/DevlogCTA";
-import { DiagramFigure } from "@/components/content/DiagramFigure";
-import { EmphasizedText } from "@/components/content/EmphasizedText";
-import { FeatureCard, FeatureCardGroup } from "@/components/content/FeatureCard";
-import { Figure } from "@/components/content/Figure";
-import { FooterTeaser } from "@/components/content/FooterTeaser";
-import { HeroQuote } from "@/components/content/HeroQuote";
-import { JsonLd } from "@/components/content/JsonLd";
-import { LayoutDiagram } from "@/components/content/LayoutDiagram";
-import { Mermaid } from "@/components/content/Mermaid";
-import { SceneBreak } from "@/components/content/SceneBreak";
-import { WriterRestoreDemo } from "@/components/content/WriterRestoreDemo";
-import { JsonRenderer, type JsonValue } from "@/components/content/JsonRenderer";
-import { MySpaceCustomizer } from "@/components/interactive/MySpaceCustomizer";
-import { StoryGraph } from "@/components/interactive/story-graph";
+
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-import { MethodBadge } from "@/components/navigation/MethodBadge";
+
 import {
   aampersandEntries,
   coverageLabel,
@@ -98,10 +67,7 @@ import type {
   PublicationPlan,
   RepositoryEntryDraft,
 } from "@/lib/entry-publication/types";
-import {
-  ComponentRegistry,
-  type ComponentRegistrySources,
-} from "@/components/interactive/ComponentRegistry";
+import type { ComponentRegistrySources } from "@/components/interactive/ComponentRegistry";
 import {
   DEFAULT_DRAFTS,
   DEVLOG_LIBRARY_STORAGE_KEY,
@@ -109,10 +75,8 @@ import {
   draftStorageKey,
   extractToc,
   insertAtSelection,
-  parseMetadataValue,
   readDraft,
   readDevlogDraftLibrary,
-  slugifyHeading,
   type EntryDraft,
   type EntryKind,
   type EntryMethod,
@@ -120,6 +84,7 @@ import {
   type EntryWorkspaceDraft,
   type MetadataRow,
 } from "./entry-editor-utils";
+import { PhonePreview } from "./phone-preview";
 import { EntrySourceEditor, type EntrySourceEditorHandle } from "./entry-source-editor";
 import {
   AnnotatedMermaidComposer,
@@ -130,6 +95,15 @@ import {
   formatMermaidIssue,
   type MermaidIssue,
 } from "./mermaid-diagnostics";
+
+import {
+  PreviewHeader,
+  ProjectMetadata,
+  createPreviewComponents,
+  findUnregisteredComponent,
+  previewCompatibleSource,
+  PreviewErrorBoundary,
+} from "./entry-preview-rendering";
 
 type LayoutMode = "split" | "editor" | "preview";
 type PreviewTheme = "light" | "dark";
@@ -204,259 +178,6 @@ function EditorTooltip({
       </span>
     </span>
   );
-}
-
-function PreviewHeader({ settings }: { settings: EntrySettings }) {
-  return (
-    <header className="mb-6 mt-2 space-y-4">
-      <div className="flex items-center gap-3">
-        <MethodBadge method={settings.method} active size="md" />
-        <span className="font-mono text-sm text-foreground-muted">{settings.endpoint}</span>
-      </div>
-      <h1 className="text-3xl font-bold leading-none text-foreground-heading">{settings.title}</h1>
-      {settings.description && <p className="text-lg text-foreground-muted">{settings.description}</p>}
-    </header>
-  );
-}
-
-function ProjectMetadata({ rows }: { rows: MetadataRow[] }) {
-  const data = useMemo<JsonValue>(() => {
-    return Object.fromEntries(
-      rows
-        .filter((row) => row.key.trim())
-        .map((row) => [row.key.trim(), parseMetadataValue(row.value)]),
-    );
-  }, [rows]);
-
-  if (rows.every((row) => !row.key.trim())) return null;
-
-  return (
-    <section className="mb-8 overflow-hidden rounded-lg border border-border bg-surface-terminal font-mono">
-      <div className="flex items-center justify-between border-b border-border bg-surface-card px-4 py-2.5">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-foreground-muted">Response body</span>
-        <span className="rounded bg-accent-success/10 px-1.5 py-0.5 text-[10px] text-accent-success">200 OK</span>
-      </div>
-      <div className="p-4 text-[11px] leading-relaxed">
-        <JsonRenderer data={data} />
-      </div>
-    </section>
-  );
-}
-
-function createPreviewComponents(
-  componentRegistrySources: ComponentRegistrySources,
-  onEditAnnotatedMermaid?: (
-    value: AnnotatedMermaidComposerValue,
-    selectionStart: number,
-    selectionEnd: number,
-  ) => void,
-): MDXComponents {
-  const RegistryPreview = () => (
-    <ComponentRegistry sources={componentRegistrySources} />
-  );
-  const EditableAnnotatedMermaid = ({
-    __entryEditorSourceStart,
-    __entryEditorSourceEnd,
-    ...props
-  }: AnnotatedMermaidProps & {
-    __entryEditorSourceStart?: number;
-    __entryEditorSourceEnd?: number;
-  }) => {
-    const canEdit = onEditAnnotatedMermaid &&
-      typeof __entryEditorSourceStart === "number" &&
-      typeof __entryEditorSourceEnd === "number";
-
-    return (
-      <div className="group relative my-6" data-entry-editor-annotated-mermaid>
-        <AnnotatedMermaid {...props} className={`${props.className ?? ""} [&>figure]:!my-0`.trim()} />
-        {canEdit && (
-          <button
-            type="button"
-            aria-label={`Edit annotated diagram: ${props.label}`}
-            onClick={() => onEditAnnotatedMermaid(
-              { chart: props.chart, label: props.label, annotationSet: props.annotationSet },
-              __entryEditorSourceStart,
-              __entryEditorSourceEnd,
-            )}
-            className="absolute right-3 top-3 z-20 rounded-md border border-border bg-surface-bg/90 p-2 text-foreground-muted shadow-sm backdrop-blur transition hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            <Pencil size={15} />
-          </button>
-        )}
-      </div>
-    );
-  };
-
-  return {
-    h1: ({ children }) => <h1 className="mb-5 mt-10 text-3xl font-bold text-foreground-heading">{children}</h1>,
-    h2: ({ children }) => {
-      const id = slugifyHeading(String(children));
-      return <h2 id={id} className="mb-4 mt-10 scroll-mt-6 text-2xl font-bold text-foreground-heading">{children}</h2>;
-    },
-    h3: ({ children }) => {
-      const id = slugifyHeading(String(children));
-      return <h3 id={id} className="mb-3 mt-8 scroll-mt-6 text-xl font-semibold text-foreground-heading">{children}</h3>;
-    },
-    p: ({ children }) => <p className="mb-4 leading-relaxed text-foreground-muted">{children}</p>,
-    ul: ({ children }) => <ul className="mb-4 list-outside list-disc space-y-1 pl-5 text-foreground-muted">{children}</ul>,
-    ol: ({ children }) => <ol className="mb-4 list-outside list-decimal space-y-4 pl-5 text-foreground-muted">{children}</ol>,
-    li: ({ children }) => <li className="pl-1 [&>p]:mb-2">{children}</li>,
-    strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
-    em: ({ children }) => <em>{children}</em>,
-    a: ({ href, children }) => <a href={href} className="text-accent hover:underline">{children}</a>,
-    blockquote: ({ children }) => <blockquote className="my-6 border-l-4 border-border pl-5 italic text-foreground-muted">{children}</blockquote>,
-    hr: () => (
-      <div className="my-10 flex items-center justify-center gap-3" aria-hidden="true">
-        <span className="h-px flex-1 bg-border" />
-        <span className="font-mono text-xs tracking-widest text-foreground-muted/40">~#~</span>
-        <span className="h-px flex-1 bg-border" />
-      </div>
-    ),
-    table: ({ children }) => <div className="my-6 overflow-x-auto"><table className="w-full overflow-hidden rounded-lg border border-border text-sm">{children}</table></div>,
-    thead: ({ children }) => <thead className="bg-surface-card text-foreground-heading">{children}</thead>,
-    th: ({ children }) => <th className="border-b border-border px-4 py-2 text-left font-semibold">{children}</th>,
-    td: ({ children }) => <td className="border-b border-border px-4 py-2 text-left text-foreground-muted">{children}</td>,
-    pre: ({ children }) => {
-      const codeElement = children as ReactElement<{ className?: string; children?: string }>;
-      const className = codeElement?.props?.className ?? "";
-      const code = codeElement?.props?.children ?? "";
-      const match = className.match(/language-([^:]+)(?::(.+))?/);
-      return <CodeBlock code={String(code).trim()} language={match?.[1]} filename={match?.[2]} />;
-    },
-    code: ({ className, children }) => className
-      ? <code className={className}>{children}</code>
-      : <code className="rounded bg-surface-card px-1.5 py-0.5 font-mono text-sm text-accent">{children}</code>,
-    AlertTriangle,
-    AnatomyOfABeat,
-    AnnotatedMermaid: EditableAnnotatedMermaid,
-    BreadcrumbPill,
-    Callout,
-    Card,
-    CardGroup,
-    CodeBlock,
-    ComponentRegistry: RegistryPreview,
-    ContrastCallout,
-    DevlogCallout,
-    DevlogCTA,
-    DiagramFigure,
-    EmphasizedText,
-    ExternalLink,
-    FeatureCard,
-    FeatureCardGroup,
-    Figure,
-    FooterTeaser,
-    Ghost,
-    HeroQuote,
-    JsonLd,
-    LayoutDiagram,
-    Mermaid,
-    MySpaceCustomizer,
-    SceneBreak,
-    StoryGraph,
-    WriterRestoreDemo,
-    Zap,
-    LiveComponentRegistry: RegistryPreview,
-  };
-}
-
-function findUnregisteredComponent(
-  source: string,
-  previewComponents: MDXComponents
-): string | null {
-  const registered = new Set(Object.keys(previewComponents));
-  for (const match of source.matchAll(/<\/?([A-Z][A-Za-z0-9]*)\b/g)) {
-    if (!registered.has(match[1])) return match[1];
-  }
-  return null;
-}
-
-function annotatedMermaidTagEnd(source: string, start: number): number | null {
-  let braceDepth = 0;
-  let quote: "\"" | "'" | "`" | null = null;
-  let escaped = false;
-
-  for (let index = start; index < source.length - 1; index += 1) {
-    const character = source[index];
-    if (quote) {
-      if (escaped) {
-        escaped = false;
-      } else if (character === "\\") {
-        escaped = true;
-      } else if (character === quote) {
-        quote = null;
-      }
-      continue;
-    }
-
-    if (character === "\"" || character === "'" || character === "`") {
-      quote = character;
-    } else if (character === "{") {
-      braceDepth += 1;
-    } else if (character === "}") {
-      braceDepth = Math.max(0, braceDepth - 1);
-    } else if (character === "/" && source[index + 1] === ">" && braceDepth === 0) {
-      return index + 2;
-    }
-  }
-
-  return null;
-}
-
-function addAnnotatedMermaidSourceRanges(source: string): string {
-  const tagName = "<AnnotatedMermaid";
-  const parts: string[] = [];
-  let cursor = 0;
-
-  while (cursor < source.length) {
-    const start = source.indexOf(tagName, cursor);
-    if (start < 0) break;
-    const end = annotatedMermaidTagEnd(source, start + tagName.length);
-    if (end == null) break;
-    parts.push(
-      source.slice(cursor, start + tagName.length),
-      ` __entryEditorSourceStart={${start}} __entryEditorSourceEnd={${end}}`,
-      source.slice(start + tagName.length, end),
-    );
-    cursor = end;
-  }
-
-  if (parts.length === 0) return source;
-  parts.push(source.slice(cursor));
-  return parts.join("");
-}
-
-function previewCompatibleSource(source: string): string {
-  return addAnnotatedMermaidSourceRanges(source).replace(
-    /\bicon=\{(AlertTriangle|Ghost)\}/g,
-    "icon={(props) => <$1 {...props} />}",
-  );
-}
-
-class PreviewErrorBoundary extends Component<
-  { children: ReactNode; onError: (error: Error) => void },
-  { error: Error | null }
-> {
-  state = { error: null as Error | null };
-
-  static getDerivedStateFromError(error: Error) {
-    return { error };
-  }
-
-  componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error("Entry Editor preview render failed", error, info);
-    this.props.onError(error);
-  }
-
-  render() {
-    if (this.state.error) {
-      return (
-        <div className="rounded-lg border border-method-put/50 bg-method-put/5 p-5 text-sm text-method-put">
-          This preview could not render. Your MDX source is still safe in the editor.
-        </div>
-      );
-    }
-    return this.props.children;
-  }
 }
 
 function ToolButton({ label, children, onClick, active = false }: { label: string; children: ReactNode; onClick: () => void; active?: boolean }) {
@@ -620,7 +341,7 @@ function SettingsPanel({
             <label className="text-xs font-medium text-foreground-muted">Index-card title <span className="font-normal opacity-60">(defaults to title)</span><input className={`${inputClass} mt-1`} value={publication.cardTitle} onChange={(event) => updatePublication("cardTitle", event.target.value)} /></label>
             <label className="text-xs font-medium text-foreground-muted">Index tag<input className={`${inputClass} mt-1`} value={publication.tag} onChange={(event) => updatePublication("tag", event.target.value)} /></label>
             <label className="text-xs font-medium text-foreground-muted">Tag color<select className={`${inputClass} mt-1`} value={publication.tagTone} onChange={(event) => updatePublication("tagTone", event.target.value as DevlogPublicationSettings["tagTone"])}>{["blue", "green", "purple", "yellow", "pink", "warning"].map((tone) => <option key={tone} value={tone}>{tone}</option>)}</select></label>
-            <label className="text-xs font-medium text-foreground-muted">Card preview<select className={`${inputClass} mt-1`} value={publication.preview} onChange={(event) => updatePublication("preview", event.target.value as DevlogPublicationSettings["preview"])}>{["default", "origin", "thread", "clothesline", "graph", "spark", "queue"].map((preview) => <option key={preview} value={preview}>{preview}</option>)}</select></label>
+            <label className="text-xs font-medium text-foreground-muted">Card preview<select className={`${inputClass} mt-1`} value={publication.preview} onChange={(event) => updatePublication("preview", event.target.value as DevlogPublicationSettings["preview"])}>{["default", "origin", "thread", "clothesline", "graph", "spark", "queue", "translation"].map((preview) => <option key={preview} value={preview}>{preview}</option>)}</select></label>
             <label className="text-xs font-medium text-foreground-muted sm:col-span-2">LLM index description <span className="font-normal opacity-60">(defaults to index description)</span><textarea rows={2} className={`${inputClass} mt-1 resize-y`} value={publication.llmsDescription} onChange={(event) => updatePublication("llmsDescription", event.target.value)} /></label>
           </div>
           <div className="mt-3 grid gap-2 rounded-lg border border-border bg-surface-card/60 p-3 font-mono text-[10px] text-foreground-muted sm:grid-cols-2">
@@ -907,6 +628,10 @@ export default function EntryEditor({
   const [restored, setRestored] = useState(false);
   const [layoutMode, setLayoutMode] = useState<LayoutMode>("split");
   const [editorWidth, setEditorWidth] = useState(46);
+  const [previewDevice, setPreviewDevice] = useState<"desktop" | "phone">("desktop");
+  const [phoneOpened, setPhoneOpened] = useState(false);
+  const [phoneWidth, setPhoneWidth] = useState(390);
+  const [phoneLandscape, setPhoneLandscape] = useState(false);
   const [previewTheme, setPreviewTheme] = useState<PreviewTheme>("dark");
   const [notice, setNotice] = useState<string>("");
   const [copied, setCopied] = useState(false);
@@ -1475,12 +1200,22 @@ export default function EntryEditor({
         )}
 
         <section className={`${layoutMode === "editor" ? "hidden" : "flex"} min-h-[50%] min-w-0 flex-1 flex-col bg-surface-sidebar`} aria-label="Preview pane">
-          <div className="flex min-h-11 items-center justify-between border-b border-border px-4">
+          <div className="flex min-h-11 flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-2">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-foreground-muted">
               Preview
               {isCompiling && <span className="font-normal normal-case tracking-normal opacity-60">Updating…</span>}
               {compileError && !isCompiling && <span className="font-normal normal-case tracking-normal text-method-put">Showing last valid version</span>}
             </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex rounded-md border border-border bg-surface-bg p-0.5" aria-label="Preview device">
+                {(["desktop", "phone"] as const).map((device) => <button key={device} type="button" aria-pressed={previewDevice === device} onClick={() => { setPreviewDevice(device); if (device === "phone") setPhoneOpened(true); }} className={`rounded px-2 py-1 text-xs capitalize ${previewDevice === device ? "bg-surface-card text-accent" : "text-foreground-muted"}`}>{device}</button>)}
+              </div>
+              {previewDevice === "phone" && <>
+                <select aria-label="Phone viewport width" value={phoneWidth} onChange={(event) => setPhoneWidth(Number(event.target.value))} className="rounded border border-border bg-surface-bg p-1 text-xs text-foreground">
+                  {[375, 390, 430].map((width) => <option key={width} value={width}>{width} px</option>)}
+                </select>
+                <EditorTooltip label="Rotate phone preview"><button type="button" aria-label="Rotate phone preview" aria-pressed={phoneLandscape} onClick={() => setPhoneLandscape((value) => !value)} className="rounded p-1.5 text-foreground-muted"><RotateCcw size={14} /></button></EditorTooltip>
+              </>}
             <div className="flex rounded-md border border-border bg-surface-bg p-0.5">
               <EditorTooltip label="Light entry preview">
                 <button type="button" aria-label="Light preview" onClick={() => setPreviewTheme("light")} className={`rounded p-1.5 ${previewTheme === "light" ? "bg-surface-card text-accent" : "text-foreground-muted"}`}><Sun size={14} /></button>
@@ -1489,9 +1224,11 @@ export default function EntryEditor({
                 <button type="button" aria-label="Dark preview" onClick={() => setPreviewTheme("dark")} className={`rounded p-1.5 ${previewTheme === "dark" ? "bg-surface-card text-accent" : "text-foreground-muted"}`}><Moon size={14} /></button>
               </EditorTooltip>
             </div>
+            </div>
           </div>
 
-          <div className={previewTheme === "dark" ? "dark min-h-0 flex-1" : "entry-preview-light min-h-0 flex-1"}>
+          {phoneOpened && <div className={`${previewDevice === "phone" ? "flex" : "hidden"} min-h-0 flex-1 flex-col`}><PhonePreview draft={draft} kind={kind} theme={previewTheme} width={phoneWidth} landscape={phoneLandscape} onThemeChange={setPreviewTheme} /></div>}
+          {previewDevice === "desktop" && <div className={previewTheme === "dark" ? "dark min-h-0 flex-1" : "entry-preview-light min-h-0 flex-1"}>
             <div className="grid h-full min-h-0 grid-cols-1 bg-surface-bg xl:grid-cols-[minmax(0,1fr)_190px]">
               <div ref={previewRef} className="min-h-0 overflow-y-auto scroll-smooth px-6 pb-20 pt-7 md:px-10">
                 <article className="mx-auto max-w-3xl">
@@ -1512,7 +1249,7 @@ export default function EntryEditor({
                 <EntryToc items={toc} previewRef={previewRef} />
               </aside>
             </div>
-          </div>
+          </div>}
         </section>
       </div>
 

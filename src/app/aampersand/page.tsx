@@ -176,6 +176,8 @@ function Preview({ type }: { type: AampersandEntry["preview"] }) {
       return <SparkPreview />;
     case "queue":
       return <QueuePreview />;
+    case "translation":
+      return <TranslationPreview />;
   }
 }
 
@@ -187,6 +189,38 @@ function DefaultPreview() {
         <span className="h-px w-full bg-border" />
         <span className="h-px w-5/6 bg-border" />
         <span className="h-px w-2/3 bg-border" />
+      </div>
+    </div>
+  );
+}
+
+function TranslationPreview() {
+  return (
+    <div className="flex h-full min-h-24 items-center justify-center font-mono text-[10px] text-foreground-muted" aria-label="Scrivener binder, Word styles, and Markdown headings translate into parts, chapters, and scenes">
+      <div className="w-full max-w-[180px]">
+        <div className="space-y-1 border border-method-get/25 bg-surface-terminal px-3 py-2">
+          {[
+            [".scriv", "binder"],
+            [".docx", "styles"],
+            [".md", "#  ---"],
+          ].map(([format, structure]) => (
+            <div key={format} className="grid grid-cols-[60px_1fr] gap-2">
+              <span className="text-method-get">{format}</span>
+              <span className="whitespace-pre">{structure}</span>
+            </div>
+          ))}
+        </div>
+        <div className="py-1 text-center text-method-get" aria-hidden="true">↓</div>
+        <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
+          <span className="text-method-patch">part</span>
+          <span aria-hidden="true">▸</span>
+          <span className="text-method-put">chapter</span>
+          <span aria-hidden="true">▸</span>
+          <span className="text-method-get">scene</span>
+        </div>
+        <p className="mt-3 text-center italic text-foreground-muted/70">
+          close enough is a book
+        </p>
       </div>
     </div>
   );

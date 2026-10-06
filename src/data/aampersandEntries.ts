@@ -12,7 +12,8 @@ export type AampersandPreview =
   | "clothesline"
   | "graph"
   | "spark"
-  | "queue";
+  | "queue"
+  | "translation";
 
 export type AampersandTagTone = "purple" | "blue" | "yellow" | "pink" | "green" | "warning";
 
