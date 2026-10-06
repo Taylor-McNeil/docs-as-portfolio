@@ -17,6 +17,7 @@ import { AnatomyOfABeat } from "@/components/content/AnatomyOfABeat";
 import { FeatureCard, FeatureCardGroup } from "@/components/content/FeatureCard";
 import { ContrastCallout } from "@/components/content/ContrastCallout";
 import { AnnotatedCodeBlock } from "@/components/content/AnnotatedCodeBlock";
+import { AnnotatedMermaid } from "@/components/content/AnnotatedMermaid";
 import { FooterTeaser } from "@/components/content/FooterTeaser";
 import { HorizontalScroll } from "@/components/content/HorizontalScroll";
 import { ScrollImage } from "@/components/content/ScrollImage";
@@ -145,6 +146,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     FeatureCardGroup,
     ContrastCallout,
     AnnotatedCodeBlock,
+    AnnotatedMermaid,
     FooterTeaser,
     HorizontalScroll,
     ScrollImage,

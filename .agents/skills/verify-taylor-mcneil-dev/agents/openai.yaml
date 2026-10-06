@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify Taylor McNeil Site"
+  short_description: "Verify portfolio and local tools end to end"
+  default_prompt: "Use $verify-taylor-mcneil-dev to verify this site change with browser evidence."

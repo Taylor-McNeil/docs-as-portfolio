@@ -11,14 +11,16 @@ import { ScrollToTop } from "./ScrollToTop";
 interface ShellProps {
   sidebar: ReactNode;
   children: ReactNode;
+  publishedPreview?: boolean;
+  themeControl?: ReactNode;
 }
 
-export function ShellInner({ sidebar, children }: ShellProps) {
+export function ShellInner({ sidebar, children, publishedPreview = false, themeControl }: ShellProps) {
   const { isOpen: mobileMenuOpen, setIsOpen: setMobileMenuOpen } = useMobileMenu();
   const { content: rightPanelContent, width: panelWidth, isCollapsed, toggleCollapsed } = useRightPanel();
   const isToolRoute = usePathname()?.startsWith("/tools/") ?? false;
 
-  if (isToolRoute) {
+  if (isToolRoute && !publishedPreview) {
     return (
       <div className="h-screen overflow-hidden">
         <ScrollToTop />
@@ -37,8 +39,9 @@ export function ShellInner({ sidebar, children }: ShellProps) {
           <p className="text-foreground-muted font-mono text-[10px]">docs-as-portfolio v1.9</p>
         </div>
         <div className="flex items-center gap-4">
-          <ThemeToggle />
+          {themeControl ?? <ThemeToggle />}
           <button
+            aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-foreground-muted"
           >
@@ -67,11 +70,11 @@ export function ShellInner({ sidebar, children }: ShellProps) {
             ? panelWidth === "narrow" ? "lg:pr-56" : panelWidth === "medium" ? "lg:pr-72" : "lg:pr-96"
             : ""
         }`}>
-          <div className={isToolRoute ? "w-full min-h-full flex flex-col" : "max-w-3xl mx-auto p-6 md:p-12 min-h-full flex flex-col"}>
+          <div className={isToolRoute && !publishedPreview ? "w-full min-h-full flex flex-col" : "max-w-3xl mx-auto p-6 md:p-12 min-h-full flex flex-col"}>
             <div className="flex-1">
               {children}
             </div>
-            {!isToolRoute && (
+            {(!isToolRoute || publishedPreview) && (
               <footer className="mt-8 pt-4 border-t border-border text-xs text-foreground-muted text-center">
                 <p>Taylor McNeil is a developer and the creator of aampersand, a creative writing tool for fiction writers.</p>
               </footer>

@@ -1,3 +1,9 @@
+import {
+  aampersandEntries,
+  aampersandEntryHref,
+  coverageLabel,
+} from "@/data/aampersandEntries";
+
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "HEAD" | "OPTIONS";
 
 export interface NavItem {
@@ -25,12 +31,11 @@ export const navigation: NavSection[] = [
      subtitle: "building in public",
      items: [
        { href: "/aampersand", label: "Overview", method: "GET" },
-       { href: "/aampersand/a-sirens-song", label: "Jan 2026", method: "PUT" },
-       { href: "/aampersand/peering-into-lethe", label: "Feb 2026", method: "PUT"},
-       { href: "/aampersand/a-broken-astrolabe", label: "Mar 2026", method: "PUT"},
-       { href: "/aampersand/oily-bodies-in-karpathos", label: "Apr 2026", method: "PUT"},
-       { href: "/aampersand/a-sword-for-every-hand", label: "May 2026", method: "PUT"},
-       { href: "/aampersand/a-seed-of-intention", label: "Jun 2026", method: "PUT"},
+       ...aampersandEntries.map((entry) => ({
+         href: aampersandEntryHref(entry),
+         label: coverageLabel(entry.coverage),
+         method: "PUT" as const,
+       })),
      ],
  },
   {

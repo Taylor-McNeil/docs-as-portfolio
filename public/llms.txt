@@ -26,6 +26,7 @@ Taylor's professional work focuses on developer documentation, tutorials, and AP
 - [Oily Bodies in Karpathos (Apr 2026)](https://taylormcneil.dev/aampersand/oily-bodies-in-karpathos): Annotation architecture for fiction writing software
 - [A Sword for Every Hand (May 2026)](https://taylormcneil.dev/aampersand/a-sword-for-every-hand): First user testing a fiction writing tool
 - [A Seed of Intention (Jun 2026)](https://taylormcneil.dev/aampersand/a-seed-of-intention): Designing offline resilience for a fiction writing tool
+- [An Alphabet Too Short (Jul–Aug 2026)](https://taylormcneil.dev/aampersand/an-alphabet-too-short): Technical devlog on aampersand's manuscript import pipeline. Covers format-specific adapters for Scrivener (zipped .scriv projects, binder XML, RTF prose), Word (.docx XML and heading-style inference), and Markdown (heading and scene-break inference); how all three produce a shared proposed project tree of parts, chapters, and scenes; a writer-facing review step before any database writes; batched writes from world to scene; routing tables and research material to the Vault; a comparison of import support across writing tools; and the decision to stop chasing edge cases instead of promising perfect fidelity.
 
 ## Related
 

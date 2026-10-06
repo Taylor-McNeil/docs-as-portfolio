@@ -1,0 +1,620 @@
+import { GuideHeader } from "@/components/content/GuideHeader";
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { JsonLd } from "@/components/content/JsonLd";
+import { Callout } from "@/components/content/Callout";
+import { ExternalLink } from "lucide-react";
+import { EmphasizedText } from "@/components/content/EmphasizedText";
+import { AnnotatedMermaid } from "@/components/content/AnnotatedMermaid";
+import { Mermaid } from "@/components/content/Mermaid";
+import { DevlogCTA } from "@/components/content/DevlogCTA";
+
+{/* entry-editor:generated */}
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "An Alphabet Too Short — aampersand Technical Devlog #7",
+  "datePublished": "2026-09-27",
+  "author": {
+    "@type": "Person",
+    "name": "Taylor McNeil"
+  },
+  "url": "https://taylormcneil.dev/aampersand/an-alphabet-too-short"
+}} />
+
+<GuideHeader
+  title={"An Alphabet Too Short"}
+  description={"How I built a manuscript importer for Scrivener, Word, and Markdown in 63 days, and why perfect import fidelity was never the goal."}
+  method="PUT"
+  endpoint={"/aampersand/an-alphabet-too-short"}
+  mdxPath={"src/app/aampersand/an-alphabet-too-short/page.mdx"}
+/>
+
+<AnchorSidebar items={[
+  {
+    "id": "follow-the-cow",
+    "label": "Follow the Cow",
+    "level": 2
+  },
+  {
+    "id": "letters-from-phoenicia",
+    "label": "Letters from Phoenicia",
+    "level": 2
+  },
+  {
+    "id": "scrivener-the-filing-cabinet",
+    "label": "Scrivener: the filing cabinet",
+    "level": 3
+  },
+  {
+    "id": "word-the-wild-west",
+    "label": "Word: the wild west",
+    "level": 3
+  },
+  {
+    "id": "markdown-the-golden-child",
+    "label": "Markdown: the golden child",
+    "level": 3
+  },
+  {
+    "id": "three-formats-three-levels-of-confidence",
+    "label": "Three formats, three levels of confidence",
+    "level": 3
+  },
+  {
+    "id": "sowing-dragon-teeth",
+    "label": "Sowing Dragon Teeth",
+    "level": 2
+  },
+  {
+    "id": "show-your-work",
+    "label": "Show your work",
+    "level": 3
+  },
+  {
+    "id": "the-table-problem",
+    "label": "The table problem",
+    "level": 3
+  },
+  {
+    "id": "seven-gates-is-plenty",
+    "label": "Seven Gates is Plenty",
+    "level": 2
+  }
+]} />
+
+<Callout type="context">
+This is the design companion to <a href="https://www.aampersand.com/devlog/jul-aug-2026" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1">Tilted Hermai<ExternalLink size={12} className="inline" /></a>.
+That piece is about crossing the distance between two languages. This one is about what's actually inside the files we toil in.
+</Callout>
+
+## Follow the Cow
+
+I copied and pasted my chapters into aampersand for months. Like a Luddite. 
+
+It worked for *me*. It was simple. I was writing new chapters directly in aampersand, so the copy-paste tango wasn't one I did often. Things were fine.
+
+Then I looked at the calendar: 63 days until friends and family. Until hands that weren't my own were going to touch aampersand, and it didn't have an importer.
+
+<EmphasizedText color="orange">Oops.</EmphasizedText>
+
+For most apps, import is a file upload. Pick a file, it lands somewhere, done. A manuscript presents a problem for aampersand. A manuscript presents a problem for aampersand, because it doesn't really store your book as one giant text blob. It deconstructs your book into chapters, scenes, and prose. A normal upload is one row. A manuscript is hundreds. I can't just take your Markdown or your Word doc and dump it on a page. Something has to read it, figure out where your chapters are, and rebuild your book in the aampersand shape.
+
+The real question, at 63 days and counting: who was going to build that? (Me?)
+
+So, like all great 10x cracked-out developers (which I am not), I started with the hardest problem first.
+
+Scrivener.
+
+My thought process was this: 
+-   Scrivener users love Scrivener. If you can convert them, you can convert anyone. They live and breathe by their folders, their corkboards, and research binders.
+-   Scrivener has its own file format, and it's the weirdest one.
+-   If I do the hardest one first, everything downstream will be easy.
+
+Two of those turned out to be true.
+
+
+## Letters from Phoenicia
+
+My naive assumption was that "structure" meant roughly the same thing everywhere. Markdown has `#` for headings. Word would have something like that. Scrivener too. Build one flexible template for "a book," point three parsers at it, done. I just needed to sit down and open a few files and easy money. Bob's your uncle.
+
+<EmphasizedText color="orange">That is not how any of this works.</EmphasizedText>
+
+Every format has a completely different idea of what a chapter *is*, and some of them don't have an idea at all. So before I could translate anything, I had to crack each one open and see what was actually inside.
+
+### Scrivener: the filing cabinet
+
+<EmphasizedText color="purple">Lesson #1: The hard road is empty for a reason.</EmphasizedText>
+
+A `.scriv` project isn't a document. It's a folder of folders. Zip it up and you're handing me a small filesystem.
+
+<AnnotatedMermaid
+  chart={[
+    "graph TD",
+    "    S[\"MegaBookTheMovie.scriv (zip)\"] --> X[\"project.scrivx<br/>the binder, in XML\"]",
+    "    S --> F[\"Files/Data/\"]",
+    "    X --> P[\"Part folders\"]",
+    "    P --> C[\"Chapter folders\"]",
+    "    C --> D[\"Scene documents\"]",
+    "    X --> R[\"Research\"]",
+    "    X --> T[\"Trash\"]",
+    "    F --> U[\"one folder per document\"]",
+    "    U --> CR[\"content.rtf<br/>the prose\"]",
+    "    U --> SY[\"synopsis.txt<br/>the corkboard card\"]",
+    "    U --> NO[\"notes.rtf<br/>the inspector notes\"]",
+  ].join("\n")}
+  label="Annotated diagram"
+  annotationSet={{
+  "version": 1,
+  "sourceHash": "bbbf2148",
+  "showBackground": false,
+  "artboard": {
+    "width": 1000,
+    "height": 700
+  },
+  "marks": [
+    {
+      "id": "1e736bc2-e4ff-4496-879e-755399c9061a",
+      "type": "text",
+      "x": 50.48273744541487,
+      "y": 90.80381969852186,
+      "text": "In some hands, it's art.\nIn the wrong hands, it's more chaotic than two starving pigeons fighting over a New York slice.",
+      "color": "#a855f7",
+      "size": 34,
+      "width": 380,
+      "rotation": -23
+    }
+  ]
+}}
+/>
+
+The binder is a treasure trove. It's a curated table of contents from the writer. This folder is Part One. These documents are chapters. That one is research. That one is trash (*don't import that*). I'm not guessing at anything. I'm reading intent the writer declared.
+
+The adapter opens the zip, reads the one `.scrivx` manifest, walks the binder tree, and for every document pulls the prose, the synopsis, and the notes. The prose is RTF (*I mean I get it, but also...😑*). Tables, diagrams, and research references get flagged for later.
+
+Scrivener was hard, but not for the reason I expected. The prose was fine. *Everything else* was the problem, and I made it worse on purpose. My first version skipped the research files entirely, **and it felt too easy**. Some might say I let my head get quite big.
+
+So I decided that if Scrivener hands me a research folder, its contents should land somewhere. That decision is how aampersand got a Vault. (*This was a wonderful decision that did not at all dramatically alter the product, add tons of extra feature work, and require massive amounts of coordination on my part for a singular decision...not at all...*)
+
+### Word: the wild west
+
+Here's a fun fact. A `.docx` file is actually a zip file. It contains way more than just text.
+It contains prose, styles, and comments. At its heart is one long XML document with styles layered on top.
+
+But therein lies the problem, dear reader. 
+
+Because you can give anything meaning in Word. Heading 2 could be your chapter headings. Heading 3 could be the title heading. You can do all kinds of wacky things in Word. YOU CAN PUT TABLES IN THE PROSE. *(I'M LOOKING AT YOU GAMELIT WRITERS!)*
+
+<AnnotatedMermaid
+  chart={[
+    "graph TD",
+    "    D[\"Manuscript.docx (zip)\"] --> W[\"word/\"]",
+    "    W --> DX[\"document.xml<br/>every paragraph, in order\"]",
+    "    W --> ST[\"styles.xml<br/>what 'Heading 1' looks like\"]",
+    "    W --> CM[\"comments.xml<br/>margin notes\"]",
+  ].join("\n")}
+  label="Annotated diagram"
+  annotationSet={{
+  "version": 1,
+  "sourceHash": "f66f21dd",
+  "showBackground": false,
+  "artboard": {
+    "width": 1000,
+    "height": 700
+  },
+  "marks": [
+    {
+      "id": "919d5b6d-ebff-4224-ae51-cc0e2bca0c3c",
+      "type": "text",
+      "x": 77.98427265283851,
+      "y": 83.5046831552761,
+      "text": "It is here that the evil tables reside",
+      "color": "#a855f7",
+      "size": 34,
+      "width": 310,
+      "rotation": 3
+    },
+    {
+      "id": "f3545ec3-6aca-46cc-adca-3e994d18842b",
+      "type": "ink",
+      "points": [
+        {
+          "x": 178.20346615720524,
+          "y": 231.83508951656177
+        },
+        {
+          "x": 177.2055813318777,
+          "y": 233.83274793892383
+        },
+        {
+          "x": 176.42944868995633,
+          "y": 236.9402165959315
+        },
+        {
+          "x": 175.48273744541484,
+          "y": 241.69105810039514
+        },
+        {
+          "x": 173.58505049126637,
+          "y": 246.44189960485878
+        },
+        {
+          "x": 170.39523062227073,
+          "y": 259.221791306893
+        },
+        {
+          "x": 168.4975436681223,
+          "y": 263.9726328113567
+        },
+        {
+          "x": 166.5998567139738,
+          "y": 268.7234743158203
+        },
+        {
+          "x": 164.70216975982532,
+          "y": 273.4743158202839
+        },
+        {
+          "x": 160.9067958515284,
+          "y": 282.97599882921116
+        },
+        {
+          "x": 157.71697598253274,
+          "y": 295.7558905312454
+        },
+        {
+          "x": 156.6551241812227,
+          "y": 302.1458363822626
+        },
+        {
+          "x": 155.7084129366812,
+          "y": 306.89667788672614
+        },
+        {
+          "x": 153.58044486899564,
+          "y": 313.2866237377433
+        },
+        {
+          "x": 150.50576555676855,
+          "y": 324.42741109322407
+        },
+        {
+          "x": 149.55905431222706,
+          "y": 329.1782525976877
+        },
+        {
+          "x": 148.6123430676856,
+          "y": 333.92909410215134
+        },
+        {
+          "x": 147.55049126637553,
+          "y": 340.31903995316844
+        },
+        {
+          "x": 147.55049126637553,
+          "y": 348.17735011463975
+        },
+        {
+          "x": 147.55049126637553,
+          "y": 351.2848187716474
+        },
+        {
+          "x": 147.55049126637553,
+          "y": 354.3922874286551
+        },
+        {
+          "x": 147.55049126637553,
+          "y": 357.4997560856627
+        },
+        {
+          "x": 147.55049126637553,
+          "y": 360.43648470657104
+        },
+        {
+          "x": 148.33088837336246,
+          "y": 363.5439533635787
+        },
+        {
+          "x": 148.8213018558952,
+          "y": 366.48068198448703
+        },
+        {
+          "x": 149.8021288209607,
+          "y": 369.41741060539533
+        },
+        {
+          "x": 150.7829557860262,
+          "y": 372.3541392263037
+        },
+        {
+          "x": 152.74460971615719,
+          "y": 376.75923215766625
+        },
+        {
+          "x": 156.2627933951965,
+          "y": 382.80342943558225
+        },
+        {
+          "x": 157.73403384279476,
+          "y": 385.7401580564906
+        },
+        {
+          "x": 159.3843818231441,
+          "y": 387.8744085077321
+        },
+        {
+          "x": 163.034763919214,
+          "y": 392.33926045172933
+        },
+        {
+          "x": 167.01777429039302,
+          "y": 396.80411239572663
+        },
+        {
+          "x": 169.02633733624452,
+          "y": 398.46882774769506
+        },
+        {
+          "x": 171.7044213973799,
+          "y": 399.80060002926973
+        },
+        {
+          "x": 173.845182860262,
+          "y": 401.44397287672564
+        },
+        {
+          "x": 177.64482123362447,
+          "y": 404.29533147958443
+        },
+        {
+          "x": 186.19507368995633,
+          "y": 410.9456558856529
+        },
+        {
+          "x": 188.527736080786,
+          "y": 413.2762573784087
+        },
+        {
+          "x": 190.86039847161572,
+          "y": 415.60685887116443
+        },
+        {
+          "x": 194.47240038209605,
+          "y": 418.2277184252891
+        },
+        {
+          "x": 198.08440229257644,
+          "y": 419.5338797014488
+        },
+        {
+          "x": 200.10575873362447,
+          "y": 419.8668227718425
+        },
+        {
+          "x": 202.1271151746725,
+          "y": 419.8668227718425
+        },
+        {
+          "x": 204.48109989082968,
+          "y": 419.8668227718425
+        },
+        {
+          "x": 206.83082014192138,
+          "y": 419.8668227718425
+        },
+        {
+          "x": 209.1805403930131,
+          "y": 420.1997658422362
+        },
+        {
+          "x": 211.19763236899564,
+          "y": 420.53270891262986
+        },
+        {
+          "x": 214.01644377729255,
+          "y": 420.53270891262986
+        },
+        {
+          "x": 218.767057860262,
+          "y": 421.48031611298114
+        },
+        {
+          "x": 226.62646697598254,
+          "y": 422.257183277233
+        },
+        {
+          "x": 228.76722843886463,
+          "y": 422.257183277233
+        }
+      ],
+      "color": "#a855f7",
+      "width": 5
+    },
+    {
+      "id": "3c25d516-fd5d-48b8-9624-4ff2dfa9ed80",
+      "type": "ink",
+      "points": [
+        {
+          "x": 214.18275791484717,
+          "y": 404.0434899263379
+        },
+        {
+          "x": 215.871486080786,
+          "y": 405.3581882043027
+        },
+        {
+          "x": 217.88004912663754,
+          "y": 407.02290355627105
+        },
+        {
+          "x": 221.35985262008734,
+          "y": 409.50717108151616
+        },
+        {
+          "x": 224.0379366812227,
+          "y": 411.8377725742719
+        },
+        {
+          "x": 226.38339246724888,
+          "y": 413.835430996634
+        },
+        {
+          "x": 228.06359170305677,
+          "y": 415.50014634860236
+        },
+        {
+          "x": 229.0742699235808,
+          "y": 417.4978047709644
+        },
+        {
+          "x": 228.40901337336246,
+          "y": 419.4954631933265
+        },
+        {
+          "x": 226.77145878820963,
+          "y": 423.0980779550222
+        },
+        {
+          "x": 225.46226801310044,
+          "y": 425.2323284062637
+        },
+        {
+          "x": 224.64349072052403,
+          "y": 427.3665788575052
+        },
+        {
+          "x": 223.33429994541484,
+          "y": 429.50082930874675
+        },
+        {
+          "x": 222.02510917030568,
+          "y": 431.63507975998834
+        },
+        {
+          "x": 220.694596069869,
+          "y": 433.96568125274405
+        },
+        {
+          "x": 219.6967112445415,
+          "y": 436.2962827454998
+        }
+      ],
+      "color": "#a855f7",
+      "width": 5
+    }
+  ]
+}}
+/>
+
+
+
+The adapter reads the XML, converts it to HTML, then starts inferring. One H1 in the whole file? Probably the title. Twenty-two of them? Probably chapters. H2s might be scenes, or they might be subheadings inside a chapter. Comments and explicit highlights get pulled out so they don't end up baked into the prose.
+
+Word doesn't tell you what the writer meant. It tells you how the writer *formatted*, and you work backward.
+
+### Markdown: the golden child
+
+I should have started here.
+
+<Mermaid chart={`
+graph TD
+    M["MegaBookReloaded.md"] --> H["# headings"]
+    M --> R["--- horizontal rules"]
+    M --> P["prose"]
+`} />
+
+That's the whole diagram. Not a lot to the format, to be honest.
+
+No metadata. No synopsis. No notes. Headings and horizontal rules are the only structural signals you get. The adapter decodes the text, scans for headings and scene breaks, and infers parts, chapters, and scenes from how the headings nest relative to each other.
+
+### Three formats, three levels of confidence
+
+Line them up next to each other, and I think you can see the problem.
+
+| | Structure | Synopsis | Notes | Research |
+|---|---|---|---|---|
+| **Scrivener** | Explicit | ✓ | ✓ | ✓ | 
+| **Word** | Inferred | — | — | — | 
+| **Markdown** | Vibes | — | — | — |
+
+So the one-template idea died. Each format gets its own parser, speaking its own dialect, and each one does its own translation into the same thing on the other side: a proposed project tree of parts, chapters, and scenes, with prose converted to HTML.
+
+## Sowing Dragon Teeth
+Parsing is the easy part. What comes out of it is a pile of guesses, and some of those guesses are going to be wrong.
+
+Here's the full shape of the pipeline, once all three lanes are done doing their specialist work:
+
+<Mermaid chart={`
+flowchart TD
+    U["Writer uploads a file"] --> S["Import session"]
+    S --> A{"Which format?"}
+    A --> SC["Scrivener<br/>read the binder"]
+    A --> WD["Word<br/>infer from styles"]
+    A --> MD["Markdown<br/>infer from headings"]
+    SC --> T["Proposed project tree"]
+    WD --> T
+    MD --> T
+    T --> R["Review: here's what we think"]
+    R --> E["Writer corrects"]
+    E --> P["Import plan"]
+    P --> B["Batched writes<br/>world → book → parts → chapters → scenes"]
+    B --> V["Research and special material → Vault"]
+`} />
+
+### Show your work
+
+The most important decision in the whole pipeline is that nothing goes straight into the database. Every import stops at a review surface first, and the posture of that surface is always the same: *here's what we think is going on. Tell us where we're wrong.*
+
+I would show you a picture of the original jank screen, but I just redesigned it, and it looks much better. I will spare your eyes.
+
+The best part of the system is that the writer can overrule everything. This isn't a part. This isn't a chapter. This is a scene break. Don't bring this in. The system proposes. The writer decides.
+
+
+### The table problem
+
+Remember those GameLit writers? They came back to haunt me. Tables showed up in all three formats, forcing me to make a decision about them.
+
+Like any good researcher, I took to the streets. What did the public have to say about importing and tables? To be honest, it was a mixed bag.
+
+| App | Scrivener import | Tables in the manuscript editor | Other imports |
+|---|---|---|---|
+| **Novelium** | Yes, native `.scrivx` | Couldn't verify | DOCX, TXT, PDF, Google Docs |
+| **Novellum** | No | No | DOCX, Markdown, TXT |
+| **Dabble** | No | Property lists, not tables | DOCX, Markdown, HTML, RTF |
+| **Novelcrafter** | Couldn't find a native importer | Couldn't verify | Document import workflows |
+| **Campfire** | No | Stat panels in worldbuilding, not manuscript | EPUB, DOCX, `.blaze` |
+| **Plottr** | Yes, `.scriv` projects | N/A, not a prose editor | DOCX, Snowflake Pro |
+| **Scrivener** | — | Yes | DOCX, RTF, ODT, TXT, Markdown, and more |
+
+
+I spent maybe twenty minutes on the problem and decided, nah. Tables suck in any tool, including Word. The editor is for prose, and specifically prose that's going to become a book. Outside of LitRPG stat blocks, nobody is putting tables in a novel headed for an EPUB.
+
+But I'm also not going to throw away your stuff *(kind of me, I know)*. So tables get converted to Markdown and routed to the Vault. You still have them. You can reference them. They just don't get to pretend they're prose. (May come back and rethink this later, but I am only one person, and this app needs to get off my computer.)
+
+
+## Seven Gates is Plenty
+ 
+Around the third week of edge cases, I had a very specific realization.
+ 
+I could make this better forever. There are people who only write scenes and never make chapters. People who separate scenes with three ampersands. People who use emojis. People whose Scrivener binders are...unhinged. I will never think of all of them. Nobody will.
+ 
+Say it takes 300 hours to chase every possible edge case. Every one of those hours serves a smaller slice of writers than the last. And import is something you do once. Maybe twice. You walk through the door and you don't think about the door again. 
+
+<EmphasizedText color="purple">Lesson #2: A promise of perfection is a commitment to lie.</EmphasizedText>
+
+Perfect fidelity was never the goal. No tool promises it. Nobody expects it.
+
+What writers expect is that you get the big things right, you don't lose their work, and you let them fix the rest in five minutes. That's the promise worth making. 
+
+---
+
+This summer, aampersand learned to read other people's books. In September, we were swallowed whole.
+
+<EmphasizedText>Next month: an Olympic sized headache.</EmphasizedText>
+
+<DevlogCTA
+  linkText="Read: Tilted Hermai"
+  linkHref="https://www.aampersand.com/devlog/jul-aug-2026"
+>
+Bring your book with you. aampersand shows you what it found and lets you decide the rest.
+</DevlogCTA>
