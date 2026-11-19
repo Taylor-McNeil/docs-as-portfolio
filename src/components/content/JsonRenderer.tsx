@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "next-themes";
+import Link from "next/link";
 
 export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
@@ -10,9 +10,6 @@ interface JsonRendererProps {
 }
 
 export function JsonRenderer({ data }: JsonRendererProps) {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
-
   if (data === null) {
     return <span className="text-foreground-muted">null</span>;
   }
@@ -26,24 +23,31 @@ export function JsonRenderer({ data }: JsonRendererProps) {
   }
 
   if (typeof data === "string") {
+    // A bare site path ("/professional-work") becomes an in-site link.
+    if (/^\/[a-z0-9][a-z0-9\-/#]*$/i.test(data)) {
+      return (
+        <Link
+          href={data}
+          className="json-link underline break-all"
+        >
+          &quot;{data}&quot;
+        </Link>
+      );
+    }
     if (data.startsWith("http") || data.startsWith("mailto:")) {
       return (
         <a
           href={data}
           target="_blank"
           rel="noopener noreferrer"
-          className={`underline break-all ${
-            isDark
-              ? "text-green-400 decoration-green-900/50 hover:text-green-300"
-              : "text-orange-600 decoration-orange-200 hover:text-orange-500"
-          }`}
+          className="json-link underline break-all"
         >
           &quot;{data}&quot;
         </a>
       );
     }
     return (
-      <span className={isDark ? "text-green-300" : "text-emerald-600"}>
+      <span className="json-string">
         &quot;{data}&quot;
       </span>
     );
@@ -77,7 +81,7 @@ export function JsonRenderer({ data }: JsonRendererProps) {
         <span className="text-foreground-muted">{"{"}</span>
         {entries.map(([key, value], index) => (
           <div key={key} className="pl-4">
-            <span className={isDark ? "text-blue-300" : "text-indigo-600"}>
+            <span className="json-key">
               &quot;{key}&quot;
             </span>
             <span className="text-foreground-muted">: </span>

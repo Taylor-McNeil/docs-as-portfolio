@@ -146,7 +146,7 @@ The site includes a growing collection of components designed specifically for t
 - [`MySpaceLayout`](https://taylormcneil.dev/aampersand/a-broken-astrolabe#furniture-and-floors)
 - [`StoryGraph`](https://taylormcneil.dev/aampersand/oily-bodies-in-karpathos#combinatorics-in-the-sun)
 - `Mermaid`
-- [`TicTacToeGame`](https://taylormcneil.dev/tutorials/java-game-dev#try-it-yourself)
+- [`TicTacToeGame`](https://taylormcneil.dev/professional-work/tutorials/java-game-dev#try-it-yourself)
 - and several other components that began with the phrase, “Wouldn't it be funny if...”
 
 Regular Markdown elements are also overridden with custom styles and behavior. Headings receive anchors, code blocks receive syntax highlighting and copy controls, and tables are styled to match the larger documentation system.
@@ -271,11 +271,12 @@ long-running practical joke
 | Route | What lives there |
 |---|---|
 | [`/quickstart`](https://taylormcneil.dev/quickstart) | A guided introduction to me, because apparently I am an API |
-| [`/guides/hmac-authentication`](https://taylormcneil.dev/guides/hmac-authentication) | An enterprise authentication guide with architecture diagrams and implementation examples |
-| [`/case-studies/stellar-api-docs`](https://taylormcneil.dev/case-studies/stellar-api-docs) | A case study on API documentation and OpenAPI work for Stellar |
-| [`/tutorials/mongodb-tanstack`](https://taylormcneil.dev/tutorials/mongodb-tanstack) | A full-stack technical tutorial |
-| [`/side-projects/the-longview`](https://taylormcneil.dev/side-projects/the-longview) | A local-first visual planning application |
+| [`/professional-work`](https://taylormcneil.dev/professional-work) | Selected published documentation, with tutorials, guides and case studies nested under it |
+| [`/professional-work/guides/hmac-authentication`](https://taylormcneil.dev/professional-work/guides/hmac-authentication) | An enterprise authentication guide with architecture diagrams and implementation examples |
+| [`/professional-work/case-studies/stellar-api-docs`](https://taylormcneil.dev/professional-work/case-studies/stellar-api-docs) | A case study on API documentation and OpenAPI work for Stellar |
+| [`/professional-work/tutorials/mongodb-tanstack`](https://taylormcneil.dev/professional-work/tutorials/mongodb-tanstack) | A full-stack technical tutorial |
 | [`/aampersand`](https://taylormcneil.dev/aampersand) | The devlog for aampersand |
+| [`/aampersand/rules`](https://taylormcneil.dev/aampersand/rules) | Every numbered lesson from the devlogs, filterable by subject and month |
 | [`/changelog`](https://taylormcneil.dev/changelog) | A running record of changes, experiments, and evidence |
 
 ## Current status

@@ -7,11 +7,12 @@ Taylor's professional work focuses on developer documentation, tutorials, and AP
 ## Technical Writing
 
 - [Introduction](https://taylormcneil.dev/): Portfolio overview and professional background
-- [HMAC Authentication Guide](https://taylormcneil.dev/guides/hmac-authentication): Request-signing mechanism guide, originally written for NCR's developer platform
-- [MongoDB x TanStack Tutorial](https://taylormcneil.dev/tutorials/mongodb-tanstack): Full-stack tutorial integrating TanStack Start with MongoDB
-- [Java Game Development Tutorial](https://taylormcneil.dev/tutorials/java-game-dev): Building Tic Tac Toe in Java, from first principles
-- [Stellar API Documentation Case Study](https://taylormcneil.dev/case-studies/stellar-api-docs): Case study on API documentation design
-- [On Good Tutorials](https://taylormcneil.dev/case-studies/on-good-tutorials): Case study on what makes a tutorial effective, and how to write one
+- [Selected Documentation](https://taylormcneil.dev/professional-work): Curated published technical documentation samples, including MongoDB AI integration docs (Claude Agent SDK, DeepAgents virtual file system, agent memory)
+- [HMAC Authentication Guide](https://taylormcneil.dev/professional-work/guides/hmac-authentication): Request-signing mechanism guide, originally written for NCR's developer platform
+- [MongoDB x TanStack Tutorial](https://taylormcneil.dev/professional-work/tutorials/mongodb-tanstack): Full-stack tutorial integrating TanStack Start with MongoDB
+- [Java Game Development Tutorial](https://taylormcneil.dev/professional-work/tutorials/java-game-dev): Building Tic Tac Toe in Java, from first principles
+- [Stellar API Documentation Case Study](https://taylormcneil.dev/professional-work/case-studies/stellar-api-docs): Case study on API documentation design
+- [On Good Tutorials](https://taylormcneil.dev/professional-work/case-studies/on-good-tutorials): Case study on what makes a tutorial effective, and how to write one
 
 ## Field Notes
 
@@ -27,6 +28,7 @@ Taylor's professional work focuses on developer documentation, tutorials, and AP
 - [A Sword for Every Hand (May 2026)](https://taylormcneil.dev/aampersand/a-sword-for-every-hand): First user testing a fiction writing tool
 - [A Seed of Intention (Jun 2026)](https://taylormcneil.dev/aampersand/a-seed-of-intention): Designing offline resilience for a fiction writing tool
 - [An Alphabet Too Short (Jul–Aug 2026)](https://taylormcneil.dev/aampersand/an-alphabet-too-short): Technical devlog on aampersand's manuscript import pipeline. Covers format-specific adapters for Scrivener (zipped .scriv projects, binder XML, RTF prose), Word (.docx XML and heading-style inference), and Markdown (heading and scene-break inference); how all three produce a shared proposed project tree of parts, chapters, and scenes; a writer-facing review step before any database writes; batched writes from world to scene; routing tables and research material to the Vault; a comparison of import support across writing tools; and the decision to stop chasing edge cases instead of promising perfect fidelity.
+- [A Tortoise in a Bronze Pot (Sep–Oct 2026)](https://taylormcneil.dev/aampersand/a-tortoise-in-a-bronze-pot): Technical devlog on what "done" means for AI-agent-built software: the Lab canvas save split into arranging edits and story decisions; agent self-reported done versus correct; a short Jev decision-model trial; why agents over-write unit tests and mocks miss the joins; invariants ("promises") as the basis for tests; separate builder and reviewer agents; the plan, adversarial, design, build, review, verify, UI-check workflow; the human as the final check.
 
 ## Related
 

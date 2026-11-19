@@ -18,25 +18,30 @@ interface ShellProps {
 export function ShellInner({ sidebar, children, publishedPreview = false, themeControl }: ShellProps) {
   const { isOpen: mobileMenuOpen, setIsOpen: setMobileMenuOpen } = useMobileMenu();
   const { content: rightPanelContent, width: panelWidth, isCollapsed, toggleCollapsed } = useRightPanel();
-  const isToolRoute = usePathname()?.startsWith("/tools/") ?? false;
+  const pathname = usePathname();
+  const isToolRoute = pathname?.startsWith("/tools/") ?? false;
+  // The homepage hero spans the whole content area, so it skips the reading-width column.
+  const isHome = pathname === "/" && !publishedPreview;
 
   if (isToolRoute && !publishedPreview) {
     return (
-      <div className="h-screen overflow-hidden">
+      <div className="h-dvh overflow-hidden">
         <ScrollToTop />
-        <main className="h-full w-full overflow-auto">{children}</main>
+        <main className="relative h-full w-full overflow-auto">{children}</main>
       </div>
     );
   }
 
   return (
-    <div className="h-screen bg-surface-bg overflow-hidden grid grid-rows-[auto_1fr] md:grid-rows-[1fr]">
+    <div className="h-dvh bg-surface-bg overflow-hidden grid grid-rows-[auto_1fr] md:grid-rows-[1fr]">
+      {/* h-dvh, not h-screen: on phones 100vh is taller than the visible area while the
+          address bar shows, which let the whole frame (and the header) scroll out of view. */}
       <ScrollToTop />
       {/* Mobile Header */}
       <header className="md:hidden flex items-center justify-between p-4 border-b border-border bg-surface-sidebar">
         <div>
           <h1 className="text-foreground-heading font-bold text-sm">Taylor McNeil</h1>
-          <p className="text-foreground-muted font-mono text-[10px]">docs-as-portfolio v1.9</p>
+          <p className="text-foreground-muted font-mono text-[10px]">docs-as-portfolio v1.10</p>
         </div>
         <div className="flex items-center gap-4">
           {themeControl ?? <ThemeToggle />}
@@ -65,17 +70,19 @@ export function ShellInner({ sidebar, children, publishedPreview = false, themeC
         </aside>
 
         {/* Main Content */}
-        <main className={`overflow-y-auto transition-[padding] duration-300 ${
+        {/* relative: absolutely positioned content (e.g. screen-reader-only labels) scrolls with
+            the page instead of escaping and stretching the window. */}
+        <main className={`relative overflow-y-auto overscroll-contain transition-[padding] duration-300 ${
           rightPanelContent && !isCollapsed
             ? panelWidth === "narrow" ? "lg:pr-56" : panelWidth === "medium" ? "lg:pr-72" : "lg:pr-96"
             : ""
         }`}>
-          <div className={isToolRoute && !publishedPreview ? "w-full min-h-full flex flex-col" : "max-w-3xl mx-auto p-6 md:p-12 min-h-full flex flex-col"}>
+          <div className={isToolRoute && !publishedPreview ? "w-full min-h-full flex flex-col" : isHome ? "min-h-full flex flex-col" : "max-w-3xl mx-auto p-6 md:p-12 min-h-full flex flex-col"}>
             <div className="flex-1">
               {children}
             </div>
             {(!isToolRoute || publishedPreview) && (
-              <footer className="mt-8 pt-4 border-t border-border text-xs text-foreground-muted text-center">
+              <footer className={`mt-8 pt-4 border-t border-border text-xs text-foreground-muted text-center${isHome ? " mx-6 mb-6 md:mx-10" : ""}`}>
                 <p>Taylor McNeil is a developer and the creator of aampersand, a creative writing tool for fiction writers.</p>
               </footer>
             )}

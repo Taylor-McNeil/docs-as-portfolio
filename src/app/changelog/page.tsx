@@ -2,6 +2,8 @@ import { ResponsePanel } from "@/components/layout/ResponsePanel";
 import { TimelineItem } from "@/components/content/TimelineItem";
 import { changelogData } from "@/components/changelog/changelog";
 import { PageHeader } from "@/components/content/PageHeader";
+import type { Metadata } from "next";
+import { withSocial } from "@/lib/metadata";
 
 const responseData = {
   total_uptime: "6 Years",
@@ -16,13 +18,13 @@ const responseData = {
   weeks_since_friday_deployment: "0",
 };
 
-export const metadata = {
+export const metadata: Metadata = withSocial({
   title: "Career Timeline",
-  description: "Career history as semantic versioning — from community building at Georgia State to API documentation at Stellar, Mastercard, and beyond.",
+  description: "Career history as semantic versioning, from community building at Georgia State to API documentation at Stellar, Mastercard, and beyond.",
   alternates: {
     canonical: 'https://taylormcneil.dev/changelog',
   },
-};
+});
 
 
 export default function Changelog() {

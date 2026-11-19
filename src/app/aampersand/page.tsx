@@ -1,36 +1,114 @@
 import Link from "next/link";
-import { Zap } from "lucide-react";
+import { ArrowRight, Zap } from "lucide-react";
 import { Callout } from "@/components/content/Callout";
 import { MethodBadge } from "@/components/navigation/MethodBadge";
+import { ResponsePanel } from "@/components/layout/ResponsePanel";
+import { RandomRules, type RandomRuleCard } from "./RandomRules";
+import { tagToneClasses, tagToneTextClasses } from "@/components/content/aampersandTones";
 import {
-  aampersandEntries,
+  aampersandEntriesNewestFirst,
+  aampersandEntryBySlug,
+  aampersandEntryGroups,
   aampersandEntryHref,
   coverageLabel,
   type AampersandEntry,
-  type AampersandTagTone,
 } from "@/data/aampersandEntries";
+import {
+  aampersandRules,
+  ruleHref,
+  ruleRangeLabel,
+  rulesForEntry,
+} from "@/data/aampersandRules";
+import type { Metadata } from "next";
+import { withSocial } from "@/lib/metadata";
 
-export const metadata = {
+export const metadata: Metadata = withSocial({
   title: "aampersand",
   description:
-    "A builder's journal for aampersand, a writing tool that helps fiction writers unfold the shape of their story.",
+    "Building aampersand, a writing tool for novelists: the systems behind it, the rules it taught me, and a monthly builder's journal.",
   alternates: {
     canonical: "https://taylormcneil.dev/aampersand",
   },
+});
+
+/**
+ * Project status, shown in the right-hand response panel like the rest of the site.
+ * CHECK BEFORE MERGE: update when the stage or version changes.
+ */
+const status = {
+  stage: "friends & family",
+  version: "0.2.0",
+  next: "learning how to make marketing content on Threads",
+  team: "just me",
 };
 
-const tagToneClasses: Record<AampersandTagTone, string> = {
-  purple: "bg-method-patch/10 text-method-patch",
-  blue: "bg-method-get/10 text-method-get",
-  yellow: "bg-method-put/10 text-method-put",
-  pink: "bg-method-head/10 text-method-head",
-  green: "bg-method-post/10 text-method-post",
-  warning: "bg-[color:var(--color-callout-warn-bg)] text-[color:var(--color-callout-warn)]",
-};
+/**
+ * The engineering layer: each system, the problem that makes it hard, and the
+ * devlog that tells its story. A devlog that isn't published yet is skipped.
+ * VOICE PASS: descriptions.
+ */
+const systems: { path: string; name: string; problem: string; devlogs: string[] }[] = [
+  {
+    path: "/editor",
+    name: "Manuscript editor",
+    problem: "Parts, chapters, and scenes as structure, with annotations that survive every edit and an undo that agrees with the database.",
+    devlogs: ["a-sirens-song", "peering-into-lethe"],
+  },
+  {
+    path: "/graph",
+    name: "Story graph",
+    problem: "A story is a graph, with several systems layered on top of it: characters, places, plotlines, Sparks, and Etches, all read from the same connections.",
+    devlogs: ["oily-bodies-in-karpathos", "a-sword-for-every-hand"],
+  },
+  {
+    path: "/lab",
+    name: "Visual planning",
+    problem: "Several interactive views, from the Clothesline to the Lab's boards, drawn from the same story data.",
+    devlogs: ["a-broken-astrolabe", "a-sword-for-every-hand"],
+  },
+  {
+    path: "/sync",
+    name: "Offline sync",
+    problem: "A replay queue, ids made on the client, and a server that stays the source of truth.",
+    devlogs: ["a-seed-of-intention"],
+  },
+  {
+    path: "/import",
+    name: "Manuscript import",
+    problem: "Scrivener, Word, and Markdown turned into one structure, and shown to the writer before anything is saved.",
+    devlogs: ["an-alphabet-too-short"],
+  },
+  {
+    path: "/themes",
+    name: "Design system",
+    problem: "Rigid primitives and tokens, so components never decide their own look.",
+    devlogs: ["a-broken-astrolabe"],
+  },
+  {
+    path: "/qa",
+    name: "Testing and release",
+    problem: "Tests written as promises about what must stay true, with gates an agent has to pass before I review.",
+    devlogs: ["a-tortoise-in-a-bronze-pot"],
+  },
+];
 
 export default function AampersandPage() {
+  const latestSlug = aampersandEntriesNewestFirst[0]?.slug;
+  const groups = aampersandEntryGroups();
+  const rulePool: RandomRuleCard[] = aampersandRules.map((rule) => {
+    const entry = aampersandEntryBySlug(rule.entry);
+    return {
+      number: rule.number,
+      rule: rule.rule,
+      href: ruleHref(rule.number),
+      postTitle: entry?.title,
+      toneClass: entry ? tagToneTextClasses[entry.tagTone] : "text-accent",
+    };
+  });
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
+      <ResponsePanel data={statusResponse()} />
       <style>{`
         @media (prefers-reduced-motion: no-preference) {
           .aampersand-devlog-card {
@@ -58,62 +136,118 @@ export default function AampersandPage() {
           }
         }
       `}</style>
-      <header className="space-y-4">
+
+      {/* Layer 1: what aampersand is */}
+      <header className="space-y-5">
         <div className="flex items-center gap-3">
           <MethodBadge method="GET" active size="md" />
-          <span className="font-mono text-sm text-foreground-muted">
-            /aampersand
-          </span>
+          <span className="font-mono text-sm text-foreground-muted">/aampersand</span>
         </div>
 
         <div className="space-y-3">
-          <h1 className="text-3xl font-bold text-foreground-heading">
-            aampersand
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground-heading">aampersand</h1>
           <p className="text-lg font-semibold text-foreground">
             A book is a world written in lines. aampersand unfolds it.
           </p>
         </div>
+
+        <div className="space-y-4 text-base leading-7 text-foreground-muted">
+          <p>
+            I&apos;m building a writing tool that treats your manuscript as a world to explore, not a
+            document to organize. You write your prose, tag what matters, and the system unfolds your
+            story across connected surfaces. Tag a murder weapon, and it leads you to the killer&apos;s
+            arc, the plotline of the investigation, and the family tree that made it inevitable.
+            Created by you in your prose, with your words. Your story, connected.
+          </p>
+          <p>
+            The waitlist is over on{" "}
+            <a
+              href="https://www.aampersand.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-accent-success hover:underline"
+            >
+              aampersand.com
+            </a>
+            . This section is my builder&apos;s journal: what I&apos;ve built, the rules it taught me,
+            and a monthly devlog tracking the ideas, the architecture, the wrong turns, and the
+            breakthroughs.
+          </p>
+        </div>
       </header>
 
-      <section className="space-y-4 text-base leading-7 text-foreground-muted">
-        <p>
-          I&apos;m building a writing tool that treats your manuscript as a world to
-          explore, not a document to organize. You write your prose, tag what
-          matters, and the system unfolds your story across connected surfaces.
-          Tag a murder weapon, and it leads you to the killer&apos;s arc, the
-          plotline of the investigation, and the family tree that made it
-          inevitable. Created by you in your prose, with your words. Your story,
-          connected.
-        </p>
-        <p>
-          The waitlist is over on{" "}
-          <a
-            href="https://www.aampersand.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-accent-success hover:underline"
-          >
-            aampersand.com
-          </a>
-          . This section is my builder&apos;s journal: a monthly devlog tracking the
-          ideas, the architecture, the wrong turns, and the breakthroughs.
-        </p>
+      {/* Layer 2: what I built and why it's hard */}
+      <section className="space-y-4 border-t border-border pt-8">
+        <div className="space-y-1">
+          <h2 className="text-xl font-bold text-foreground-heading">What I&apos;ve built</h2>
+          <p className="text-sm text-foreground-muted">
+            The systems underneath, what makes each one hard, and where I wrote about it.
+          </p>
+        </div>
+
+        <div className="divide-y divide-border-card border border-border-card bg-surface-card">
+          {systems.map((system) => (
+            <SystemRow key={system.path} system={system} />
+          ))}
+        </div>
       </section>
 
-      <section className="space-y-4 border-t border-border pt-6">
-        <h2 className="text-xl font-bold text-foreground-heading">Devlog</h2>
-        <div className="space-y-4">
-          {aampersandEntries.map((devlog) => (
-            <DevlogCard key={devlog.slug} devlog={devlog} />
+      {/* The rules */}
+      <section className="space-y-4 border-t border-border pt-8">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <div className="space-y-1">
+            <h2 className="text-xl font-bold text-foreground-heading">The Rules</h2>
+            {/* VOICE PASS */}
+            <p className="text-sm text-foreground-muted">
+              Building aampersand teaches me a lot, so I&apos;ve collected what I&apos;ve learned
+              into rules. Here are a few at random.
+            </p>
+          </div>
+          <Link
+            href="/aampersand/rules"
+            className="inline-flex items-center gap-1 font-mono text-xs font-semibold text-accent-success hover:underline"
+          >
+            all {aampersandRules.length} rules <ArrowRight size={12} />
+          </Link>
+        </div>
+
+        <RandomRules rules={rulePool} />
+      </section>
+
+      {/* Layer 3: the builder's journal, newest first */}
+      <section className="space-y-4 border-t border-border pt-8">
+        <div className="space-y-1">
+          <h2 className="text-xl font-bold text-foreground-heading">Builder&apos;s journal</h2>
+          <p className="text-sm text-foreground-muted">
+            {/* VOICE PASS */}
+            These are some of my musings: long-form pieces on the technical side of building
+            aampersand, what each one taught me, and the mistakes I made along the way.
+          </p>
+        </div>
+        <div className="space-y-8">
+          {groups.map((group) => (
+            <div key={group.season?.title ?? "latest"} className="space-y-4">
+              {group.season && (
+                <h3 className="flex items-center gap-3 font-mono text-[11px] font-semibold uppercase tracking-widest text-foreground-muted">
+                  {group.season.title}
+                  <span className="h-px flex-1 bg-border" aria-hidden="true" />
+                  <span className="font-normal normal-case tracking-normal">
+                    {group.entries.length} devlogs
+                  </span>
+                </h3>
+              )}
+              {group.entries.map((devlog) => (
+                <DevlogCard key={devlog.slug} devlog={devlog} isLatest={devlog.slug === latestSlug} />
+              ))}
+            </div>
           ))}
         </div>
       </section>
 
       <Callout type="context" label="Note">
         <p>
-          Each devlog here is the builder&apos;s version: architecture, decisions,
-          wrong turns. The writer-facing versions live at{" "}
+          These are the builder&apos;s versions. The writer-facing devlogs, and aampersand itself,
+          live at{" "}
           <a
             href="https://www.aampersand.com/devlog"
             target="_blank"
@@ -129,34 +263,97 @@ export default function AampersandPage() {
   );
 }
 
-function DevlogCard({ devlog }: { devlog: AampersandEntry }) {
+function statusResponse() {
+  return {
+    status: 200,
+    data: {
+      stage: status.stage,
+      version: status.version,
+      next: status.next,
+      team: status.team,
+      devlogs: aampersandEntriesNewestFirst.length,
+      rules: aampersandRules.length,
+    },
+  };
+}
+
+function SystemRow({
+  system,
+}: {
+  system: { path: string; name: string; problem: string; devlogs: string[] };
+}) {
+  const devlogs = system.devlogs
+    .map((slug) => aampersandEntryBySlug(slug))
+    .filter((entry): entry is AampersandEntry => Boolean(entry));
+
   return (
-    <Link
-      href={aampersandEntryHref(devlog)}
-      className="aampersand-devlog-card group grid overflow-hidden border border-border-card bg-surface-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:grid-cols-[1fr_220px]"
-    >
+    <div className="grid gap-2 px-4 py-4 md:grid-cols-[180px_1fr] md:gap-6">
+      <div className="space-y-1">
+        <div className="font-mono text-xs text-method-get">{system.path}</div>
+        <div className="text-sm font-semibold text-foreground-heading">{system.name}</div>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm leading-6 text-foreground-muted">{system.problem}</p>
+        {devlogs.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {devlogs.map((entry) => (
+              <Link
+                key={entry.slug}
+                href={aampersandEntryHref(entry)}
+                className={`inline-flex items-center gap-1 rounded px-2 py-0.5 font-mono text-[10px] font-semibold hover:underline ${tagToneClasses[entry.tagTone]}`}
+              >
+                {entry.title} <ArrowRight size={10} />
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function DevlogCard({ devlog, isLatest = false }: { devlog: AampersandEntry; isLatest?: boolean }) {
+  const rules = rulesForEntry(devlog.slug);
+  const range = ruleRangeLabel(devlog.slug);
+
+  return (
+    <article className="aampersand-devlog-card group relative grid overflow-hidden border border-border-card bg-surface-card focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent md:grid-cols-[1fr_220px]">
       <div className="p-5">
         <div className="flex items-start justify-between gap-4">
           <h3 className="text-base font-bold text-foreground-heading">
-            {devlog.cardTitle}
+            <Link href={aampersandEntryHref(devlog)} className="after:absolute after:inset-0 focus:outline-none">
+              <span className="mr-2 font-mono text-xs font-normal text-foreground-muted">
+                #{String(devlog.number).padStart(2, "0")}
+              </span>
+              {devlog.cardTitle}
+            </Link>
           </h3>
           <span className="shrink-0 font-mono text-[10px] text-foreground-muted">
+            {isLatest && <span className="mr-2 font-semibold text-accent">latest</span>}
             {coverageLabel(devlog.coverage)}
           </span>
         </div>
-        <p className="mt-2 text-sm leading-6 text-foreground-muted">
-          {devlog.description}
-        </p>
-        <span
-          className={`mt-4 inline-flex rounded px-2 py-1 font-mono text-[10px] font-semibold ${tagToneClasses[devlog.tagTone]}`}
-        >
-          {devlog.tag}
-        </span>
+        <p className="mt-2 text-sm leading-6 text-foreground-muted">{devlog.description}</p>
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span
+            className={`inline-flex rounded px-2 py-1 font-mono text-[10px] font-semibold ${tagToneClasses[devlog.tagTone]}`}
+          >
+            {devlog.tag}
+          </span>
+          {rules.length > 0 && (
+            <Link
+              href={ruleHref(rules[0].number)}
+              className="relative z-10 inline-flex rounded border border-border-card px-2 py-1 font-mono text-[10px] text-foreground-muted hover:border-accent hover:text-accent"
+            >
+              rules {range}
+            </Link>
+          )}
+        </div>
       </div>
       <div className="min-h-32 border-t border-border-card bg-surface-terminal/60 p-4 md:border-l md:border-t-0">
         <Preview type={devlog.preview} />
       </div>
-    </Link>
+    </article>
   );
 }
 
@@ -178,6 +375,8 @@ function Preview({ type }: { type: AampersandEntry["preview"] }) {
       return <QueuePreview />;
     case "translation":
       return <TranslationPreview />;
+    case "pot":
+      return <PotPreview />;
   }
 }
 
@@ -190,6 +389,39 @@ function DefaultPreview() {
         <span className="h-px w-5/6 bg-border" />
         <span className="h-px w-2/3 bg-border" />
       </div>
+    </div>
+  );
+}
+
+function PotPreview() {
+  return (
+    <div
+      className="flex h-full min-h-24 flex-col items-center justify-center font-mono text-[10px] text-foreground-muted"
+      aria-label="A bronze pot with its lid tilted open and one wisp of steam rising between a checkmark and an X"
+    >
+      <svg viewBox="0 0 120 92" className="h-20 w-auto" fill="none" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {/* one wisp of steam, a check on its left and an X on its right */}
+        <path
+          d="M47 47 C 41 41, 53 37, 47 31 C 42 26, 50 23, 48 19"
+          className="stroke-foreground-muted/60"
+          strokeWidth="1.5"
+          strokeDasharray="2 3"
+        />
+        <path d="M8 24 L14 30 L25 17" className="stroke-accent-success" strokeWidth="3" />
+        <path d="M99 18 L109 28 M109 18 L99 28" className="stroke-red-500 dark:stroke-red-400" strokeWidth="3" />
+        {/* lid, hinged on the right rim and lifted on the left */}
+        <g transform="rotate(24 90 50)">
+          <path d="M52 50 Q 71 36 90 50 Z" className="fill-method-put/20 stroke-method-put" strokeWidth="2" />
+          <path d="M71 43 v-5" className="stroke-method-put" strokeWidth="2.5" />
+        </g>
+        {/* pot */}
+        <path d="M30 52 H90" className="stroke-method-put" strokeWidth="2.5" />
+        <path d="M33 52 C 31 70, 42 82, 60 82 C 78 82, 89 70, 87 52" className="fill-method-put/15 stroke-method-put" strokeWidth="2" />
+        <path d="M33 56 C 26 56, 24 64, 31 66 M87 56 C 94 56, 96 64, 89 66" className="stroke-method-put" strokeWidth="2" />
+        <path d="M46 82 L44 88 M74 82 L76 88" className="stroke-method-put" strokeWidth="2" />
+        <path d="M40 64 H80" className="stroke-method-put/40" strokeWidth="1" />
+      </svg>
+      <p className="mt-2 text-center italic text-foreground-muted/70">ask what you know, keep what&apos;s true</p>
     </div>
   );
 }

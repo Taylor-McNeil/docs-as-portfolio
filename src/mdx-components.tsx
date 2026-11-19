@@ -65,8 +65,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ul: ({ children }) => (
       <ul className="list-disc list-outside pl-5 text-foreground-muted mb-4 space-y-1">{children}</ul>
     ),
-    ol: ({ children }) => (
-      <ol className="list-decimal list-outside pl-5 text-foreground-muted mb-4 space-y-4">{children}</ol>
+    ol: ({ children, start }) => (
+      <ol start={start} className="list-decimal list-outside pl-5 text-foreground-muted mb-4 space-y-4">{children}</ol>
     ),
     li: ({ children }) => (
       <li className="pl-1 [&>p]:mb-2 [&>p+p]:mt-2 last:[&>p:last-child]:mb-0">{children}</li>

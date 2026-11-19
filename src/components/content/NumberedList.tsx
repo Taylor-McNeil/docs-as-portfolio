@@ -22,7 +22,7 @@ export function NumberedListItem({ title, children, number, isLast }: NumberedLi
           <div className="w-px flex-1 bg-accent/30 mt-2" />
         )}
       </div>
-      <div className="flex-1 pt-0.5 pb-6">
+      <div className="min-w-0 flex-1 pt-0.5 pb-6 [&_code]:break-words">
         <div className="text-base font-semibold text-foreground">{title}</div>
         <div className="mt-1 text-sm text-foreground-muted [&>p]:m-0 [&_a]:text-accent [&_a]:underline [&_a]:hover:opacity-80">
           {children}

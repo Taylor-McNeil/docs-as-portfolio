@@ -27,7 +27,7 @@ const LLMS_FILE = "public/llms.txt";
 const GENERATED_MARKER = "entry-editor:generated";
 
 const PREVIEWS = new Set<AampersandPreview>([
-  "default", "origin", "thread", "clothesline", "graph", "spark", "queue", "translation",
+  "default", "origin", "thread", "clothesline", "graph", "spark", "queue", "translation", "pot",
 ]);
 const TAG_TONES = new Set<AampersandTagTone>(["purple", "blue", "yellow", "pink", "green", "warning"]);
 
@@ -35,13 +35,18 @@ const COMPONENT_IMPORTS: Record<string, { path: string; imported?: string }> = {
   AnnotatedMermaid: { path: "@/components/content/AnnotatedMermaid" },
   AlertTriangle: { path: "lucide-react" },
   AnatomyOfABeat: { path: "@/components/content/AnatomyOfABeat" },
+  BuildLoopDiagram: { path: "@/components/content/BronzePotDiagrams" },
+  CardSaveDiagram: { path: "@/components/content/BronzePotDiagrams" },
   BreadcrumbPill: { path: "@/components/content/BreadcrumbPill" },
   Callout: { path: "@/components/content/Callout" },
   Card: { path: "@/components/content/Card" },
   CardGroup: { path: "@/components/content/Card" },
   CodeBlock: { path: "@/components/content/CodeBlock" },
+  CodeTabs: { path: "@/components/content/CodeTabs" },
   ComponentRegistry: { path: "@/components/interactive/LiveComponentRegistry", imported: "LiveComponentRegistry" },
   ContrastCallout: { path: "@/components/content/ContrastCallout" },
+  ChatMessage: { path: "@/components/content/Conversation" },
+  Conversation: { path: "@/components/content/Conversation" },
   DevlogCallout: { path: "@/components/content/DevlogCallout" },
   DevlogCTA: { path: "@/components/content/DevlogCTA" },
   DiagramFigure: { path: "@/components/content/DiagramFigure" },
@@ -53,11 +58,15 @@ const COMPONENT_IMPORTS: Record<string, { path: string; imported?: string }> = {
   FooterTeaser: { path: "@/components/content/FooterTeaser" },
   Ghost: { path: "lucide-react" },
   HeroQuote: { path: "@/components/content/HeroQuote" },
+  JevDiagram: { path: "@/components/content/BronzePotDiagrams" },
   LayoutDiagram: { path: "@/components/content/LayoutDiagram" },
   LiveComponentRegistry: { path: "@/components/interactive/LiveComponentRegistry" },
   Mermaid: { path: "@/components/content/Mermaid" },
+  MockedJoinDiagram: { path: "@/components/content/BronzePotDiagrams" },
   MySpaceCustomizer: { path: "@/components/interactive/MySpaceCustomizer" },
   SceneBreak: { path: "@/components/content/SceneBreak" },
+  SceneDesignerDiagram: { path: "@/components/content/BronzePotDiagrams" },
+  StickyNote: { path: "@/components/content/StickyNote" },
   StoryGraph: { path: "@/components/interactive/story-graph" },
   WriterRestoreDemo: { path: "@/components/content/WriterRestoreDemo" },
   Zap: { path: "lucide-react" },

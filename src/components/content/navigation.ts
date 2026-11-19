@@ -1,92 +1,112 @@
 import {
-  aampersandEntries,
+  aampersandEntryGroups,
   aampersandEntryHref,
   coverageLabel,
 } from "@/data/aampersandEntries";
 
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "HEAD" | "OPTIONS";
 
-export interface NavItem {
+export interface NavLink {
+  type: "link";
   href: string;
   label: string;
   method: Method;
+  /** Entries shown indented under this link, always visible. */
+  children?: NavEntry[];
 }
+
+export interface NavGroup {
+  type: "group";
+  label: string;
+  children: NavLink[];
+  /** Start expanded (devlog seasons). Groups always open when they hold the active page. */
+  defaultOpen?: boolean;
+  /** Show a folder icon. */
+  folder?: boolean;
+}
+
+export type NavEntry = NavLink | NavGroup;
 
 export interface NavSection {
   title: string;
   subtitle?: string;
-  items: NavItem[];
+  items: NavEntry[];
 }
+
+const link = (href: string, label: string, method: Method, children?: NavEntry[]): NavLink => ({
+  type: "link",
+  href,
+  label,
+  method,
+  ...(children ? { children } : {}),
+});
 
 export const navigation: NavSection[] = [
   {
     title: "Getting Started",
     items: [
-      { href: "/", label: "Introduction", method: "GET" },
-      { href: "/quickstart", label: "Quickstart", method: "GET" },
+      link("/", "Introduction", "GET"),
+      link("/quickstart", "Quickstart", "GET"),
     ],
   },
-   {
-     title: "aampersand",
-     subtitle: "building in public",
-     items: [
-       { href: "/aampersand", label: "Overview", method: "GET" },
-       ...aampersandEntries.map((entry) => ({
-         href: aampersandEntryHref(entry),
-         label: coverageLabel(entry.coverage),
-         method: "PUT" as const,
-       })),
-     ],
- },
+  {
+    title: "Professional Work",
+    items: [
+      link("/professional-work", "Selected Documentation", "GET", [
+        {
+          type: "group",
+          folder: true,
+          label: "Tutorials",
+          children: [
+            link("/professional-work/tutorials/java-game-dev", "Java Game Dev", "GET"),
+            link("/professional-work/tutorials/mongodb-tanstack", "MongoDB x TanStack", "GET"),
+          ],
+        },
+        {
+          type: "group",
+          folder: true,
+          label: "Guides",
+          children: [
+            link("/professional-work/guides/hmac-authentication", "HMAC Authentication", "GET"),
+          ],
+        },
+        {
+          type: "group",
+          folder: true,
+          label: "Case Studies",
+          children: [
+            link("/professional-work/case-studies/stellar-api-docs", "Stellar API Docs", "GET"),
+            link("/professional-work/case-studies/on-good-tutorials", "On Good Tutorials", "HEAD"),
+          ],
+        },
+      ]),
+    ],
+  },
+  {
+    title: "aampersand",
+    subtitle: "building in public",
+    items: [
+      link("/aampersand", "Overview", "GET", [
+        link("/aampersand/rules", "The Rules", "GET"),
+        ...aampersandEntryGroups().flatMap((group): NavEntry[] => {
+          const children = group.entries.map((entry) =>
+            link(aampersandEntryHref(entry), coverageLabel(entry.coverage), "PUT"),
+          );
+          return group.season
+            ? [{ type: "group", label: group.season.title, children, defaultOpen: true, folder: true }]
+            : children;
+        }),
+      ]),
+    ],
+  },
   {
     title: "Field Notes",
     items: [
-      { href: "/field-notes/on-building-a-doc-system", label: "Building Docs From Scratch", method: "OPTIONS" },
+      link("/field-notes/on-building-a-doc-system", "Building Docs From Scratch", "OPTIONS"),
     ],
-  },
-   {
-     title: "Side Projects",
-     items: [
-  //     { href: "/active-builds/ampersand", label: "&mpersand", method: "POST" },
-  //     { href: "/side-projects/llm-evaluator", label: "LLM Evaluator", method: "POST" },
-        { href: "/side-projects/the-longview", label: "The Long View", method: "POST"}
-     ],
-   },
-   {
-    title: "Tutorials",
-     items: [
-  //     { href: "/tutorials/year-calendar", label: "Year Calendar", method: "GET" },
-       { href: "/tutorials/java-game-dev", label: "Java Game Dev", method: "GET" },
-       { href: "/tutorials/mongodb-tanstack", label: "MongoDB x TanStack", method: "GET" },
-
-     ],
-   },
-  {
-    title: "Guides",
-    items: [
-      { href: "/guides/hmac-authentication", label: "HMAC Authentication", method: "GET" },
-     // { href: "/guides/openapi-patterns", label: "OpenAPI Patterns", method: "GET" },
-    ],
-  },
-  // {
-  //   title: "Methodology",
-  //   items: [
-  //     { href: "/methodology/llm-evaluation", label: "LLM Evaluation Framework", method: "GET" },
-  //     { href: "/methodology/release-notes", label: "Automating Release Notes", method: "GET" },
-  //     { href: "/methodology/ai-doc-review", label: "AI-Assisted Doc Review", method: "GET" },
-  //   ],
-  // },
-  {
-    title: "Case Studies",
-    items:[
-      { href: "/case-studies/stellar-api-docs",label:"Stellar API Docs",method:"GET" },
-      { href: "/case-studies/on-good-tutorials", label:" On Good Tutorials", method: "HEAD"}
-    ]
   },
   {
     title: "Log",
-    items: [
-      {href: "/changelog", label:"Changelog", method:"PATCH"}
-    ]
-  }
+    items: [link("/changelog", "Changelog", "PATCH")],
+  },
 ];

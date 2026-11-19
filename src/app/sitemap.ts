@@ -8,7 +8,9 @@ const PAGE_FILE = /^page\.(tsx|ts|jsx|mdx)$/
 
 // Routes to keep out of the sitemap. A route and everything beneath it is
 // excluded, so 'tools' also drops 'tools/ogmaker', 'tools/tropecloud', etc.
-const EXCLUDED = new Set(['tools'])
+// 'side-projects/the-longview' is archived (noindex) but still reachable.
+// 'professional-work/snapshots' holds noindex copies of MongoDB docs.
+const EXCLUDED = new Set(['tools', 'side-projects/the-longview', 'professional-work/snapshots'])
 
 type ChangeFrequency = MetadataRoute.Sitemap[number]['changeFrequency']
 type RouteMeta = { changeFrequency?: ChangeFrequency; priority?: number }
@@ -19,6 +21,7 @@ const overrides: Record<string, RouteMeta> = {
   '': { changeFrequency: 'weekly', priority: 1 },
   changelog: { changeFrequency: 'weekly', priority: 0.5 },
   aampersand: { changeFrequency: 'monthly', priority: 0.8 },
+  'professional-work': { changeFrequency: 'monthly', priority: 0.9 },
 }
 
 // Sensible defaults by top-level section so new pages get reasonable values
@@ -27,7 +30,6 @@ function metaFor(route: string): RouteMeta {
   if (route in overrides) return overrides[route]
   const section = route.split('/')[0]
   if (section === 'aampersand') return { changeFrequency: 'monthly', priority: 0.6 }
-  if (section === 'side-projects') return { changeFrequency: 'monthly', priority: 0.5 }
   return { changeFrequency: 'monthly', priority: 0.7 }
 }
 

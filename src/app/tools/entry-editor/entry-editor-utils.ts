@@ -101,7 +101,7 @@ Continue writing here.
     settings: {
       title: "Untitled Project",
       method: "POST",
-      endpoint: "/side-projects/project-slug",
+      endpoint: "/section/project-slug",
       description: "A concise description of the project.",
       metadata: [
         { id: "status", key: "status", value: "Shipped" },

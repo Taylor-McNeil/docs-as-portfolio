@@ -8,6 +8,8 @@ import {
   parametersSnippet,
   fileStructure,
 } from "@/components/snippets/stellar-snippets";
+import type { Metadata } from "next";
+import { withSocial } from "@/lib/metadata";
 
 const responseData = {
   project: "Stellar API Documentation",
@@ -24,13 +26,13 @@ const responseData = {
   status: "Live in production",
 };
 
-export const metadata = {
+export const metadata: Metadata = withSocial({
   title: "Stellar API Documentation Case Study",
   description: "How I derived OpenAPI specs from Stellar's codebase to create auto-generated API documentation that can't drift out of sync.",
   alternates: {
-    canonical: 'https://taylormcneil.dev/case-studies/stellar-api-docs',
+    canonical: 'https://taylormcneil.dev/professional-work/case-studies/stellar-api-docs',
   },
-};
+});
 
 export default function StellarCaseStudy() {
   const jsonLd = {
@@ -39,7 +41,7 @@ export default function StellarCaseStudy() {
     headline: 'Stellar API Documentation Case Study',
     datePublished: '2023-06-01',
     author: { '@type': 'Person', name: 'Taylor McNeil' },
-    url: 'https://taylormcneil.dev/case-studies/stellar-api-docs',
+    url: 'https://taylormcneil.dev/professional-work/case-studies/stellar-api-docs',
   }
 
   return (
@@ -53,7 +55,7 @@ export default function StellarCaseStudy() {
 
       <PageHeader
         method="GET"
-        endpoint="/case-studies/stellar-api-docs"
+        endpoint="/professional-work/case-studies/stellar-api-docs"
         title="Stellar API Documentation"
       />
 

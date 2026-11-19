@@ -32,7 +32,7 @@ const COMPONENTS: RegistryEntry[] = [
       "A reusable context block with visual variants for notes, warnings, tips, tests, and celebrations.",
     usage: {
       label: "HMAC authentication guide",
-      href: "/guides/hmac-authentication",
+      href: "/professional-work/guides/hmac-authentication",
     },
     renderPreview: () => (
       <Callout type="tip" title="The component is the documentation">
@@ -47,7 +47,7 @@ const COMPONENTS: RegistryEntry[] = [
       "A language switcher that groups equivalent code samples without making readers scroll past every version.",
     usage: {
       label: "HMAC authentication guide",
-      href: "/guides/hmac-authentication",
+      href: "/professional-work/guides/hmac-authentication",
     },
     renderPreview: () => (
       <CodeTabs
@@ -114,7 +114,7 @@ const COMPONENTS: RegistryEntry[] = [
       "A playable terminal-style game embedded at the end of a Java tutorial so readers can try the finished result.",
     usage: {
       label: "Build Tic Tac Toe in Java",
-      href: "/tutorials/java-game-dev",
+      href: "/professional-work/tutorials/java-game-dev",
     },
     renderPreview: () => <TicTacToeGame />,
   },

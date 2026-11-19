@@ -1,7 +1,6 @@
 "use client";
 
 import { FileText, LoaderCircle, RotateCcw, WifiOff } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 const fullText = [
@@ -15,7 +14,6 @@ type Phase = "drafting" | "restoring" | "restored";
 export function WriterRestoreDemo() {
   const [phase, setPhase] = useState<Phase>("drafting");
   const [charCount, setCharCount] = useState(0);
-  const { resolvedTheme } = useTheme();
 
   const resetDemo = () => {
     setPhase("drafting");
@@ -58,20 +56,16 @@ export function WriterRestoreDemo() {
     phase === "restoring" ? "Rebuilding" : phase === "restored" ? "Restored" : "Drafting";
   const statusLabel =
     phase === "restoring" ? "Reconnecting" : phase === "restored" ? "Restored" : "Draft ready";
-  const isDark = resolvedTheme === "dark";
-
-  const shellClass = isDark
-    ? "bg-[#132036] shadow-[0_18px_50px_-30px_rgba(15,23,42,0.45)]"
-    : "bg-[#fff8ee] shadow-[0_18px_50px_-30px_rgba(15,23,42,0.14)]";
-  const headerClass = isDark ? "bg-[#18243a]" : "bg-[#fff4df]";
-  const editorBodyClass = isDark ? "bg-[#132036]" : "bg-[#fffdf7]";
-  const overlayVeilClass = isDark
-    ? "bg-[rgba(19,32,54,0.46)]"
-    : "bg-[rgba(255,248,231,0.58)]";
-  const overlayCardClass = isDark
-    ? "bg-[#142138] shadow-[0_24px_60px_-28px_rgba(15,23,42,0.52)]"
-    : "bg-[#fffdf8] shadow-[0_24px_60px_-28px_rgba(15,23,42,0.18)]";
-  const overlayIconClass = isDark ? "bg-[#1a2740]" : "bg-[#fff4df]";
+  // Colours switch on the theme class in CSS ([.dark_&]), not in JS, so the server
+  // render matches the browser's before the theme is known.
+  const shellClass =
+    "bg-[#fff8ee] shadow-[0_18px_50px_-30px_rgba(15,23,42,0.14)] [.dark_&]:bg-[#132036] [.dark_&]:shadow-[0_18px_50px_-30px_rgba(15,23,42,0.45)]";
+  const headerClass = "bg-[#fff4df] [.dark_&]:bg-[#18243a]";
+  const editorBodyClass = "bg-[#fffdf7] [.dark_&]:bg-[#132036]";
+  const overlayVeilClass = "bg-[rgba(255,248,231,0.58)] [.dark_&]:bg-[rgba(19,32,54,0.46)]";
+  const overlayCardClass =
+    "bg-[#fffdf8] shadow-[0_24px_60px_-28px_rgba(15,23,42,0.18)] [.dark_&]:bg-[#142138] [.dark_&]:shadow-[0_24px_60px_-28px_rgba(15,23,42,0.52)]";
+  const overlayIconClass = "bg-[#fff4df] [.dark_&]:bg-[#1a2740]";
 
   return (
     <div className={`mt-[30px] border border-border-card ${shellClass}`}>
