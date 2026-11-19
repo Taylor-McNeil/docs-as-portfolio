@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
 import { MethodBadge } from "@/components/navigation/MethodBadge";
 import { constellationStars } from "./constellationData";
 import { ConstellationScene } from "./constellationScene";
@@ -22,7 +21,6 @@ export function ConstellationHero() {
   const tipRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<ConstellationScene | null>(null);
   const router = useRouter();
-  const { resolvedTheme } = useTheme();
   const { stars, trail } = useMemo(() => constellationStars(), []);
 
   useEffect(() => {
@@ -41,11 +39,6 @@ export function ConstellationHero() {
       sceneRef.current = null;
     };
   }, [stars, trail, router]);
-
-  // next-themes flips the class on <html>; repaint the sky once it has.
-  useEffect(() => {
-    sceneRef.current?.setTheme();
-  }, [resolvedTheme]);
 
   return (
     <div className={styles.frame}>
