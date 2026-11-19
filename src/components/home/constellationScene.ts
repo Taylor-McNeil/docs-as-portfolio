@@ -188,6 +188,15 @@ export class ConstellationScene {
       this.cvs.removeEventListener("click", onClick);
     });
 
+    // Watch the theme class on <html> directly. A React effect keyed on the theme can run
+    // before next-themes has swapped the class, which left the old theme's colours and sky.
+    const themeObserver = new MutationObserver(() => {
+      const dark = document.documentElement.classList.contains("dark");
+      if (dark !== this.dark) this.setTheme();
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    this.cleanup.push(() => themeObserver.disconnect());
+
     this.readColors();
     this.size();
     this.restart();
@@ -199,11 +208,13 @@ export class ConstellationScene {
     this.cleanup.forEach((fn) => fn());
   }
 
-  /** Call after the site theme changes. */
+  /** Repaint for the current site theme and replay the fade-in. */
   setTheme() {
     this.readColors();
+    this.sidesFor = "";
     this.buildSky();
-    if (this.reduce) this.draw(0);
+    this.t0 = 0;
+    this.restart();
   }
 
   private restart() {
