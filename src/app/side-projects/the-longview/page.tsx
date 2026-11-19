@@ -1,13 +1,17 @@
 import { ResponsePanel } from "@/components/layout/ResponsePanel";
 import { PageHeader } from "@/components/content/PageHeader";
+import type { Metadata } from "next";
+import { withSocial } from "@/lib/metadata";
 
-export const metadata = {
+export const metadata: Metadata = withSocial({
   title: "The Long View",
   description: "A free, no-signup year-at-a-glance digital planner. Built with React and localStorage — everything stays on your device.",
   alternates: {
     canonical: 'https://taylormcneil.dev/side-projects/the-longview',
   },
-};
+  // Archived: retired from navigation but kept live for existing links.
+  robots: { index: false, follow: true },
+});
 
 export default function TheLongView() {
   return (

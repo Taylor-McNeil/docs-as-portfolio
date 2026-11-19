@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { withSocial } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocial({
   title: "A Seed of Intention — Building Offline Resilience Without a Sync Engine",
   description: "Why offline mode for a solo SaaS annotation graph meant an intent-replay queue instead of a sync engine, and what it took to make reconnection honest. aampersand devlog 6.",
   alternates: {
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
-};
+});
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return children;

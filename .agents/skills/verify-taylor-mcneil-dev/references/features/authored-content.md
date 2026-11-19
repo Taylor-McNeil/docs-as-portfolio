@@ -13,10 +13,12 @@ side projects, and changelog entries rendered from TSX or MDX.
 
 ## How to get to it (user POV)
 
-- Use the sidebar sections Getting Started, Field Notes, Side Projects,
-  Tutorials, Guides, Case Studies, and Log.
+- Use the sidebar sections Getting Started, Professional Work (Selected
+  Documentation plus the collapsible Tutorials, Guides, and Case Studies
+  groups), Field Notes, and Log. The archived `/side-projects/the-longview`
+  is reachable only by direct URL and is `noindex`.
 - Use in-article links such as `Building Docs from Scratch` on `/`.
-- Open `/case-studies/on-good-tutorials` and use its report download cards.
+- Open `/professional-work/case-studies/on-good-tutorials` and use its report download cards.
 
 ## Driving it with Playwright or computer use
 

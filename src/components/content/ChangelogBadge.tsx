@@ -45,7 +45,7 @@ const badgeLabels: Record<BadgeType, string> = {
 export function ChangelogBadge({ type }: ChangelogBadgeProps) {
   return (
     <span
-      className={`inline-flex items-center justify-center w-20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide border rounded ${badgeStyles[type]}`}
+      className={`inline-flex items-center justify-center w-24 shrink-0 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide border rounded ${badgeStyles[type]}`}
     >
       {badgeLabels[type]}
     </span>
@@ -71,6 +71,6 @@ export function ChangelogBadge({ type }: ChangelogBadgeProps) {
  * └──────────┘  └──────────┘  └──────────┘  └──────────┘
  *    green         blue        purple        orange
  *
- * Fixed-width badge (w-20) with uppercase text.
+ * Fixed-width badge (w-24, wide enough for CONTRIBUTED) with uppercase text.
  * Used in TimelineItem to label changelog entries.
  */

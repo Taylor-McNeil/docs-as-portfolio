@@ -12,6 +12,16 @@ import {
 import { BreadcrumbPill } from "@/components/content/BreadcrumbPill";
 import { Card, CardGroup } from "@/components/content/Card";
 import { CodeBlock } from "@/components/content/CodeBlock";
+import { CodeTabs } from "@/components/content/CodeTabs";
+import {
+  BuildLoopDiagram,
+  CardSaveDiagram,
+  JevDiagram,
+  MockedJoinDiagram,
+  SceneDesignerDiagram,
+} from "@/components/content/BronzePotDiagrams";
+import { StickyNote } from "@/components/content/StickyNote";
+import { ChatMessage, Conversation } from "@/components/content/Conversation";
 import { ContrastCallout } from "@/components/content/ContrastCallout";
 import { DevlogCallout } from "@/components/content/DevlogCallout";
 import { DevlogCTA } from "@/components/content/DevlogCTA";
@@ -126,7 +136,7 @@ export function createPreviewComponents(
     },
     p: ({ children }) => <p className="mb-4 leading-relaxed text-foreground-muted">{children}</p>,
     ul: ({ children }) => <ul className="mb-4 list-outside list-disc space-y-1 pl-5 text-foreground-muted">{children}</ul>,
-    ol: ({ children }) => <ol className="mb-4 list-outside list-decimal space-y-4 pl-5 text-foreground-muted">{children}</ol>,
+    ol: ({ children, start }) => <ol start={start} className="mb-4 list-outside list-decimal space-y-4 pl-5 text-foreground-muted">{children}</ol>,
     li: ({ children }) => <li className="pl-1 [&>p]:mb-2">{children}</li>,
     strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
     em: ({ children }) => <em>{children}</em>,
@@ -157,10 +167,13 @@ export function createPreviewComponents(
     AnatomyOfABeat,
     AnnotatedMermaid: EditableAnnotatedMermaid,
     BreadcrumbPill,
+    BuildLoopDiagram,
     Callout,
+    CardSaveDiagram,
     Card,
     CardGroup,
     CodeBlock,
+    CodeTabs,
     ComponentRegistry: RegistryPreview,
     ContrastCallout,
     DevlogCallout,
@@ -174,11 +187,17 @@ export function createPreviewComponents(
     FooterTeaser,
     Ghost,
     HeroQuote,
+    JevDiagram,
     JsonLd,
     LayoutDiagram,
     Mermaid,
+    MockedJoinDiagram,
     MySpaceCustomizer,
     SceneBreak,
+    SceneDesignerDiagram,
+    StickyNote,
+    ChatMessage,
+    Conversation,
     StoryGraph,
     WriterRestoreDemo,
     Zap,

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { withSocial } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withSocial({
   title: "HMAC Authentication Guide",
   description: "A practical guide to HMAC API authentication — how request signing works, why it matters, and how to implement it step by step.",
   alternates: {
-    canonical: 'https://taylormcneil.dev/guides/hmac-authentication',
+    canonical: 'https://taylormcneil.dev/professional-work/guides/hmac-authentication',
   },
-};
+});
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return children;

@@ -182,7 +182,46 @@
 body {
   @apply bg-surface-bg text-foreground;
 }
-/* Highlight.js theme - GitHub Dark inspired */
+
+/* The page scrolls inside <main>, never the window. Stop the window rubber-banding
+   on phones, which dragged the mobile header out of view. */
+html,
+body {
+  overscroll-behavior: none;
+}
+/* Highlight.js theme: GitHub Light by default, GitHub Dark under .dark */
+:root,
+.entry-preview-light {
+  --hljs-keyword: #cf222e;
+  --hljs-string: #0a3069;
+  --hljs-comment: #6e7781;
+  --hljs-number: #0550ae;
+  --hljs-function: #8250df;
+  --hljs-variable: #24292f;
+  --hljs-class: #953800;
+}
+
+.dark {
+  --hljs-keyword: #ff7b72;
+  --hljs-string: #a5d6ff;
+  --hljs-comment: #8b949e;
+  --hljs-number: #79c0ff;
+  --hljs-function: #d2a8ff;
+  --hljs-variable: #c9d1d9;
+  --hljs-class: #f0883e;
+}
+
+/* Keep previews that force light mode light, even inside the dark theme. */
+.dark .entry-preview-light {
+  --hljs-keyword: #cf222e;
+  --hljs-string: #0a3069;
+  --hljs-comment: #6e7781;
+  --hljs-number: #0550ae;
+  --hljs-function: #8250df;
+  --hljs-variable: #24292f;
+  --hljs-class: #953800;
+}
+
 .hljs {
   background: transparent !important;
   font-family: inherit;
@@ -193,7 +232,7 @@ body {
 .hljs-built_in,
 .hljs-name,
 .hljs-tag {
-  color: #ff7b72;
+  color: var(--hljs-keyword);
 }
 
 .hljs-string,
@@ -205,36 +244,47 @@ body {
 .hljs-template-variable,
 .hljs-type,
 .hljs-addition {
-  color: #a5d6ff;
+  color: var(--hljs-string);
 }
 
 .hljs-comment,
 .hljs-quote,
 .hljs-deletion,
 .hljs-meta {
-  color: #8b949e;
+  color: var(--hljs-comment);
 }
 
 .hljs-number,
 .hljs-regexp,
 .hljs-selector-id,
 .hljs-selector-class {
-  color: #79c0ff;
+  color: var(--hljs-number);
 }
 
 .hljs-function,
 .hljs-title.function_ {
-  color: #d2a8ff;
+  color: var(--hljs-function);
 }
 
 .hljs-variable,
 .hljs-params {
-  color: #c9d1d9;
+  color: var(--hljs-variable);
 }
 
 .hljs-class .hljs-title {
-  color: #f0883e;
+  color: var(--hljs-class);
 }
+
+/* JSON response bodies. Colours follow the theme class in CSS, so a server render
+   matches the browser's (the theme isn't known until the page hydrates). */
+.json-key { color: #4f46e5; }
+.json-string { color: #059669; }
+.json-link { color: #ea580c; text-decoration-color: #fed7aa; }
+.json-link:hover { color: #f97316; }
+.dark .json-key { color: #93c5fd; }
+.dark .json-string { color: #86efac; }
+.dark .json-link { color: #4ade80; text-decoration-color: rgb(20 83 45 / 0.5); }
+.dark .json-link:hover { color: #86efac; }
 
 /* Mermaid diagram dark mode overrides */
 .mermaid-diagram svg[id^="mermaid"] {

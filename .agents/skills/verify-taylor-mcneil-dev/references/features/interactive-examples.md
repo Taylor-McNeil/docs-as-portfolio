@@ -16,7 +16,7 @@ customizer, writer-state restoration, a component registry, and Tic-Tac-Toe.
 - Open `/aampersand/oily-bodies-in-karpathos` for Story Graph.
 - Open `/aampersand/a-broken-astrolabe` for MySpace Customizer.
 - Open `/aampersand/a-seed-of-intention` for Writer Restore.
-- Open `/tutorials/java-game-dev` for Tic-Tac-Toe.
+- Open `/professional-work/tutorials/java-game-dev` for Tic-Tac-Toe.
 - Open `/tools/entry-editor` in development for the Live Component Registry.
 
 ## Driving it with Playwright or computer use

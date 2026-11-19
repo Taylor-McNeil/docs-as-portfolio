@@ -3,17 +3,23 @@ import { PageHeader } from "@/components/content/PageHeader";
 import { CodeBlock } from "@/components/content/CodeBlock";
 import { Callout } from "@/components/content/Callout";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { MethodBadge } from "@/components/navigation/MethodBadge";
+import type { Metadata } from "next";
+import { withSocial } from "@/lib/metadata";
+import type { JsonValue } from "@/components/content/JsonRenderer";
 
-const faqResponse = {
+const faqResponse: JsonValue = {
   "status": 200,
   "faq": [
-    { "q": "What have you been doing the past 18 months?", "a": "Building. Learning. Improving my skills." },
-    { "q": "What are you working on right now?", "a": "aampersand, LLM Eval, this portfolio" },
-    { "q": "Can you use AI? LLMs? CI/CD?", "a": " This website uses all three." },
-    { "q": "Road warrior?", "a": "Deprecated in v4.0" },
+    { "q": "Just want to see if I can write docs?", "a": "Sure. Here you go.", "read": "/professional-work" },
+    { "q": "What are you working on right now?", "a": "AI docs at MongoDB, aampersand, AI evaluation consulting, this portfolio" },
+    { "q": "Can you use AI? LLMs? CI/CD?", "a": "This website uses all three." },
+    { "q": "Road warrior?", "a": "Retired after v3.0.0. I travel for fun now." },
     { "q": "What is this?", "a": "Docs-as-portfolio" },
+    { "q": "What is aampersand?", "a": "A writing app for novelists that I'm building in public. See /aampersand" },
     { "q": "Why hire you?", "a": "Acquired taste. Keep exploring the portfolio." },
-    { "q": "Do you have a highlight reel?", "a": "6 continents, 11 hackathons, 75k+ devs. See /introduction"}
+    { "q": "Do you have a highlight reel?", "a": "6 continents, 12 hackathons, 75k+ devs, and real products built and shipped to customers. See /introduction"}
   ],
   
 }
@@ -22,7 +28,7 @@ const configCode = `import { Candidate } from '@taylor-mcneil/core';
 
 export default new Candidate({
   role: 'Developer Experience Engineer',
-  version: '4.0.0', // Deprecates "Road Warrior" module
+  version: '4.2.0', // "Road Warrior" module retired after 3.0.0
   location: 'Remote',
   
   capabilities: {
@@ -35,8 +41,21 @@ export default new Candidate({
   stack: {
     languages: ['TypeScript', 'Python', 'Java', 'SQL'],
     frameworks: ['Next.js', 'FastAPI', 'React', 'Django'],
-    tools: ['OpenAPI', 'GitHub Actions', 'MongoDB'],
-    ai_workflow: ['Prompt Engineering', 'Multi-Model Evaluation']
+    tools: [
+      'MongoDB Atlas',
+      'OpenAPI',
+      'Postman',
+      'Playwright',
+      'GitHub Actions',
+    ],
+    ai_workflow: [
+      'Claude Code',
+      'Codex',
+      'T3 Code ★',
+      'Agent Orchestration',
+      'Agent Swarms',
+      'Agent Skills',
+    ]
   },
 
   preferences: {
@@ -45,13 +64,13 @@ export default new Candidate({
   }
 });`;
 
-export const metadata = {
+export const metadata: Metadata = withSocial({
   title: "TL;DR · Developer Experience Engineer",
-  description: "The TL;DR on Taylor McNeil — skills, stack, and career stats, formatted as a developer config file.",
+  description: "The TL;DR on Taylor McNeil: skills, stack, and career stats, formatted as a developer config file.",
   alternates: {
     canonical: 'https://taylormcneil.dev/quickstart',
   },
-};
+});
 
 
 export default function Quickstart() {
@@ -81,6 +100,26 @@ export default function Quickstart() {
         </ul>
       </div>
 
+      {/* Shortcut for readers who only want writing samples */}
+      <Link
+        href="/professional-work"
+        className="group flex flex-col gap-2 rounded-lg border border-border bg-surface-card p-5 transition-colors hover:border-accent"
+      >
+        <span className="flex items-center gap-2 font-mono text-xs text-accent">
+          <MethodBadge method="GET" active />
+          /professional-work
+        </span>
+        <span className="text-base font-bold text-foreground-heading">Just want to see if I can write docs?</span>
+        <span className="text-sm text-foreground-muted">
+          Sure. Here you go: published documentation for MongoDB&apos;s AI integrations, plus tutorials, guides and
+          case studies.
+        </span>
+        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-accent">
+          Read the docs
+          <ArrowRight size={14} aria-hidden="true" className="transition-transform group-hover:translate-x-0.5" />
+        </span>
+      </Link>
+
       {/* Configuration */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-foreground-heading">Configuration</h2>
@@ -89,7 +128,7 @@ export default function Quickstart() {
         </p>
         <CodeBlock code={configCode} language="javascript" filename="taylor.config.js" />
         <Callout type="note">
-          Version 4.0.0 focuses on high-leverage developer enablement.
+          Version 4.2.0 runs on AI documentation, agent-built software and aampersand.
           For the legacy &quot;Evangelist&quot; build (80% travel), see{" "}
           <Link href="/changelog#stellar" className="text-accent underline hover:opacity-80">
             v3.0.0 in the Changelog

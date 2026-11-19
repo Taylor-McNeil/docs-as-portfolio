@@ -7,9 +7,12 @@ My portfolio, structured as API documentation—because if I'm going to say I th
 A Next.js site that treats my career like an API:
 - **`/quickstart`** — TLDR
 - **`/changelog`** — Career History 
-- **`/guides`** — ... guides?
-- **`/case-studies`** — Documentation architecture work
-- **`/tutorials`** — ... tutorials?
+- **`/professional-work`** — Selected published documentation
+  - **`/professional-work/tutorials`** — ... tutorials?
+  - **`/professional-work/guides`** — ... guides?
+  - **`/professional-work/case-studies`** — Documentation architecture work
+- **`/aampersand`** — Building aampersand in public
+- **`/field-notes`** — Notes on building this site
 
 ## Stack
 

@@ -103,5 +103,20 @@
     "tagTone": "blue",
     "preview": "translation",
     "llmsDescription": "Technical devlog on aampersand's manuscript import pipeline. Covers format-specific adapters for Scrivener (zipped .scriv projects, binder XML, RTF prose), Word (.docx XML and heading-style inference), and Markdown (heading and scene-break inference); how all three produce a shared proposed project tree of parts, chapters, and scenes; a writer-facing review step before any database writes; batched writes from world to scene; routing tables and research material to the Vault; a comparison of import support across writing tools; and the decision to stop chasing edge cases instead of promising perfect fidelity."
+  },
+  {
+    "number": 8,
+    "slug": "a-tortoise-in-a-bronze-pot",
+    "title": "A Tortoise in a Bronze Pot",
+    "cardTitle": "A Tortoise in a Bronze Pot",
+    "coverage": {
+      "start": "2026-09",
+      "end": "2026-10"
+    },
+    "description": "What \"done\" means to an agent, and how I had 13,000 tests and still had bugs.",
+    "tag": "verification",
+    "tagTone": "yellow",
+    "preview": "pot",
+    "llmsDescription": "Technical devlog on what \"done\" means for AI-agent-built software: the Lab canvas save split into arranging edits and story decisions; agent self-reported done versus correct; a short Jev decision-model trial; why agents over-write unit tests and mocks miss the joins; invariants (\"promises\") as the basis for tests; separate builder and reviewer agents; the plan, adversarial, design, build, review, verify, UI-check workflow; the human as the final check."
   }
 ]

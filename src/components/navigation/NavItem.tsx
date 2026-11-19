@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 import { MethodBadge } from "./MethodBadge";
 import { useMobileMenu } from "@/components/layout/MobileMenuContext";
 import { Method } from "@/components/content/navigation";
@@ -10,6 +11,8 @@ interface NavItemProps {
   href: string;
   label: string;
   method: Method;
+  /** Nested entries, rendered indented under this link. */
+  children?: ReactNode;
 }
 
 const activeStyles: Record<Method, string> = {
@@ -21,7 +24,7 @@ const activeStyles: Record<Method, string> = {
   OPTIONS: "bg-method-options-bg text-method-options",
 };
 
-export function NavItem({ href, label, method }: NavItemProps) {
+export function NavItem({ href, label, method, children }: NavItemProps) {
   const pathname = usePathname();
   const { close: closeMobileMenu } = useMobileMenu();
   const isActive = pathname === href;
@@ -41,6 +44,9 @@ export function NavItem({ href, label, method }: NavItemProps) {
         <MethodBadge method={method} active={isActive} />
         <span className="ml-2">{label}</span>
       </Link>
+      {children ? (
+        <ul className="mt-1 ml-[18px] space-y-1 border-l border-border pl-2">{children}</ul>
+      ) : null}
     </li>
   );
 }

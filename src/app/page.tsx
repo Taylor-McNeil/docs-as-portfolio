@@ -1,16 +1,53 @@
-import { ResponsePanel } from "@/components/layout/ResponsePanel";
-import { PageHeader } from "@/components/content/PageHeader";
 import { JsonLd } from "@/components/content/JsonLd";
+import { ResponseBody } from "@/components/content/ResponseBody";
+import { MethodBadge } from "@/components/navigation/MethodBadge";
+import type { Method } from "@/components/content/navigation";
+import { ConstellationHero } from "@/components/home/ConstellationHero";
+import { devlogCount } from "@/components/home/constellationData";
 import Link from "next/link";
-import { FileText } from "lucide-react";
+import type { Metadata } from "next";
+import { withSocial } from "@/lib/metadata";
 
-export const metadata = {
+export const metadata: Metadata = withSocial({
   title: "Developer Experience Engineer",
   description: "Taylor McNeil is a Developer Experience Engineer whose documentation and tutorials have helped 75,000+ developers across 6 continents get unstuck.",
   alternates: {
     canonical: 'https://taylormcneil.dev',
   },
-};
+});
+
+const numberWords = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"];
+const devlogsLabel = numberWords[devlogCount] ?? String(devlogCount);
+
+const doors: { method: Method; route: string; href: string; title: string; text: string }[] = [
+  {
+    method: "GET",
+    route: "/quickstart",
+    href: "/quickstart",
+    title: "Hiring?",
+    text: "The TL;DR: skills, stack and career stats as a config file.",
+  },
+  {
+    method: "PUT",
+    route: "/aampersand",
+    href: "/aampersand",
+    title: "Building in public",
+    text: `${devlogsLabel} devlogs on building a creative writing tool for fiction writers.`,
+  },
+  {
+    method: "GET",
+    route: "/professional-work",
+    href: "/professional-work",
+    title: "Read the work",
+    text: "MongoDB x TanStack, Java Game Dev, HMAC Authentication and more.",
+  },
+];
+
+const stats = [
+  { value: "75k+", label: "developers" },
+  { value: "6", label: "continents" },
+  { value: "12", label: "hackathons" },
+];
 
 export default function Home() {
 
@@ -73,143 +110,65 @@ export default function Home() {
   return (
     <>
       <JsonLd data={jsonLd} />
-    <div className="space-y-8">
-      <ResponsePanel
-        data={{
-          status: 200,
-          data: {
-            roles: [
-              "Developer Experience Engineer",
-              "Technical Writer",
-              "Developer Advocate"
-            ],
-            location: "Remote",
-            github: "https://github.com/taylor-mcneil",
-            linkedin: "https://linkedin.com/in/taylormcneil",
-            availability: "Busy building"
-          },
-        }}
-      />
+      <ConstellationHero />
 
-      <PageHeader
-        method="GET"
-        endpoint="/taylor-mcneil/readme"
-        title="Introduction"
-        description="I design developer systems that reduce friction and scale adoption."
-      />
+      <div className="space-y-10 px-6 py-10 md:px-10">
+        <nav aria-label="Where to go from here" className="grid gap-4 md:grid-cols-3">
+          {doors.map((door) => (
+            <Link
+              key={door.route}
+              href={door.href}
+              className="flex min-w-0 flex-col gap-2 rounded-lg border border-border bg-surface-card p-5 transition-colors hover:border-accent"
+            >
+              <span className="flex items-center gap-2 font-mono text-xs text-accent">
+                <MethodBadge method={door.method} active />
+                {door.route}
+              </span>
+              <b className="text-base text-foreground-heading">{door.title}</b>
+              <span className="text-sm text-foreground-muted">{door.text}</span>
+            </Link>
+          ))}
+        </nav>
 
-      <div className="space-y-4">
-        <p className="text-lg text-foreground-muted">
-          I&apos;ve mass-configured 150 flash drives overnight for a robotics
-          workshop. Explained HMAC authentication to a room that thought I said
-          &quot;hammock.&quot; Built documentation systems that outlived two
-          reorgs. Judged many a zany hackathon project.
-        </p>
+        <section className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+          <div className="space-y-3 text-base text-foreground-muted">
+            <p>
+              I&apos;ve mass-configured 150 flash drives overnight for a robotics workshop. Explained HMAC
+              authentication to a room that thought I said &quot;hammock.&quot; Built documentation systems that
+              outlived two reorgs. Judged many a zany hackathon project.
+            </p>
+            <p>
+              Why a docs site? I wanted a portfolio that works the way I work: structured, searchable, and slightly
+              overengineered for the joy of it.{" "}
+              <Link href="/field-notes/on-building-a-doc-system" className="font-medium text-accent hover:underline">
+                Building Docs from Scratch
+              </Link>
+            </p>
+          </div>
+          <dl className="grid grid-cols-3 overflow-hidden rounded-lg border border-border">
+            {stats.map((stat) => (
+              <div key={stat.label} className="min-w-0 border-r border-border p-3.5 last:border-r-0">
+                <dd className="font-mono text-xl font-bold tabular-nums text-foreground-heading sm:text-2xl">{stat.value}</dd>
+                <dt className="text-xs text-foreground-muted">{stat.label}</dt>
+              </div>
+            ))}
+          </dl>
+        </section>
 
-        <p className="text-lg text-foreground-muted">
-          75,000+ developers across 6 continents have used something I wrote to
-          get unstuck.
-        </p>
+        <ResponseBody
+          request="GET /taylor-mcneil/readme"
+          data={{
+            status: 200,
+            data: {
+              roles: ["Developer Experience Engineer", "Technical Writer", "Developer Advocate"],
+              location: "Remote",
+              github: "https://github.com/Taylor-McNeil",
+              linkedin: "https://linkedin.com/in/taylormcneil",
+              availability: "Busy building",
+            },
+          }}
+        />
       </div>
-
-      <hr className="border-border" />
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold text-foreground-heading">
-          Why a docs site?
-        </h2>
-
-        <p className="text-lg text-foreground-muted">
-          I wanted a portfolio that works the way I work: structured, searchable, 
-          and slightly overengineered for the joy of it.
-        </p>
-
-        <p className="text-lg text-foreground-muted">
-          Also, I thought it would be funny. <br/> It was. <br/> For about 40 hours of Next.js debugging.
-        </p>
-
-        <p className="text-lg">
-          <Link
-            href="/field-notes/on-building-a-doc-system"
-            className="inline-flex items-center gap-2 text-accent hover:underline font-medium"
-          >
-            <FileText size={18} aria-hidden="true" />
-            Building Docs from Scratch
-          </Link>
-        </p>
-
-      </section>
-
-      <hr className="border-border" />
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold text-foreground-heading">
-          Where to go from here
-        </h2>
-
-        <ul className="space-y-2 text-lg">
-          <li>
-            <Link
-              href="/quickstart"
-              className="text-accent hover:underline font-medium"
-            >
-              /quickstart
-            </Link>
-            <span className="text-foreground-muted"> — The TL;DR</span>
-          </li>
-          <li>
-            <Link
-              href="/aampersand"
-              className="text-accent hover:underline font-medium"
-            >
-              /aampersand
-            </Link>
-             <span className="text-foreground-muted">
-              {" "}
-              — The journey about building a creative writing tool for fiction writers
-            </span>
-          </li>
-          <li>
-            <Link
-              href="/changelog"
-              className="text-accent hover:underline font-medium"
-            >
-              /changelog
-            </Link>
-            <span className="text-foreground-muted">
-              {" "}
-              — Career history as versioning
-            </span>
-          </li>
-          <li>
-            <Link
-              href="/case-studies/on-good-tutorials"
-              className="inline-flex items-center gap-2 text-accent hover:underline font-medium"
-            >
-              <FileText size={18} aria-hidden="true" />
-              On Writing Good Tutorials
-            </Link>
-            <span className="text-foreground-muted">
-              {" "}
-              — My learnings and thoughts on tutorials
-            </span>
-          </li>
-          <li>
-            <Link
-              href="/tutorials/mongodb-tanstack"
-              className="inline-flex items-center gap-2 text-accent hover:underline font-medium"
-            >
-              <FileText size={18} aria-hidden="true" />
-              MongoDB x TanStack
-            </Link>
-            <span className="text-foreground-muted">
-              {" "}
-              — A recent tutorial I wrote
-            </span>
-          </li>
-        </ul>
-      </section>
-    </div>
     </>
   );
 }

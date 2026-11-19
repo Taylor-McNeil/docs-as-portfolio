@@ -1,0 +1,364 @@
+import { GuideHeader } from "@/components/content/GuideHeader";
+import { AnchorSidebar } from "@/components/layout/AnchorSidebar";
+import { JsonLd } from "@/components/content/JsonLd";
+import { HeroQuote } from "@/components/content/HeroQuote";
+import { BuildLoopDiagram, CardSaveDiagram, JevDiagram, MockedJoinDiagram, SceneDesignerDiagram } from "@/components/content/BronzePotDiagrams";
+import { Callout } from "@/components/content/Callout";
+import { EmphasizedText } from "@/components/content/EmphasizedText";
+import { StickyNote } from "@/components/content/StickyNote";
+import { CodeTabs } from "@/components/content/CodeTabs";
+import { ChatMessage, Conversation } from "@/components/content/Conversation";
+import { DevlogCTA } from "@/components/content/DevlogCTA";
+
+{/* entry-editor:generated */}
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A Tortoise in a Bronze Pot — aampersand Technical Devlog #8",
+  "datePublished": "2026-11-18",
+  "author": {
+    "@type": "Person",
+    "name": "Taylor McNeil"
+  },
+  "url": "https://taylormcneil.dev/aampersand/a-tortoise-in-a-bronze-pot"
+}} />
+
+<GuideHeader
+  title={"A Tortoise in a Bronze Pot"}
+  description={"What \"done\" means to an agent, and how I had 13,000 tests and still had bugs."}
+  method="PUT"
+  endpoint={"/aampersand/a-tortoise-in-a-bronze-pot"}
+  mdxPath={"src/app/aampersand/a-tortoise-in-a-bronze-pot/page.mdx"}
+/>
+
+<AnchorSidebar items={[
+  {
+    "id": "guarding-every-coin",
+    "label": "Guarding Every Coin",
+    "level": 2
+  },
+  {
+    "id": "seven-messengers",
+    "label": "Seven Messengers",
+    "level": 2
+  },
+  {
+    "id": "a-faster-oracle",
+    "label": "A Faster Oracle",
+    "level": 2
+  },
+  {
+    "id": "a-great-empire-will-fall",
+    "label": "A Great Empire Will Fall",
+    "level": 2
+  },
+  {
+    "id": "what-must-always-be-true",
+    "label": "What Must Always Be True",
+    "level": 2
+  },
+  {
+    "id": "another-pair-of-eyes",
+    "label": "Another Pair of Eyes",
+    "level": 2
+  },
+  {
+    "id": "the-tortoise-and-the-lamb",
+    "label": "The Tortoise and the Lamb",
+    "level": 2
+  },
+  {
+    "id": "holding-the-lid",
+    "label": "Holding the Lid",
+    "level": 2
+  }
+]} />
+
+<HeroQuote>
+Twenty-four items marked done. Five of them actually were.
+</HeroQuote>
+
+## Guarding Every Coin
+
+The Lab is aampersand's planning room. Today it's four screens: the Canvas, the Storyboard, the Outline and the Clothesline. The first version, back in February, had three, and one of them was the Scene Designer.
+
+The Scene Designer was built for exactly one person: me. It matched how I plan, which is great. But I never intended aampersand to be used by only one person. Building for yourself is fantastic. Building for other people is where the interesting ideas come from, because they don't work the way you do. *(How rude of them.)*
+
+<SceneDesignerDiagram />
+
+February's version didn't work, for a lot of reasons. The tooling wasn't there yet. I hadn't learned how to orchestrate agents. And agents hadn't yet learned how to make up for people's poor design skills. *(Again...rude.)*
+
+<Callout type="context" label="Aside">
+
+Honestly, almost everything about how I build has changed between February and November. Now I run teams of agents doing a handful of different things at once, and the agents themselves are just better. My computer regularly sounds like a spaceship about to take off, and I am always, always out of RAM. But I have never had more fun building than I'm having right now. :)
+
+</Callout>
+
+So I put the Lab on the shelf and focused on other parts of the app. That turned out to be a great decision: I moved a lot of other things forward. When I came back to the Lab, I split the Scene Designer into the Outline and the Storyboard, because people plan differently, and matching different planning styles worked better than cramming them into one. But I was so focused on the Scene Designer that I missed the problem sitting right in front of me.
+
+***The Canvas.***
+
+I took my first real swing at redesigning it around June or July. My approach was, roughly, telling my agents *here, go ham.* I thought the code was designed well, even if I hadn't fully designed the actual screens.
+
+In hindsight, that was one of the most idiotic things I've ever done. There are whole companies whose entire product is a canvas, and I had no idea how hard it is to build a good one. I made the whole project much harder on myself by not designing the UI first. My thinking was that if I could make it work, I could come back and design it later, which is ultimately what I did. Shockingly, though, the UI wasn't the biggest problem.
+
+The biggest problem was that building and iterating on it was agonizing. A simple change took almost forty-five minutes to test.
+
+***INSANITY.***
+
+When I went digging, it took a while, but I found two problems. The save underneath the canvas was wrong. And the canvas looked nothing like the design (*you know, the thing I'd barely given the agents any input on*).
+
+Here's the first one, simplified. When you nudged a card, this is roughly what the save did, next to what it needed to do:
+
+<CardSaveDiagram />
+
+"Lock the whole book" means exactly what it sounds like: while one change saved, nothing else in your book could. Every little save was treated like a story decision. It touched the database in a lot of places when it only needed to touch one.
+
+Story decisions deserve that care. Back in February I decided that a deliberate story decision stays put until the writer says otherwise. Planning a Spark into a chapter, or moving a scene to another part of the book, is a claim about your story. A save like that should be careful: it should know exactly what it's changing, keep a receipt, and be able to undo it.
+
+Dragging a card two inches to the left isn't a story decision. It's sliding a sticky note across a desk. I'd made every save as careful as the most important one.
+
+So the save split in two. Moving a card now just saves its new position, and if two moves collide, the later one wins. Story decisions keep the careful path.
+
+But peeling back that layer only exposed the next one. Once saving was simple enough to work offline, syncing started turning up problems in other parts of the app, and that became its own monster, lovingly dubbed Sync v2 (you can read more about offline hell in **[A Seed of Intention](/aampersand/a-seed-of-intention)**). And the second problem was still sitting there, buried under the sync problem. The canvas didn't look anything like the design. So I sent the agents back in to rebuild the Lab, and to tell me when it was done.
+
+## Seven Messengers
+
+By late September, the agents had marked twenty-four items in the second Lab rebuild "done." When I checked them myself, five were actually correct.
+
+A bit unsettling, to be honest.
+
+Each agent did its work and reported it done, sincerely. Reviewer agents had to agree, and they agreed. But what does it mean to be "done"? What does it mean to agree? What does it mean for something to be "correct"? Those words feel obvious to us. To an agent, they're ambiguous, and agents don't handle ambiguity well.
+
+It didn't help that this build stretched over months, in the background of everything else I was working on, and the models changed underneath it. A way of prompting that worked a few months earlier needed a different strategy later on.
+
+<EmphasizedText color="purple">Lesson #27: To an agent, "done" is a state. It isn't the same thing as correct.</EmphasizedText>
+
+That week is where my run playbook started: one written set of rules for who builds, who checks, who signs off, and when to stop. A verdict names the commit and the files it depends on, and it goes stale the moment those files change. Three attempts, then it stops and asks me.
+
+Getting there was iterative, and it had to be. You can't copy someone else's playbook and expect it to work for you. UI testing matters far more to me than it seems to for a lot of people. I often need to test several accounts against each other, with different session tokens. Most people don't have to deal with that, so the general advice often isn't the advice I need, and I have to go find the niche advice that fits. *(Thank you to everyone who still asks questions on the internet.)*
+
+And between February and November, orchestrating a team of agents wasn't really mainstream yet. There was no manual. I learned it the way I learn most things: by picking up pieces from everywhere and seeing what holds. A trick somebody posted on Twitter, tried for real that afternoon. Ideas from game development, which I love, and which keeps handing me tools and techniques that turn out to work in web development too (and the other way around).
+
+The playbook fixed some problems. It still couldn't tell me whether the screen matched the design, because nothing in it could actually look.
+
+## A Faster Oracle
+
+So I went looking for something that could. A decision model called Jev had come out in mid-September, and I thought I'd found the missing piece.
+
+TypeSafe built Jev to make decisions, not to chat: you give it a question and a fixed set of answers, and it picks one, fast and cheap. The developer world lost its mind for a minute. Platforms added support. People wrote blog posts about using it for test assertions. And I had exactly the question it seemed built for: here's the design, here's what got built, pass or fail?
+
+*That's it. That's my oracle.*
+
+***Wrong.***
+
+The advice everywhere was that Jev was drag and drop: install it, and your agent will figure out how to use it. So I didn't tell the agent where it belonged.
+
+*Ladies and gentlemen, it did not figure out how to use it.*
+
+Instead of holding the finished screen up against the design, the agent reached for Jev in the middle of computer use, to decide what to click next. Every step became a round trip: the agent asked, Jev decided, the agent interpreted the answer, the agent clicked. It was slow. Painfully slow. And I was paying extra for a second model to make decisions slower than the first model could make them on its own. No matter what I tried, I couldn't get the agent to put Jev where it belonged.
+
+<JevDiagram />
+
+I gave up in less than a week.
+
+<Callout type="context" label="Aside">
+
+In fairness, a postmortem. Jev might fit better now. The models have gotten better since September, and a newer one might work out where it goes. OpenAI has its own take on the idea too, a Decisions API that opened up to everyone in October. But I haven't found a real reason to bring either one in. I'm not sure what it would buy me that the rest of my workflow doesn't already. That doesn't mean it won't work for you.
+
+</Callout>
+
+<EmphasizedText color="purple">Lesson #28: Understand your problem before you take generic advice.</EmphasizedText>
+
+## A Great Empire Will Fall
+
+If Jev wasn't my oracle, I already had one. Thousands of them, actually.
+
+Agents love tests. They really, really love tests.
+
+It makes sense. A test is the closest thing an agent gets to certainty. It runs, it goes green, and green means done. So every time an agent touched something, it wrote tests. Lots of them.
+
+By late October, aampersand had 13,575 tests across 1,917 files, more lines of test code than lines of app. The full run took about an hour. And I still had hundreds of bugs.
+
+How?
+
+<Callout type="context" label="Aside">
+
+**A quick primer, if you don't write tests for a living.** A unit test checks one small piece on its own: give this function these inputs, expect this output. An integration test checks that pieces work together: does the save actually reach the database? An end-to-end test drives the whole app the way a person would: open the book, write a chapter, leave, come back. Is it still there?
+
+</Callout>
+
+Unit tests are fast, cheap and precise, which is exactly why agents write so many of them. End-to-end tests are slow and fiddly, and they're the only ones that see what a writer sees. My suite was a mix of all three, and plenty of tests were a muddle somewhere in between.
+
+When I finally read the whole suite, file by file, the pattern was obvious:
+
+- 992 files tested a piece against a stand-in for the piece next to it (a mock), not the real thing. Each piece passed on its own, even where the real pieces didn't fit together.
+- I sampled eight open bugs. Current tests directly covered one, partly covered two, and missed five completely. Every one of the eight lived at a join between two features.
+- Some checks compared the code to itself, so if the code and the check made the same mistake, the check passed.
+- One test asserted an open bug as correct behavior.
+
+<MockedJoinDiagram />
+
+<Callout type="context" label="Aside">
+<StickyNote note="Almost every view in aampersand is the same data, shaped differently. That's why it's strong. It's also why the bugs hide in the joins.">
+
+aampersand is an unusually connected piece of software. Almost every view is the same data, shaped a different way. So problems at the joins are far more common than in most apps, and much harder to track down. That's baked into the architecture. The thing that makes aampersand strong is the same thing that makes it horrible to test.
+
+</StickyNote>
+</Callout>
+
+Every one of those tests passed. They were just answering questions nobody needed answered.
+
+<EmphasizedText color="purple">Lesson #29: Be very clear about what you're actually testing.</EmphasizedText>
+
+<Callout type="context" label="Aside">
+
+The wider community is starting to circle this problem too. More people are talking about formal verification: instead of checking examples, you state what must always be true and prove the code can't break it. I haven't brought formal verification into aampersand, not really. But it led me somewhere interesting.
+
+</Callout>
+
+## What Must Always Be True
+
+What if, instead of testing everything, I wrote down the handful of things aampersand must never get wrong?
+
+The industry calls these invariants: things that stay true no matter what else changes. In aampersand I call them promises, because that's what they are. Here are a few:
+
+- **Your words are never lost.**
+- **Nothing is duplicated.**
+- **The app tells you the truth about what it kept.**
+
+In October, I deleted the entire test suite and rebuilt it around the promises. *(Don't worry, I have more than three promises.)*
+
+A great empire did fall. It just turned out to be mine.
+
+Here's the difference. The old way, an agent builds a feature, then writes tests that describe what it built. Those tests check the code against the code. If the feature is wrong, the tests are wrong in the same way, and everything goes green.
+
+The new way, the test comes first, and it's written from the promise, not from the code. Take duplicating a chapter you've planned in the Lab. One promise says your words are never lost, so the copy has to keep every word and every note. Another says nothing is duplicated, so the planned Spark stays behind, because copying it would put the same story moment on the Clothesline twice. That's the expected result, decided before anyone touches the feature. It fails. The helper builds until it passes.
+
+Here's roughly what the two look like side by side (simplified, not the real code):
+
+<CodeTabs
+  tabs={[
+    {
+      label: "The old way",
+      language: "ts",
+      code: `test('duplicateChapter works', () => {
+  const copy = duplicateChapter(chapter)
+  expect(copy).toMatchSnapshot()
+})`,
+    },
+    {
+      label: "The new way",
+      language: "ts",
+      code: `test('a duplicated chapter keeps everything and copies nothing twice', () => {
+  const copy = duplicateChapter(chapter)
+
+  // Your words are never lost
+  expect(text(copy)).toEqual(text(chapter))
+  expect(notes(copy)).toEqual(notes(chapter))
+
+  // Nothing is duplicated
+  expect(sparks(copy)).toHaveLength(0)
+  expect(sparks(chapter)).toHaveLength(1)
+})`,
+    },
+  ]}
+/>
+
+The first test only asks whether the copy matches what the code made last time. If duplicating a chapter quietly dropped a note on day one, the snapshot saved the missing note as correct. The second test knows a chapter is more than its words: the text and the notes have to come across, and the Spark has to stay behind. It fails until all of that is true.
+
+Every committed test now has to name the promise it guards, have an expected result a human wrote, and fail before the change and pass after. Anything else is scaffolding: use it, then delete it.
+
+<EmphasizedText color="purple">Lesson #30: A test may pass but still fail to test its target.</EmphasizedText>
+
+## Another Pair of Eyes
+
+The last rule in my workflow is the oldest one in software: whoever wrote the code can't be the one who reviews it.
+
+Engineers already do this with pull requests. Nobody approves their own PR (unless they're a solo dev, like me) because we cannot see our own blind spots. Agents have blind spots too, and the agent that wrote the code is the worst-placed one to find them. So the builder agent never reviews its own work, and never tests it either. Another agent checks it, and the last set of eyes is mine. That makes me the bottleneck in my own code, and it's a trade-off I'm willing to make.
+
+<Callout type="context" label="Aside">
+
+The checking isn't foolproof either. It's a system too, which means it can break. In October, a bug in Codex broke the handoff between Claude Code and Codex, and took my whole testing setup down with it for a couple of days.
+
+</Callout>
+
+## The Tortoise and the Lamb
+
+Croesus didn't trust his oracles, and with good reason. Most of them were wrong. Only Delphi gave him the right answer, and even Delphi's answer wasn't the full picture.
+
+My workflow is my version of his test, and every piece of it came from something in this post going wrong. The canvas I built without designing first. The tests that checked the code against itself. The agents who agreed with each other. The screens that looked nothing like the design.
+
+So here's what the process looks like now:
+
+<BuildLoopDiagram />
+
+It starts with an idea, mine or one I grabbed from somewhere else. I work with the agents to turn it into a plan: what we're building, and how.
+
+Then the plan goes through an adversarial run. A separate agent's whole job is to attack it. What's wrong with this? What doesn't work? What are we missing?
+
+Then design, and design is iteration. What does the screen actually look like? What happens when it's empty? With three hundred things in it? Where does the dropdown open?
+
+Then back to planning, because once the UI exists, the plan almost always has to change to fit how the design actually came out.
+
+Then implementation. An orchestrator breaks the plan into tasks and hands them to helpers. Before a helper writes a single line, the orchestrator writes the test that task has to pass, and commits it failing. The helper builds until it passes. Then a different agent reviews the code. Then another one verifies the change: what it was supposed to do, and what actually changed on screen. The last agent check is the UI itself, the build held up against the design. If anything's off, it goes back around.
+
+And finally, it comes to me.
+
+Every gate in that loop asks a question somebody already knows the answer to. The failing test exists before the code. The design is agreed before the build. And when a gate says no, the work goes back around. That's the part that took me longest to learn.
+
+<EmphasizedText color="purple">Lesson #31: Iteration is the learning.</EmphasizedText>
+
+## Holding the Lid
+
+So, trust.
+
+After all of it, the playbook, the failing tests, the separate reviewers, the promises, the biggest factor in whether something was right or wrong was this: I checked it myself.
+
+It doesn't matter if the code is correct and every agent says done. Does it look right? Does it do what it's supposed to do when you actually use it? Over and over, it's in the iterating and the poking that I find the things I never would have thought of. You can't think of all of them ahead of time.
+
+Sometimes the agent swears it matches. I've had many conversations that went like this:
+
+<Conversation caption="A conversation I've had more than once">
+  <ChatMessage from="me">Bro, these are different colors.</ChatMessage>
+  <ChatMessage from="claude" interrupted>These seem to match, the creams are--</ChatMessage>
+  <ChatMessage from="me">These don't even look the same. The buttons look off.</ChatMessage>
+  <ChatMessage from="claude" interrupted>I use the components--</ChatMessage>
+  <ChatMessage from="me">The button is BLUE. BLUE isn't in our agreed-upon colors?!</ChatMessage>
+</Conversation>
+
+It's a skill.
+
+It's a weird one.
+
+Getting the agent to execute your vision.
+
+You don't really learn it until you do it, and you build the craft over time. For me it's a lot more product and design engineering than software engineering. You can work through the edge cases in code. But nothing can tell you a design isn't intuitive until you look at it, until you play with it, until somebody tells you, "Oh, I didn't get that." Code can't tell you that.
+
+And even with all of that, there will be iteration. Until something like formal verification becomes the last word on testing, software is going to get built more than once. Some things you can't know won't work until you've done them.
+
+That's hard to accept if you're someone who likes to explore and still get it right the first time. *(Hi.)* But iteration isn't failure. It's part of engineering, and it's part of creativity. The fifth draft isn't proof the first four were wasted.
+
+Croesus's mistake wasn't trusting the oracle. It was hearing the answer he wanted and calling it done.
+
+---
+
+For months I've said aampersand is a mirror, not an oracle: it shows you your story; it doesn't tell you what it means. This fall I had to hold my own tools to the same rule. An agent's "done" is an oracle. So is a reviewer's agreement, and so are thirteen thousand green tests. A promise written down before the work starts is a mirror. So is a design agreed before the build. And so am I, at the end, looking at the screen.
+
+I did you a favor and collected every lesson in one place, for the TL;DR crowd:
+
+27. To an agent, "done" is a state. It isn't the same thing as correct.
+28. Understand your problem before you take generic advice.
+29. Be very clear about what you're actually testing.
+30. A test may pass but still fail to test its target.
+31. Iteration is the learning.
+
+<EmphasizedText>In November, we opened the door to strangers. A scrivener, an ambitious beta tester and a god walk into a writing app. They all took a sip of wine.</EmphasizedText>
+
+<DevlogCTA
+  linkText="Read the aampersand devlog"
+  linkHref="https://www.aampersand.com/devlog"
+>
+**aampersand.** Your story, kept the way you made it.
+</DevlogCTA>
