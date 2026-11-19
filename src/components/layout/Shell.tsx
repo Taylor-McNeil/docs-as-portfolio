@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, PanelRightOpen } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
@@ -39,10 +40,10 @@ export function ShellInner({ sidebar, children, publishedPreview = false, themeC
       <ScrollToTop />
       {/* Mobile Header */}
       <header className="md:hidden flex items-center justify-between p-4 border-b border-border bg-surface-sidebar">
-        <div>
+        <Link href="/" onClick={() => setMobileMenuOpen(false)} aria-label="Taylor McNeil, home">
           <h1 className="text-foreground-heading font-bold text-sm">Taylor McNeil</h1>
           <p className="text-foreground-muted font-mono text-[10px]">docs-as-portfolio v1.10</p>
-        </div>
+        </Link>
         <div className="flex items-center gap-4">
           {themeControl ?? <ThemeToggle />}
           <button
